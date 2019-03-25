@@ -1,6 +1,46 @@
 package comp1110.ass2;
 
 public class RailroadInk {
+
+    public enum Pieces {
+
+        S0("0", 0, 'h', 'h', 'r', 'h');
+
+        private String location;
+        private int orientation;
+        private char north;
+        private char south;
+        private char east;
+        private char west;
+
+        Pieces(String location, int orientation, char north, char south, char east, char west) {
+            this.location = location;
+            this.orientation = orientation;
+            this.north = north;
+            this.east = east;
+            this.south = south;
+            this.west = west;
+        }
+    }
+
+    public enum Board {
+        A0("NULL", "NULL");
+
+        private String piece;
+        private String featues;
+
+        Board(String piece, String featues) {
+            this.piece = piece;
+            this.featues = featues;
+        }
+
+    }
+
+    public static int rollNumber() {
+        //randomly generate number 1-6
+        return 1; 
+    }
+
     /**
      * Determine whether a tile placement string is well-formed:
      * - it consists of exactly 5 characters;
