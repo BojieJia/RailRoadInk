@@ -137,7 +137,7 @@ public class RailroadInk {
      */
     public static String generateDiceRoll() {
         // FIXME Task 7: generate a dice roll
-        char number = char rollNumber();
+        char number = (char)rollNumber();
         return "" + number;
     }
 
