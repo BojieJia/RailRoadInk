@@ -4,22 +4,44 @@ public class RailroadInk {
 
     public enum Pieces {
 
-        S0("0", 0, 'h', 'h', 'r', 'h');
+        S0("S0", "0", '0', 'h', 'h', 'r', 'h');
 
+        private String name;
         private String location;
-        private int orientation;
+        private char orientation;
         private char north;
         private char south;
         private char east;
         private char west;
 
-        Pieces(String location, int orientation, char north, char south, char east, char west) {
+        Pieces(String name, String location, char orientation, char north, char south, char east, char west) {
+            this.name = name;
             this.location = location;
             this.orientation = orientation;
             this.north = north;
             this.east = east;
             this.south = south;
             this.west = west;
+        }
+
+        @Override
+        public String toString() {
+            return name + location + orientation + north + south + east + west;
+        }
+    }
+
+    public static void fixOrientation(Pieces e, char orientation) {
+        char north = e.north;
+        char east = e.east;
+        char south = e.south;
+        char west = e.west;
+
+        int o = (int) orientation;
+
+        if(orientation < 4) {
+            //rotate/cycle features right amount
+        } else {
+            //flip features then rotate/cycle
         }
     }
 
@@ -34,11 +56,6 @@ public class RailroadInk {
             this.featues = featues;
         }
 
-    }
-
-    public static int rollNumber() {
-        //randomly generate number 1-6
-        return 1; 
     }
 
     /**
@@ -120,7 +137,13 @@ public class RailroadInk {
      */
     public static String generateDiceRoll() {
         // FIXME Task 7: generate a dice roll
-        return "";
+        char number = char rollNumber();
+        return "" + number;
+    }
+
+    public static int rollNumber() {
+        //randomly generate number 1-6
+        return 1;
     }
 
     /**
@@ -136,7 +159,19 @@ public class RailroadInk {
      */
     public static int getBasicScore(String boardString) {
         // FIXME Task 8: compute the basic score
-        return -1;
+        return exitScore(boardString) + centerScore(boardString) + errorScore(boardString);
+    }
+
+    public static int exitScore(String boardString) {
+        return 0;
+    }
+
+    public static int centerScore(String boardString) {
+        return 0;
+    }
+
+    public static int errorScore(String boardString) {
+        return 0;
     }
 
     /**
@@ -164,7 +199,15 @@ public class RailroadInk {
      */
     public static int getAdvancedScore(String boardString) {
         // FIXME Task 12: compute the total score including bonus points
-        return -1;
+        return longestHighway(boardString) + longestRailway(boardString);
+    }
+
+    public static int longestHighway(String boardString) {
+        return 0;
+    }
+
+    public static int longestRailway(String boardString) {
+        return 0;
     }
 }
 
