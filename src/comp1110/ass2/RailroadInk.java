@@ -4,34 +4,6 @@ import java.sql.SQLOutput;
 
 public class RailroadInk {
 
-    public enum Pieces {
-
-        S0("S0", "0", '0', 'h', 'h', 'r', 'h');
-
-        private String name;
-        private String location;
-        private char orientation;
-        private char north;
-        private char south;
-        private char east;
-        private char west;
-
-        Pieces(String name, String location, char orientation, char north, char south, char east, char west) {
-            this.name = name;
-            this.location = location;
-            this.orientation = orientation;
-            this.north = north;
-            this.east = east;
-            this.south = south;
-            this.west = west;
-        }
-
-        @Override
-        public String toString() {
-            return name + location + orientation + north + south + east + west;
-        }
-    }
-
     public static void fixOrientation(Pieces e, char orientation) {
         char north = e.north;
         char east = e.east;
@@ -45,19 +17,6 @@ public class RailroadInk {
         } else {
             //flip features then rotate/cycle
         }
-    }
-
-    public enum Board {
-        A0("NULL", "NULL");
-
-        private String piece;
-        private String featues;
-
-        Board(String piece, String featues) {
-            this.piece = piece;
-            this.featues = featues;
-        }
-
     }
 
     /**

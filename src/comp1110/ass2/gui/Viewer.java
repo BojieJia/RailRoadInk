@@ -6,8 +6,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
+
+import static comp1110.ass2.RailroadInk.Board.A0;
 
 /**
  * A very simple viewer for tile placements in the Railroad Ink game.
@@ -44,6 +50,7 @@ public class Viewer extends Application {
         textField.setPrefWidth(300);
         Button button = new Button("Refresh");
         button.setOnAction(e -> {
+            //call makePlacement with given text
             makePlacement(textField.getText());
             textField.clear();
         });
@@ -58,6 +65,7 @@ public class Viewer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
+
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
