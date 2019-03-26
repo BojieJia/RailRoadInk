@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+import java.sql.SQLOutput;
+
 public class RailroadInk {
 
     public enum Pieces {
@@ -72,7 +74,50 @@ public class RailroadInk {
      */
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
         // FIXME Task 2: determine whether a tile placement is well-formed
-        return false;
+        boolean firstSecond = false;
+        boolean third = false;
+        boolean fourth = false;
+        boolean fifth = false;
+
+        char[] array = tilePlacementString.toCharArray();
+
+        if(tilePlacementString.length() == 5) {
+            System.out.println("Length");
+            if(array[0] == 'A' || array[0] == 'S') {
+                System.out.println("A or S");
+                if(array[1] <= '5') {
+                    System.out.println("Less than 5");
+                    firstSecond = true;
+                } else {
+                    return false;
+                }
+            } else if (array[0] == 'B' && array[1] <= '2') {
+                System.out.println("B and <= 2");
+                firstSecond = true;
+            }
+
+            if(array[2] >= 'A' && array[2] <= 'G') {
+                System.out.println("A - G");
+                third = true;
+            }
+
+            if(array[3] <= '6') {
+                System.out.println("<= 6");
+                fourth = true;
+            }
+
+            if(array[4] <= '7') {
+                System.out.println(" B<=7 ");
+                fifth = true;
+            }
+        }
+
+        if(firstSecond && third && fourth && fifth) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     /**
@@ -86,6 +131,19 @@ public class RailroadInk {
      */
     public static boolean isBoardStringWellFormed(String boardString) {
         // FIXME Task 3: determine whether a board string is well-formed
+
+        if(isTilePlacementWellFormed(boardString) && correctTilePlacements(boardString)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public static boolean correctTilePlacements(String boardString) {
+        //check for N five character tile placements, no more than 3 S
+
+
         return false;
     }
 
@@ -210,6 +268,11 @@ public class RailroadInk {
 
     public static int longestRailway(String boardString) {
         return 0;
+    }
+
+
+    public static void main(String[] args) {
+        isTilePlacementWellFormed("B2C03");
     }
 }
 
