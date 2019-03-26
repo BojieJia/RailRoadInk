@@ -73,7 +73,6 @@ public class RailroadInk {
      * @return true if the tile placement is well formed
      */
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
-        // FIXME Task 2: determine whether a tile placement is well-formed
         boolean firstSecond = false;
         boolean third = false;
         boolean fourth = false;
@@ -81,40 +80,60 @@ public class RailroadInk {
 
         char[] array = tilePlacementString.toCharArray();
 
+
+        //check if string is the right length
         if(tilePlacementString.length() == 5) {
             System.out.println("Length");
             if(array[0] == 'A' || array[0] == 'S') {
-                System.out.println("A or S");
+                //If the first array element is A or S
                 if(array[1] <= '5') {
-                    System.out.println("Less than 5");
+                    //Check that the second element has a number 0 - 5
+                    //Set firstSecond to true
                     firstSecond = true;
                 } else {
+                    //If not return false, save memory
                     return false;
                 }
             } else if (array[0] == 'B' && array[1] <= '2') {
-                System.out.println("B and <= 2");
+                //If first array element is B and the second element is 0-2
+                //Set firstSecond to be true
                 firstSecond = true;
+            } else {
+                //Otherwise return false
+                return false;
             }
 
             if(array[2] >= 'A' && array[2] <= 'G') {
-                System.out.println("A - G");
+                //If 3rd array element is A-G then set third to true
                 third = true;
+            } else {
+                //Otherwise return false
+                return false;
             }
 
             if(array[3] <= '6') {
-                System.out.println("<= 6");
+                //If the fourth array element is 0-6 set fourth to true
                 fourth = true;
+            } else {
+                //Otherwise return false
+                return false;
             }
 
             if(array[4] <= '7') {
-                System.out.println(" B<=7 ");
+                //If the fifth array element is 0-7 set fifth to true
                 fifth = true;
+            } else {
+                //Otherwise return false
+                return false;
             }
         }
 
+
+        //If all elements are true return
         if(firstSecond && third && fourth && fifth) {
             return true;
         } else {
+            //Otherwise return false
             return false;
         }
 
@@ -142,7 +161,6 @@ public class RailroadInk {
 
     public static boolean correctTilePlacements(String boardString) {
         //check for N five character tile placements, no more than 3 S
-
 
         return false;
     }
