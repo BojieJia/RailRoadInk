@@ -15,6 +15,8 @@ It was decided the tasks would be allocated as follows:
 Task 2 - Harriet
 Task 3 - Bojie and Chenxaun
 Task 4 - Everyone
+Task 5 - If time allows
+Task 6 - If time allows
 
 ## Week 6
 
