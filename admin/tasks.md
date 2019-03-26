@@ -5,9 +5,16 @@ Use the entries below as an example.
 
 ## Week 4
 
-Create application skeleton -
+Create application skeleton - Harriet
 
 ## Week 5
+
+Tuesday meeting - 11am - 12pm
+
+It was decided the tasks would be allocated as follows:
+Task 2 - Harriet
+Task 3 - Bojie and Chenxaun
+Task 4 - Everyone
 
 ## Week 6
 
