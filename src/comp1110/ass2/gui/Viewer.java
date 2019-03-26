@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 
-import static comp1110.ass2.RailroadInk.Board.A0;
-
 /**
  * A very simple viewer for tile placements in the Railroad Ink game.
  * <p>
@@ -65,6 +63,24 @@ public class Viewer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
+
+        Image image = new Image(new FileInputStream("src/comp1110/ass2/gui/assets/A0.png"));
+        ImageView imageView = new ImageView(image);
+
+        imageView.setX(100);
+        imageView.setY(100);
+
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+
+        imageView.setX(200);
+        imageView.setY(200);
+
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+
+
+        Group root = new Group(imageView);
 
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
