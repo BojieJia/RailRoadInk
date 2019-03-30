@@ -43,7 +43,7 @@ public class RailroadInk {
 
         //check if string is the right length
         if(tilePlacementString.length() == 5) {
-            System.out.println("Length");
+
             if(array[0] == 'A' || array[0] == 'S') {
                 //If the first array element is A or S
                 if(array[1] <= '5') {
@@ -109,6 +109,44 @@ public class RailroadInk {
      * @return true if the board string is well-formed
      */
     public static boolean isBoardStringWellFormed(String boardString) {
+        if(boardString!=null &&!"".equals(boardString)) {
+            System.out.println(boardString.length());
+            int x = boardString.length() % 5;
+            System.out.println(x);
+
+            int N = boardString.length() / 5;
+
+            System.out.println(N);
+            if (x == 0 && N > 0 && N < 32) {
+                //check the length of boardString
+                for (int k = 0; k < N; k++) {
+                    String St = boardString.substring(5 * k, 5 * k + 4);
+                    if (isTilePlacementWellFormed(St)) {
+                        return true;
+                    }
+                }
+                //make sure each piece placement is well- formed
+                int count = 0;
+                for (int j = 0; j < N; j++) {
+                    if (boardString.charAt(5 * j) == 'S') {
+                        count++;
+                        System.out.println(count);
+                    }
+                }
+                System.out.println(count);
+                if (count <= 3) {
+                    return true;
+                }
+                //check the amount of special tiles
+            }
+        }
+        else {
+            return false;
+        }
+
+
+
+
         // FIXME Task 3: determine whether a board string is well-formed
 
         if(isTilePlacementWellFormed(boardString) && correctTilePlacements(boardString)) {
