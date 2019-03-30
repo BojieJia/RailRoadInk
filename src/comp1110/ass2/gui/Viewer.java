@@ -12,6 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 
 /**
  * A very simple viewer for tile placements in the Railroad Ink game.
@@ -30,8 +33,6 @@ public class Viewer extends Application {
     private final Group controls = new Group();
     TextField textField;
 
-    private final Group images = new Group();
-
     private String CURRENT_PIECE = "";
 
     /**
@@ -42,30 +43,47 @@ public class Viewer extends Application {
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
 
-        /*char[] array = placement.toCharArray();
-
+        char[] array = placement.toCharArray();
         char[] arrayp = {array[0], array[1]};
+
+        int y = (array[2] - 'A') * 100;
+        int x = Character.getNumericValue(array[3]) * 100;
 
         String piece = new String(arrayp);
 
         CURRENT_PIECE = piece;
 
-        Image image = new Image("assets/" + CURRENT_PIECE + ".png");
+        //create a new image using current piece visual
+        Image image = new Image(Viewer.class.getResourceAsStream("assets/" + CURRENT_PIECE + ".png"));
         ImageView imageView = new ImageView(image);
 
-        imageView.setX(100);
-        imageView.setY(100);
+        if(Character.getNumericValue(array[4]) > 3) {
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            imageView.setScaleX(-1);
+            imageView.setRotate(360.0/4 * ((double)Character.getNumericValue(array[4]) - 4));
+        } else {
+            imageView.setFitHeight(100);
+            imageView.setFitWidth(100);
+            imageView.setRotate(360.0/4 * (double)Character.getNumericValue(array[4]));
+        }
 
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+        imageView.setX(x);
+        imageView.setY(y);
 
-        imageView.setX(200);
-        imageView.setY(200);
+        root.getChildren().add(imageView);
+    }
 
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+    int[] getLocation(String placement, int counter) {
 
-        images.getChildren().add(imageView);*/
+        char[] placementArray = placement.toCharArray();
+
+        int y = placementArray[counter] - 'A' * 100;
+        int x = placementArray[counter + 1] * 100;
+
+        int[] array = {x, y};
+
+        return array;
     }
 
     /**
@@ -91,33 +109,16 @@ public class Viewer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         primaryStage.setTitle("StepsGame Viewer");
-
-        Image image = new Image("src/comp1110/ass2/gui/assets/A0.png");
-        ImageView imageView = new ImageView(image);
-
-        imageView.setX(100);
-        imageView.setY(100);
-
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
-
-        imageView.setX(200);
-        imageView.setY(200);
-
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
-
-        Group root = new Group(imageView);
-
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
-        //root.getChildren().add(images);
 
         makeControls();
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 }
