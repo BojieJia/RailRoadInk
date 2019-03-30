@@ -146,9 +146,15 @@ public class RailroadInk {
         char[] n1 = {p1[0], p1[1]};
         char[] n2 = {p2[0], p2[1]};
 
+        //find the name of the pieces
         String name1 = new String(n1);
         String name2 = new String(n2);
 
+        //initialize feature placements
+        //n = north
+        //e = east
+        //s = south
+        //w = west
         char n1n = 'a';
         char n1e = 'b';
         char n1s = 'c';
@@ -161,7 +167,9 @@ public class RailroadInk {
 
 
         for (Pieces p : Pieces.values()) {
+            //check for piece name in pieces enum
             if (p.name().equals(name1)) {
+                //set feature placement variables depending on piece's orientation
                 if(p1[4] == '0') {
                     n1n = p.north;
                     n1e = p.east;
@@ -205,8 +213,6 @@ public class RailroadInk {
                 }
             }
         }
-
-        System.out.println(n1n + " " + n1e + " " + n1s + " " + n1w);
 
         for (Pieces p : Pieces.values()) {
             if (p.name().equals(name2)) {
@@ -253,8 +259,6 @@ public class RailroadInk {
                 }
             }
         }
-
-        System.out.println(n2n + " " + n2e + " " + n2s + " " + n2w);
 
         char location = connectionLocation(tilePlacementStringA, tilePlacementStringB);
 
@@ -436,9 +440,5 @@ public class RailroadInk {
         return 0;
     }
 
-    public static void main(String[] args) {
-        areConnectedNeighbours("A4A10", "A3B13");
-        System.out.println(connectionLocation("A4A10", "A3B13"));
-    }
 }
 

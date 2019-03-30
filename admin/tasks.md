@@ -11,10 +11,12 @@ Create application skeleton - Harriet
 
 Tuesday meeting - 11am - 12pm
 
+Attended by Harriet and Bojie.
+
 It was decided the tasks would be allocated as follows:
 Task 2 - Harriet
-Task 3 - Bojie and Chenxaun
-Task 4 - Everyone
+Task 3 - Bojie
+Task 4 - Harriet
 Task 5 - If time allows
 Task 6 - If time allows
 
