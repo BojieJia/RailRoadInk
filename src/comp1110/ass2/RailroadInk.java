@@ -139,8 +139,49 @@ public class RailroadInk {
      */
     public static boolean areConnectedNeighbours(String tilePlacementStringA, String tilePlacementStringB) {
         // FIXME Task 5: determine whether neighbouring placements are connected
+
+        char[] p1 = tilePlacementStringA.toCharArray();
+        char[] p2 = tilePlacementStringB.toCharArray();
+
+        char[] n1 = {p1[0], p1[1]};
+        char[] n2 = {p2[0], p2[1]};
+
+        String name1 = new String(n1);
+        String name2 = new String(n2);
+
+        char n1n;
+        char n1e;
+        char n1s;
+        char n1w;
+
+        char n2n;
+        char n2e;
+        char n2s;
+        char n2w;
+
+
+        for (Pieces p : Pieces.values()) {
+            if (p.name().equals(name1)) {
+                n1n = p.north;
+                n1e = p.east;
+                n1s = p.south;
+                n1w = p.west;
+            }
+        }
+
+        for (Pieces p : Pieces.values()) {
+            if (p.name().equals(name1)) {
+                n2n = p.north;
+                n2e = p.east;
+                n2s = p.south;
+                n2w = p.west;
+            }
+        }
+
         return false;
     }
+
+
 
     /**
      * Given a well-formed board string representing an ordered list of placements,
