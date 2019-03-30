@@ -12,4 +12,7 @@ https://stackoverflow.com/questions/40059836/rotating-image-in-javafx
 Converting int to char (in dice roll):
 https://www.javatpoint.com/java-int-to-char
 
+Checking if an enum contains a certain value (used to find the features of each piece in task 5):
+https://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string/37240149
+
 Signed: Harriet Phillips (u6698981)

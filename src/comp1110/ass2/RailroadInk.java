@@ -215,7 +215,9 @@ public class RailroadInk {
         }
 
         for (Pieces p : Pieces.values()) {
+            //check for piece name in pieces enum
             if (p.name().equals(name2)) {
+                //set feature placement variables depending on piece's orientation
                 if(p2[4] == '0') {
                     n2n = p.north;
                     n2e = p.east;
@@ -260,28 +262,41 @@ public class RailroadInk {
             }
         }
 
+        //find the location of the connection of the pieces (if there is one)
         char location = connectionLocation(tilePlacementStringA, tilePlacementStringB);
 
         if(location == 'n') {
+            //if the connection is "North" (above piece 1)
             if(n1n == n2s && n1n != 'n') {
+                //if the north feature of piece 1 matches the south feature
+                //of piece 2, then return true
                 return true;
             } else {
                 return false;
             }
         } else if (location == 'e') {
+            //if the connection is "east" (right of piece 2)
             if(n1e == n2w && n1e != 'n') {
+                //if the east feature of piece 1 matches the west feature
+                //of piece 2, then return true
                 return true;
             } else {
                 return false;
             }
         } else if (location == 's') {
+            //if the connection is "south" (below piece 2)
             if(n1s == n2n && n1s != 'n') {
+                //if the south feature of piece 1 matches the north feature
+                //of piece 2, then return true
                 return true;
             } else {
                 return false;
             }
         } else if (location == 'w') {
+            //if the connection is "west" (left of piece 1)
             if(n1w == n2e  && n1w != 'n') {
+                //if the west feature of piece 1 matches the east feature
+                //of piece 2, then return true
                 return true;
             } else {
                 return false;
