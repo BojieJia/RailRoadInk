@@ -1,6 +1,7 @@
 package comp1110.ass2;
 
 import java.sql.SQLOutput;
+import java.util.Random;
 
 public class RailroadInk {
 
@@ -174,13 +175,17 @@ public class RailroadInk {
      */
     public static String generateDiceRoll() {
         // FIXME Task 7: generate a dice roll
-        char number = (char)rollNumber();
-        return "" + number;
+        //generate a number between 0-5 for A or 0-2 for B
+        //convert number to a char, return string.
+        return "A" + (char)(rollNumber(6) + '0') + "A" + (char)(rollNumber(6) + '0')
+                + "A" + (char)(rollNumber(6) + '0') + "B" + (char)(rollNumber(2) + '0');
     }
 
-    public static int rollNumber() {
-        //randomly generate number 1-6
-        return 1;
+    public static int rollNumber(int max) {
+        //generate a number from 0 to max - 1;
+        Random rand = new Random();
+        int value = rand.nextInt(max);
+        return value;
     }
 
     /**

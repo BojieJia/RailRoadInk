@@ -33,8 +33,6 @@ public class Viewer extends Application {
     private final Group controls = new Group();
     TextField textField;
 
-    private String CURRENT_PIECE = "";
-
     /**
      * Draw a placement in the window, removing any previously drawn one
      *
@@ -44,46 +42,44 @@ public class Viewer extends Application {
         // FIXME Task 4: implement the simple placement viewer
 
         char[] array = placement.toCharArray();
-        char[] arrayp = {array[0], array[1]};
 
-        int y = (array[2] - 'A') * 100;
-        int x = Character.getNumericValue(array[3]) * 100;
+        //create pieces until exhausted the list
+        for (int i = 0; i < placement.length(); i = i + 5) {
 
-        String piece = new String(arrayp);
+            char[] arrayPieceName = {array[i], array[i+1]};
 
-        CURRENT_PIECE = piece;
+            int y = (array[i + 2] - 'A') * 100;
+            int x = Character.getNumericValue(array[i + 3]) * 100;
 
-        //create a new image using current piece visual
-        Image image = new Image(Viewer.class.getResourceAsStream("assets/" + CURRENT_PIECE + ".png"));
-        ImageView imageView = new ImageView(image);
+            String piece = new String(arrayPieceName);
 
-        if(Character.getNumericValue(array[4]) > 3) {
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
-            imageView.setScaleX(-1);
-            imageView.setRotate(360.0/4 * ((double)Character.getNumericValue(array[4]) - 4));
-        } else {
-            imageView.setFitHeight(100);
-            imageView.setFitWidth(100);
-            imageView.setRotate(360.0/4 * (double)Character.getNumericValue(array[4]));
+            //create a new image using current piece visual
+            Image image = new Image(Viewer.class.getResourceAsStream("assets/" + piece + ".png"));
+            ImageView imageView = new ImageView(image);
+
+            if (Character.getNumericValue(array[i + 4]) > 3) {
+                //set the image dimensions to 100
+                imageView.setFitHeight(100);
+                imageView.setFitWidth(100);
+                //flip the image
+                imageView.setScaleX(-1);
+                //rotate the image
+                imageView.setRotate(360.0 / 4 * ((double) Character.getNumericValue(array[4]) - 4));
+            } else {
+                //set the image dimensions
+                imageView.setFitHeight(100);
+                imageView.setFitWidth(100);
+                //rotate the image
+                imageView.setRotate(360.0 / 4 * (double) Character.getNumericValue(array[4]));
+            }
+
+            //set the image's location
+            imageView.setX(x);
+            imageView.setY(y);
+
+            //add the image to root
+            root.getChildren().add(imageView);
         }
-
-        imageView.setX(x);
-        imageView.setY(y);
-
-        root.getChildren().add(imageView);
-    }
-
-    int[] getLocation(String placement, int counter) {
-
-        char[] placementArray = placement.toCharArray();
-
-        int y = placementArray[counter] - 'A' * 100;
-        int x = placementArray[counter + 1] * 100;
-
-        int[] array = {x, y};
-
-        return array;
     }
 
     /**
