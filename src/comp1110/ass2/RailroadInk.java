@@ -149,39 +149,182 @@ public class RailroadInk {
         String name1 = new String(n1);
         String name2 = new String(n2);
 
-        char n1n;
-        char n1e;
-        char n1s;
-        char n1w;
+        char n1n = 'a';
+        char n1e = 'b';
+        char n1s = 'c';
+        char n1w = 'c';
 
-        char n2n;
-        char n2e;
-        char n2s;
-        char n2w;
+        char n2n = 'e';
+        char n2e = 'f';
+        char n2s = 'g';
+        char n2w = 'h';
 
-
-        for (Pieces p : Pieces.values()) {
-            if (p.name().equals(name1)) {
-                n1n = p.north;
-                n1e = p.east;
-                n1s = p.south;
-                n1w = p.west;
-            }
-        }
 
         for (Pieces p : Pieces.values()) {
             if (p.name().equals(name1)) {
-                n2n = p.north;
-                n2e = p.east;
-                n2s = p.south;
-                n2w = p.west;
+                if(p1[4] == '0') {
+                    n1n = p.north;
+                    n1e = p.east;
+                    n1s = p.south;
+                    n1w = p.west;
+                } else if(p1[4] == '1') {
+                    n1e = p.north;
+                    n1s = p.east;
+                    n1w = p.south;
+                    n1n = p.west;
+                } else if(p1[4] == '2') {
+                    n1s = p.north;
+                    n1w = p.east;
+                    n1n = p.south;
+                    n1e = p.west;
+                } else if(p1[4] == '3') {
+                    n1w = p.north;
+                    n1n = p.east;
+                    n1e = p.south;
+                    n1s = p.west;
+                } else if(p1[4] == '4') {
+                    n1n = p.north;
+                    n1e = p.west;
+                    n1s = p.south;
+                    n1w = p.east;
+                } else if(p1[4] == '5') {
+                    n1e = p.north;
+                    n1s = p.west;
+                    n1w = p.south;
+                    n1n = p.east;
+                } else if(p1[4] == '6') {
+                    n1s = p.north;
+                    n1w = p.west;
+                    n1n = p.south;
+                    n1e = p.east;
+                } else if(p1[4] == '7') {
+                    n1w = p.north;
+                    n1n = p.west;
+                    n1e = p.south;
+                    n1s = p.east;
+                }
             }
         }
 
-        return false;
+        System.out.println(n1n + " " + n1e + " " + n1s + " " + n1w);
+
+        for (Pieces p : Pieces.values()) {
+            if (p.name().equals(name2)) {
+                if(p2[4] == '0') {
+                    n2n = p.north;
+                    n2e = p.east;
+                    n2s = p.south;
+                    n2w = p.west;
+                } else if(p2[4] == '1') {
+                    n2e = p.north;
+                    n2s = p.east;
+                    n2w = p.south;
+                    n2n = p.west;
+                } else if(p2[4] == '2') {
+                    n2s = p.north;
+                    n2w = p.east;
+                    n2n = p.south;
+                    n2e = p.west;
+                } else if(p2[4] == '3') {
+                    n2w = p.north;
+                    n2n = p.east;
+                    n2e = p.south;
+                    n2s = p.west;
+                } else if(p2[4] == '4') {
+                    n2n = p.north;
+                    n2e = p.west;
+                    n2s = p.south;
+                    n2w = p.east;
+                } else if(p2[4] == '5') {
+                    n2e = p.north;
+                    n2s = p.west;
+                    n2w = p.south;
+                    n2n = p.east;
+                } else if(p2[4] == '6') {
+                    n2s = p.north;
+                    n2w = p.west;
+                    n2n = p.south;
+                    n2e = p.east;
+                } else if(p2[4] == '7') {
+                    n2w = p.north;
+                    n2n = p.west;
+                    n2e = p.south;
+                    n2s = p.east;
+                }
+            }
+        }
+
+        System.out.println(n2n + " " + n2e + " " + n2s + " " + n2w);
+
+        char location = connectionLocation(tilePlacementStringA, tilePlacementStringB);
+
+        if(location == 'n') {
+            if(n1n == n2s && n1n != 'n') {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (location == 'e') {
+            if(n1e == n2w && n1e != 'n') {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (location == 's') {
+            if(n1s == n2n && n1s != 'n') {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (location == 'w') {
+            if(n1w == n2e  && n1w != 'n') {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
+    public static char connectionLocation(String tilePlacementStringA, String tilePlacementStringB) {
+        char[] p1 = tilePlacementStringA.toCharArray();
+        char[] p2 = tilePlacementStringB.toCharArray();
 
+        char[] l1 = {p1[2], p1[3]};
+        char[] l2 = {p2[2], p2[3]};
+
+        if(l2[0] == l1[0]) {
+            //check same row
+            if(l2[1] == l1[1] + 1) {
+                //if l2 is to the right of l1
+                return 'e';
+            } else if(l2[1] == l1[1] - 1) {
+                //if l2 is to the left of l1
+                return 'w';
+            } else {
+                return 'f';
+            }
+        } else if (l2[0] == l1[0] + 1) {
+            //check below
+            if(l2[1] == l1[1]) {
+                //if l2 is the same as l1
+                return 's';
+            } else {
+                return 'f';
+            }
+        } else if (l2[0] == l1[0] - 1) {
+            //check above
+            if(l2[1] == l1[1]) {
+                //if l2 is the same as l1
+                return 'n';
+            } else {
+                return 'f';
+            }
+        } else {
+            return 'f';
+        }
+    }
 
     /**
      * Given a well-formed board string representing an ordered list of placements,
@@ -294,7 +437,8 @@ public class RailroadInk {
     }
 
     public static void main(String[] args) {
-        isTilePlacementWellFormed("B2C03");
+        areConnectedNeighbours("A4A10", "A3B13");
+        System.out.println(connectionLocation("A4A10", "A3B13"));
     }
 }
 
