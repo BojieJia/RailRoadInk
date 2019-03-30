@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Board;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -11,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
 
 /**
  * A very simple viewer for tile placements in the Railroad Ink game.
@@ -30,6 +30,10 @@ public class Viewer extends Application {
     private final Group controls = new Group();
     TextField textField;
 
+    private final Group images = new Group();
+
+    private String CURRENT_PIECE = "";
+
     /**
      * Draw a placement in the window, removing any previously drawn one
      *
@@ -37,6 +41,31 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
+
+        /*char[] array = placement.toCharArray();
+
+        char[] arrayp = {array[0], array[1]};
+
+        String piece = new String(arrayp);
+
+        CURRENT_PIECE = piece;
+
+        Image image = new Image("assets/" + CURRENT_PIECE + ".png");
+        ImageView imageView = new ImageView(image);
+
+        imageView.setX(100);
+        imageView.setY(100);
+
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+
+        imageView.setX(200);
+        imageView.setY(200);
+
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+
+        images.getChildren().add(imageView);*/
     }
 
     /**
@@ -64,7 +93,7 @@ public class Viewer extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("StepsGame Viewer");
 
-        Image image = new Image(new FileInputStream("src/comp1110/ass2/gui/assets/A0.png"));
+        Image image = new Image("src/comp1110/ass2/gui/assets/A0.png");
         ImageView imageView = new ImageView(image);
 
         imageView.setX(100);
@@ -79,12 +108,12 @@ public class Viewer extends Application {
         imageView.setFitHeight(100);
         imageView.setFitWidth(100);
 
-
         Group root = new Group(imageView);
 
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
+        //root.getChildren().add(images);
 
         makeControls();
 
