@@ -5,19 +5,75 @@ import java.util.Random;
 
 public class RailroadInk {
 
-    public static void fixOrientation(Pieces e, char orientation) {
-        char north = e.north;
-        char east = e.east;
-        char south = e.south;
-        char west = e.west;
+    public static char[] fixOrientation(String tilePlacementString) {
+        char[] array = tilePlacementString.toCharArray();
 
-        int o = (int) orientation;
+        char[] nameArray = {array[0], array[1]};
 
-        if(orientation < 4) {
-            //rotate/cycle features right amount
-        } else {
-            //flip features then rotate/cycle
+        //find the name of the pieces
+        String name = new String(nameArray);
+
+        //initialize feature placements
+        //n = north
+        //e = east
+        //s = south
+        //w = west
+        char n = 'a';
+        char e = 'b';
+        char s = 'c';
+        char w = 'd';
+
+        for (Pieces p : Pieces.values()) {
+            //check for piece name in pieces enum
+            if (p.name().equals(name)) {
+                //set feature placement variables depending on piece's orientation
+                if(array[4] == '0') {
+                    n = p.north;
+                    e = p.east;
+                    s = p.south;
+                    w = p.west;
+                } else if(array[4] == '1') {
+                    e = p.north;
+                    s = p.east;
+                    w = p.south;
+                    n = p.west;
+                } else if(array[4] == '2') {
+                    s = p.north;
+                    w = p.east;
+                    n = p.south;
+                    e = p.west;
+                } else if(array[4] == '3') {
+                    w = p.north;
+                    n = p.east;
+                    e = p.south;
+                    s = p.west;
+                } else if(array[4] == '4') {
+                    n = p.north;
+                    e = p.west;
+                    s = p.south;
+                    w = p.east;
+                } else if(array[4] == '5') {
+                    e = p.north;
+                    s = p.west;
+                    w = p.south;
+                    n = p.east;
+                } else if(array[4] == '6') {
+                    s = p.north;
+                    w = p.west;
+                    n = p.south;
+                    e = p.east;
+                } else if(array[4] == '7') {
+                    w = p.north;
+                    n = p.west;
+                    e = p.south;
+                    s = p.east;
+                }
+            }
         }
+
+        char[] features = {n, e, s, w};
+
+        return features;
     }
 
     /**
@@ -154,129 +210,25 @@ public class RailroadInk {
      * @return true if the placements are connected neighbours
      */
     public static boolean areConnectedNeighbours(String tilePlacementStringA, String tilePlacementStringB) {
-        // FIXME Task 5: determine whether neighbouring placements are connected
 
-        char[] p1 = tilePlacementStringA.toCharArray();
-        char[] p2 = tilePlacementStringB.toCharArray();
+        char[] array1 = fixOrientation(tilePlacementStringA);
+        char[] array2 = fixOrientation(tilePlacementStringB);
 
-        char[] n1 = {p1[0], p1[1]};
-        char[] n2 = {p2[0], p2[1]};
-
-        //find the name of the pieces
-        String name1 = new String(n1);
-        String name2 = new String(n2);
 
         //initialize feature placements
         //n = north
         //e = east
         //s = south
         //w = west
-        char n1n = 'a';
-        char n1e = 'b';
-        char n1s = 'c';
-        char n1w = 'c';
+        char n1n = array1[0];
+        char n1e = array1[1];
+        char n1s = array1[2];
+        char n1w = array1[3];
 
-        char n2n = 'e';
-        char n2e = 'f';
-        char n2s = 'g';
-        char n2w = 'h';
-
-
-        for (Pieces p : Pieces.values()) {
-            //check for piece name in pieces enum
-            if (p.name().equals(name1)) {
-                //set feature placement variables depending on piece's orientation
-                if(p1[4] == '0') {
-                    n1n = p.north;
-                    n1e = p.east;
-                    n1s = p.south;
-                    n1w = p.west;
-                } else if(p1[4] == '1') {
-                    n1e = p.north;
-                    n1s = p.east;
-                    n1w = p.south;
-                    n1n = p.west;
-                } else if(p1[4] == '2') {
-                    n1s = p.north;
-                    n1w = p.east;
-                    n1n = p.south;
-                    n1e = p.west;
-                } else if(p1[4] == '3') {
-                    n1w = p.north;
-                    n1n = p.east;
-                    n1e = p.south;
-                    n1s = p.west;
-                } else if(p1[4] == '4') {
-                    n1n = p.north;
-                    n1e = p.west;
-                    n1s = p.south;
-                    n1w = p.east;
-                } else if(p1[4] == '5') {
-                    n1e = p.north;
-                    n1s = p.west;
-                    n1w = p.south;
-                    n1n = p.east;
-                } else if(p1[4] == '6') {
-                    n1s = p.north;
-                    n1w = p.west;
-                    n1n = p.south;
-                    n1e = p.east;
-                } else if(p1[4] == '7') {
-                    n1w = p.north;
-                    n1n = p.west;
-                    n1e = p.south;
-                    n1s = p.east;
-                }
-            }
-        }
-
-        for (Pieces p : Pieces.values()) {
-            //check for piece name in pieces enum
-            if (p.name().equals(name2)) {
-                //set feature placement variables depending on piece's orientation
-                if(p2[4] == '0') {
-                    n2n = p.north;
-                    n2e = p.east;
-                    n2s = p.south;
-                    n2w = p.west;
-                } else if(p2[4] == '1') {
-                    n2e = p.north;
-                    n2s = p.east;
-                    n2w = p.south;
-                    n2n = p.west;
-                } else if(p2[4] == '2') {
-                    n2s = p.north;
-                    n2w = p.east;
-                    n2n = p.south;
-                    n2e = p.west;
-                } else if(p2[4] == '3') {
-                    n2w = p.north;
-                    n2n = p.east;
-                    n2e = p.south;
-                    n2s = p.west;
-                } else if(p2[4] == '4') {
-                    n2n = p.north;
-                    n2e = p.west;
-                    n2s = p.south;
-                    n2w = p.east;
-                } else if(p2[4] == '5') {
-                    n2e = p.north;
-                    n2s = p.west;
-                    n2w = p.south;
-                    n2n = p.east;
-                } else if(p2[4] == '6') {
-                    n2s = p.north;
-                    n2w = p.west;
-                    n2n = p.south;
-                    n2e = p.east;
-                } else if(p2[4] == '7') {
-                    n2w = p.north;
-                    n2n = p.west;
-                    n2e = p.south;
-                    n2s = p.east;
-                }
-            }
-        }
+        char n2n = array2[0];
+        char n2e = array2[1];
+        char n2s = array2[2];
+        char n2w = array2[3];
 
         //find the location of the connection of the pieces (if there is one)
         char location = connectionLocation(tilePlacementStringA, tilePlacementStringB);
