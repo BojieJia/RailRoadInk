@@ -110,19 +110,17 @@ public class RailroadInk {
      */
     public static boolean isBoardStringWellFormed(String boardString) {
         if(boardString!=null &&!"".equals(boardString)) {
-            System.out.println(boardString.length());
+
             int x = boardString.length() % 5;
-            System.out.println(x);
-
             int N = boardString.length() / 5;
+            boolean wellFormed = true;
 
-            System.out.println(N);
             if (x == 0 && N > 0 && N < 32) {
                 //check the length of boardString
                 for (int k = 0; k < N; k++) {
-                    String St = boardString.substring(5 * k, 5 * k + 4);
-                    if (isTilePlacementWellFormed(St)) {
-                        return true;
+                    String St = boardString.substring(5 * k, 5 * k + 5);
+                    if (!isTilePlacementWellFormed(St)) {
+                        wellFormed = false;
                     }
                 }
                 //make sure each piece placement is well- formed
@@ -130,37 +128,17 @@ public class RailroadInk {
                 for (int j = 0; j < N; j++) {
                     if (boardString.charAt(5 * j) == 'S') {
                         count++;
-                        System.out.println(count);
                     }
                 }
-                System.out.println(count);
-                if (count <= 3) {
+                if (count <= 3 && wellFormed) {
                     return true;
                 }
                 //check the amount of special tiles
             }
         }
-        else {
-            return false;
-        }
-
-
-
-
-        // FIXME Task 3: determine whether a board string is well-formed
-
-        if(isTilePlacementWellFormed(boardString) && correctTilePlacements(boardString)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    public static boolean correctTilePlacements(String boardString) {
-        //check for N five character tile placements, no more than 3 S
 
         return false;
+
     }
 
 
