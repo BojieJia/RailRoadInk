@@ -5,3 +5,4 @@ We declare that the work toward our submission of Stage C was distributed among 
 0 Chenxuan Tang (u6359121)
 
 Signed: Harriet Phillips (u6698981)
+        Bojie Jia(u6730978)
