@@ -16,6 +16,8 @@ public class RailroadInk {
      * @param tilePlacementString a candidate tile placement string
      * @return true if the tile placement is well formed
      */
+
+    //Authored by Harriet
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
         boolean firstSecond = false;
         boolean third = false;
@@ -35,7 +37,7 @@ public class RailroadInk {
                     //Set firstSecond to true
                     firstSecond = true;
                 } else {
-                    //If not return false, save memory
+                    //If not return false
                     return false;
                 }
             } else if (array[0] == 'B' && array[1] <= '2') {
@@ -92,6 +94,7 @@ public class RailroadInk {
      * @param boardString a board string describing the placement of one or more pieces
      * @return true if the board string is well-formed
      */
+    //Authored by Bojie
     public static boolean isBoardStringWellFormed(String boardString) {
         if(boardString!=null &&!"".equals(boardString)) {
 
@@ -137,6 +140,8 @@ public class RailroadInk {
      *
      * @return true if the placements are connected neighbours
      */
+
+    //Authored by Harriet
     public static boolean areConnectedNeighbours(String tilePlacementStringA, String tilePlacementStringB) {
 
         char[] array1 = fixOrientation(tilePlacementStringA);
@@ -202,6 +207,7 @@ public class RailroadInk {
         }
     }
 
+    //Authored by Harriet
     public static char[] fixOrientation(String tilePlacementString) {
         char[] array = tilePlacementString.toCharArray();
 
@@ -273,6 +279,7 @@ public class RailroadInk {
         return features;
     }
 
+    //Authored by Harriet
     public static char connectionLocation(String tilePlacementStringA, String tilePlacementStringB) {
         char[] p1 = tilePlacementStringA.toCharArray();
         char[] p2 = tilePlacementStringB.toCharArray();

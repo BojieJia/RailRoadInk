@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+//Authored by Harriet
 public enum Pieces {
 
     S0("S0", 'h', 'h', 'r', 'h'),
