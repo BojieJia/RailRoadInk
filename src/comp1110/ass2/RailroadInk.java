@@ -113,9 +113,7 @@ public class RailroadInk {
             System.out.println(boardString.length());
             int x = boardString.length() % 5;
             System.out.println(x);
-
             int N = boardString.length() / 5;
-
             System.out.println(N);
             if (x == 0 && N > 0 && N < 32) {
                 //check the length of boardString
@@ -400,6 +398,9 @@ public class RailroadInk {
      * @return true if placement sequence is valid
      */
     public static boolean isValidPlacementSequence(String boardString) {
+
+
+
         // FIXME Task 6: determine whether the given placement sequence is valid
         return false;
     }
