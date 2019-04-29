@@ -38,6 +38,8 @@ public class Viewer extends Application {
      *
      * @param placement A valid placement string
      */
+
+    //Authored by Harriet
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
 

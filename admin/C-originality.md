@@ -16,3 +16,4 @@ Checking if an enum contains a certain value (used to find the features of each 
 https://stackoverflow.com/questions/4936819/java-check-if-enum-contains-a-given-string/37240149
 
 Signed: Harriet Phillips (u6698981)
+        Bojie Jia(u6730978)
