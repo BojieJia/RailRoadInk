@@ -4,22 +4,6 @@ import java.sql.SQLOutput;
 import java.util.Random;
 
 public class RailroadInk {
-
-    public static void fixOrientation(Pieces e, char orientation) {
-        char north = e.north;
-        char east = e.east;
-        char south = e.south;
-        char west = e.west;
-
-        int o = (int) orientation;
-
-        if(orientation < 4) {
-            //rotate/cycle features right amount
-        } else {
-            //flip features then rotate/cycle
-        }
-    }
-
     /**
      * Determine whether a tile placement string is well-formed:
      * - it consists of exactly 5 characters;
@@ -32,6 +16,8 @@ public class RailroadInk {
      * @param tilePlacementString a candidate tile placement string
      * @return true if the tile placement is well formed
      */
+
+    //Authored by Harriet
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
         boolean firstSecond = false;
         boolean third = false;
@@ -51,7 +37,7 @@ public class RailroadInk {
                     //Set firstSecond to true
                     firstSecond = true;
                 } else {
-                    //If not return false, save memory
+                    //If not return false
                     return false;
                 }
             } else if (array[0] == 'B' && array[1] <= '2') {
@@ -108,19 +94,20 @@ public class RailroadInk {
      * @param boardString a board string describing the placement of one or more pieces
      * @return true if the board string is well-formed
      */
+    //Authored by Bojie
     public static boolean isBoardStringWellFormed(String boardString) {
         if(boardString!=null &&!"".equals(boardString)) {
-            System.out.println(boardString.length());
+
             int x = boardString.length() % 5;
-            System.out.println(x);
             int N = boardString.length() / 5;
-            System.out.println(N);
+            boolean wellFormed = true;
+
             if (x == 0 && N > 0 && N < 32) {
                 //check the length of boardString
                 for (int k = 0; k < N; k++) {
-                    String St = boardString.substring(5 * k, 5 * k + 4);
-                    if (isTilePlacementWellFormed(St)) {
-                        return true;
+                    String St = boardString.substring(5 * k, 5 * k + 5);
+                    if (!isTilePlacementWellFormed(St)) {
+                        wellFormed = false;
                     }
                 }
                 //make sure each piece placement is well- formed
@@ -128,37 +115,17 @@ public class RailroadInk {
                 for (int j = 0; j < N; j++) {
                     if (boardString.charAt(5 * j) == 'S') {
                         count++;
-                        System.out.println(count);
                     }
                 }
-                System.out.println(count);
-                if (count <= 3) {
+                if (count <= 3 && wellFormed) {
                     return true;
                 }
                 //check the amount of special tiles
             }
         }
-        else {
-            return false;
-        }
-
-
-
-
-        // FIXME Task 3: determine whether a board string is well-formed
-
-        if(isTilePlacementWellFormed(boardString) && correctTilePlacements(boardString)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    public static boolean correctTilePlacements(String boardString) {
-        //check for N five character tile placements, no more than 3 S
 
         return false;
+
     }
 
 
@@ -173,130 +140,28 @@ public class RailroadInk {
      *
      * @return true if the placements are connected neighbours
      */
+
+    //Authored by Harriet
     public static boolean areConnectedNeighbours(String tilePlacementStringA, String tilePlacementStringB) {
-        // FIXME Task 5: determine whether neighbouring placements are connected
 
-        char[] p1 = tilePlacementStringA.toCharArray();
-        char[] p2 = tilePlacementStringB.toCharArray();
+        char[] array1 = fixOrientation(tilePlacementStringA);
+        char[] array2 = fixOrientation(tilePlacementStringB);
 
-        char[] n1 = {p1[0], p1[1]};
-        char[] n2 = {p2[0], p2[1]};
-
-        //find the name of the pieces
-        String name1 = new String(n1);
-        String name2 = new String(n2);
 
         //initialize feature placements
         //n = north
         //e = east
         //s = south
         //w = west
-        char n1n = 'a';
-        char n1e = 'b';
-        char n1s = 'c';
-        char n1w = 'c';
+        char n1n = array1[0];
+        char n1e = array1[1];
+        char n1s = array1[2];
+        char n1w = array1[3];
 
-        char n2n = 'e';
-        char n2e = 'f';
-        char n2s = 'g';
-        char n2w = 'h';
-
-
-        for (Pieces p : Pieces.values()) {
-            //check for piece name in pieces enum
-            if (p.name().equals(name1)) {
-                //set feature placement variables depending on piece's orientation
-                if(p1[4] == '0') {
-                    n1n = p.north;
-                    n1e = p.east;
-                    n1s = p.south;
-                    n1w = p.west;
-                } else if(p1[4] == '1') {
-                    n1e = p.north;
-                    n1s = p.east;
-                    n1w = p.south;
-                    n1n = p.west;
-                } else if(p1[4] == '2') {
-                    n1s = p.north;
-                    n1w = p.east;
-                    n1n = p.south;
-                    n1e = p.west;
-                } else if(p1[4] == '3') {
-                    n1w = p.north;
-                    n1n = p.east;
-                    n1e = p.south;
-                    n1s = p.west;
-                } else if(p1[4] == '4') {
-                    n1n = p.north;
-                    n1e = p.west;
-                    n1s = p.south;
-                    n1w = p.east;
-                } else if(p1[4] == '5') {
-                    n1e = p.north;
-                    n1s = p.west;
-                    n1w = p.south;
-                    n1n = p.east;
-                } else if(p1[4] == '6') {
-                    n1s = p.north;
-                    n1w = p.west;
-                    n1n = p.south;
-                    n1e = p.east;
-                } else if(p1[4] == '7') {
-                    n1w = p.north;
-                    n1n = p.west;
-                    n1e = p.south;
-                    n1s = p.east;
-                }
-            }
-        }
-
-        for (Pieces p : Pieces.values()) {
-            //check for piece name in pieces enum
-            if (p.name().equals(name2)) {
-                //set feature placement variables depending on piece's orientation
-                if(p2[4] == '0') {
-                    n2n = p.north;
-                    n2e = p.east;
-                    n2s = p.south;
-                    n2w = p.west;
-                } else if(p2[4] == '1') {
-                    n2e = p.north;
-                    n2s = p.east;
-                    n2w = p.south;
-                    n2n = p.west;
-                } else if(p2[4] == '2') {
-                    n2s = p.north;
-                    n2w = p.east;
-                    n2n = p.south;
-                    n2e = p.west;
-                } else if(p2[4] == '3') {
-                    n2w = p.north;
-                    n2n = p.east;
-                    n2e = p.south;
-                    n2s = p.west;
-                } else if(p2[4] == '4') {
-                    n2n = p.north;
-                    n2e = p.west;
-                    n2s = p.south;
-                    n2w = p.east;
-                } else if(p2[4] == '5') {
-                    n2e = p.north;
-                    n2s = p.west;
-                    n2w = p.south;
-                    n2n = p.east;
-                } else if(p2[4] == '6') {
-                    n2s = p.north;
-                    n2w = p.west;
-                    n2n = p.south;
-                    n2e = p.east;
-                } else if(p2[4] == '7') {
-                    n2w = p.north;
-                    n2n = p.west;
-                    n2e = p.south;
-                    n2s = p.east;
-                }
-            }
-        }
+        char n2n = array2[0];
+        char n2e = array2[1];
+        char n2s = array2[2];
+        char n2w = array2[3];
 
         //find the location of the connection of the pieces (if there is one)
         char location = connectionLocation(tilePlacementStringA, tilePlacementStringB);
@@ -342,6 +207,79 @@ public class RailroadInk {
         }
     }
 
+    //Authored by Harriet
+    public static char[] fixOrientation(String tilePlacementString) {
+        char[] array = tilePlacementString.toCharArray();
+
+        char[] nameArray = {array[0], array[1]};
+
+        //find the name of the pieces
+        String name = new String(nameArray);
+
+        //initialize feature placements
+        //n = north
+        //e = east
+        //s = south
+        //w = west
+        char n = 'a';
+        char e = 'b';
+        char s = 'c';
+        char w = 'd';
+
+        for (Pieces p : Pieces.values()) {
+            //check for piece name in pieces enum
+            if (p.name().equals(name)) {
+                //set feature placement variables depending on piece's orientation
+                if(array[4] == '0') {
+                    n = p.north;
+                    e = p.east;
+                    s = p.south;
+                    w = p.west;
+                } else if(array[4] == '1') {
+                    e = p.north;
+                    s = p.east;
+                    w = p.south;
+                    n = p.west;
+                } else if(array[4] == '2') {
+                    s = p.north;
+                    w = p.east;
+                    n = p.south;
+                    e = p.west;
+                } else if(array[4] == '3') {
+                    w = p.north;
+                    n = p.east;
+                    e = p.south;
+                    s = p.west;
+                } else if(array[4] == '4') {
+                    n = p.north;
+                    e = p.west;
+                    s = p.south;
+                    w = p.east;
+                } else if(array[4] == '5') {
+                    e = p.north;
+                    s = p.west;
+                    w = p.south;
+                    n = p.east;
+                } else if(array[4] == '6') {
+                    s = p.north;
+                    w = p.west;
+                    n = p.south;
+                    e = p.east;
+                } else if(array[4] == '7') {
+                    w = p.north;
+                    n = p.west;
+                    e = p.south;
+                    s = p.east;
+                }
+            }
+        }
+
+        char[] features = {n, e, s, w};
+
+        return features;
+    }
+
+    //Authored by Harriet
     public static char connectionLocation(String tilePlacementStringA, String tilePlacementStringB) {
         char[] p1 = tilePlacementStringA.toCharArray();
         char[] p2 = tilePlacementStringB.toCharArray();
