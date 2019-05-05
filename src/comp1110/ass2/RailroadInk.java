@@ -336,12 +336,12 @@ public class RailroadInk {
      * @return true if placement sequence is valid
      */
 
-    public static boolean notCover(String boradString) {
+    public static boolean notCover(String boardString) {
 
-        for (int i = 0; i < boradString.length(); i += 5) {
-            for (int j = 0; j < boradString.length(); j += 5) {
-                String s1 = boradString.substring(i, i + 5);
-                String s2 = boradString.substring(j, j + 5);
+        for (int i = 0; i < boardString.length(); i += 5) {
+            for (int j = 0; j < boardString.length(); j += 5) {
+                String s1 = boardString.substring(i, i + 5);
+                String s2 = boardString.substring(j, j + 5);
                 if (i != j && s1.charAt(2) == s2.charAt(2) && s1.charAt(3) == s2.charAt(3)) {
                     return false;
                 }
@@ -381,7 +381,7 @@ public class RailroadInk {
             if (s.charAt(2) == 'B' && s.charAt(3) == '6') {
                 if (tile.east == 2) {
                     haveExit = true;
-                } else if (tile.east == '1') {
+                } else if (tile.east == 1) {
                     return false;
                 }
             }
@@ -409,7 +409,7 @@ public class RailroadInk {
             if (s.charAt(2) == 'F' && s.charAt(3) == '6') {
                 if (tile.east == 2) {
                     haveExit = true;
-                } else if (tile.east == '1') {
+                } else if (tile.east == 1) {
                     return false;
                 }
             }
@@ -428,8 +428,9 @@ public class RailroadInk {
                 }
             }
 
+        }
 
-        return true;
+        return haveExit;
     }
 
     public static boolean isNeighbor(String boardString){
@@ -448,9 +449,11 @@ public class RailroadInk {
                 char column1=s1.charAt(3);
                 char column2=s2.charAt(3);
                 if(row1==row2&&(column1-column2)==1){
-                    if(tile1.south==0|| tile2.north==0)
-                        continue;
-                    if (tile1.south!=tile2.north){
+
+                    if(tile1.west!=0&&tile1.west==tile2.east) {
+                        connect[i] = true;
+                    }
+                    if (tile1.west!=0&&tile2.east!=0&&tile1.west!=tile2.east){
                         return false;
                     }
                 }
@@ -499,12 +502,6 @@ public class RailroadInk {
         if(notCover(boardString)&&isExit(boardString)&&isNeighbor(boardString)){
             return true;
         }
-
-
-
-
-
-
         // FIXME Task 6: determine whether the given placement sequence is valid
         return false;
     }
