@@ -542,22 +542,270 @@ public class RailroadInk {
      * @param boardString a board string representing a completed game
      * @return integer (positive or negative) for score *not* considering longest rail/highway
      */
+    public static boolean touchExit[] =new boolean[12];
+    public static boolean TouchPile []=new boolean[50];
+    public static String exits[]=new String[]{"A1","A3","A5","B0","B6","D0","D6","F0","F6","G1","G3","G5"};
+
     public static int getBasicScore(String boardString) {
         // FIXME Task 8: compute the basic score
-        return exitScore(boardString) + centerScore(boardString) + errorScore(boardString);
+
+        int num=boardString.length()/5;
+        int score=0;
+
+        String exitP = "";
+        for(int i=0;i<12;i++){
+            int exitNum=1;
+            int k=0;
+            int points=0;
+            for(int j=0;j<boardString.length();j+=5){
+                String s=boardString.substring(j,j+5);
+                String t=s.substring(2,4);
+                if(t==exits[i]){
+                     exitP=s;
+                     k=j/5;
+                }
+            }
+            //find pieces connected with exits
+            if(!touchExit[i]){
+                touchExit[i] = true;
+                int direction[]=new int[]{0,1,2,3};
+                for(int j=0;j<4;j++){
+                    exitNum+=exitNumber(exitP,k,j,exits[i],boardString);
+                }
+            }//calculate the total number of exits
+            if(exitNum==0){
+                points+=0;
+            }
+            if(exitNum==2){
+                points+=4;
+            }
+            if(exitNum==3){
+                points+=8;
+            }
+            if(exitNum==4){
+                points+=12;
+            }
+            if(exitNum==5){
+                points+=16;
+            }
+            if(exitNum==6){
+                points+=20;
+            }
+            if(exitNum==7){
+                points+=24;
+            }
+            if(exitNum==8){
+                points+=28;
+            }
+            if(exitNum==9){
+                points+=32;
+            }
+            if(exitNum==10){
+                points+=36;
+            }
+            if(exitNum==11){
+                points+=40;
+            }
+            if(exitNum==12){
+                points+=45;
+            }
+            score=points;
+        }
+        score=score+centreGridNum(boardString)-missEdges(boardString);
+       return score;
     }
 
-    public static int exitScore(String boardString) {
-        return 0;
+
+     public static int whichExit(String piece){
+        for(int i=0;i<exits.length;i++){
+            String location=piece.substring(2,4);
+            if(exits[i]==location){
+                return i;
+            }
+        }
+         return -1;
+     }
+
+     public static boolean isValidDirection(String string1, String string2, int direction){
+        char row1 = string1.charAt(2);
+        char row2 = string2.charAt(2);
+        char column1 = string1.charAt(3);
+        char column2 = string2.charAt(3);
+        if(direction==0&&column1==column2&&row1-row2==1){
+            return true;
+        }
+         if(direction==1&&row1==row2&&column2-column1==1){
+             return true;
+         }
+         if(direction==2&&column1==column2&&row2-row1==1){
+             return true;
+         }
+         if(direction==3&&row1==row2&&column1-column2==1){
+             return true;
+         }
+         else
+             return false;
+        //if direction=0； s2在s1上面；
+         // if direction=1: s2 is on the east of s1
+         // if direction=2: s2 is on the south of s1
+         // if direction=3: s2 is on the west of s1.
+     }
+
+
+
+    public static int exitNumber(String pieces, int orderOfPieces, int direction, String firstexit,String boardString){
+        String location=pieces.substring(2,4);
+        if(pieces.charAt(2)=='A'&&direction==0){
+            if((pieces.charAt(3)=='1'||pieces.charAt(3)=='3'||pieces.charAt(3)=='5')&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if(pieces.charAt(2)=='B'&&direction==3){
+            if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if(pieces.charAt(2)=='B'&&direction==1){
+            if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if(pieces.charAt(2)=='D'&&direction==3){
+            if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if(pieces.charAt(2)=='D'&&direction==1){
+            if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if(pieces.charAt(2)=='F'&&direction==3){
+            if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if(pieces.charAt(2)=='F'&&direction==1){
+            if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if(pieces.charAt(2)=='G'&&direction==2){
+            if((pieces.charAt(3)=='1'||pieces.charAt(3)=='3'||pieces.charAt(3)=='5')&&!touchExit[whichExit(pieces)]){
+                touchExit[whichExit(pieces)]=true;
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        //judge the number of exits on the edge
+        int total=0;
+        for(int i=0;i<boardString.length();i+=5){
+            String s=boardString.substring(i,i+5);
+            if(areConnectedNeighbours(s,pieces)&&isValidDirection(pieces,s,direction)&&!touchExit[i/5]) {
+                String next=s;
+                touchExit[whichExit(pieces)]=true;// 把走过的路标记为true
+                if(next.substring(0,2)=="B2"){
+                    total +=exitNumber(next,i/5,direction,firstexit,boardString);
+                }
+                else {
+                    total += exitNumber(next, i / 5, 0, firstexit, boardString);
+                    total += exitNumber(next, i / 5, 1, firstexit, boardString);
+                    total += exitNumber(next, i / 5, 2, firstexit, boardString);
+                    total += exitNumber(next, i / 5, 3, firstexit, boardString);
+                }
+                touchExit[whichExit(pieces)] = false;
+            }
+        }
+        return total;
+    }
+    public static int centreGridNum(String boardString){
+        int num=0;
+        for(int i=0;i<boardString.length();i++){
+            String location=boardString.substring(i+2,i+4);
+
+            if(location=="C2"||location=="C3"||location=="C4"
+            ||location=="D2"||location=="D3"||location=="D4"
+                    ||location=="E2"||location=="E3"||location=="E4"){
+                num++;
+            }
+        }
+        return num;
+    }
+    public  static int missEdges(String boardString){
+        int num=0;
+        for(int i=0;i<boardString.length();i++){
+            String str1=boardString.charAt(i)+""+boardString.charAt(i+1)+boardString.charAt(i+4);
+            char row1=boardString.charAt(i+2);
+            char volumn1=boardString.charAt(i+3);
+            Tile tile1=Tile.valueOf(str1);
+            //check the north
+            for(int j=0;j<boardString.length();j++){
+                String str2=boardString.charAt(j)+""+boardString.charAt(j+1)+boardString.charAt(j+4);
+                char row2=boardString.charAt(j+2);
+                char volumn2=boardString.charAt(j+3);
+                Tile tile2=Tile.valueOf(str2);
+                if(j!=i&&volumn1==volumn2&&row1-row2==1){
+                    if(tile1.north!=0&&tile2.south==0){
+                        num++;
+                    }
+                }//check the north
+                if(j!=i&&volumn1==volumn2&&row2-row1==1){
+                    if(tile1.south!=0&&tile2.north==0){
+                        num++;
+                    }
+                }//check the south
+                if(j!=i&&row1==row2&&volumn1-volumn2==1){
+                    if(tile1.west!=0&&tile2.east==1){
+                        num++;
+                    }
+                }//check the west
+                if(j!=i&&row1==row2&&volumn2-volumn1==1){
+                    if(tile1.east!=0&&tile2.west==1){
+                        num++;
+                    }
+                }
+
+            }
+
+        }
+        return num;
+
     }
 
-    public static int centerScore(String boardString) {
-        return 0;
-    }
 
-    public static int errorScore(String boardString) {
-        return 0;
-    }
+
+
+
 
     /**
      * Given a valid boardString and a dice roll for the round,
