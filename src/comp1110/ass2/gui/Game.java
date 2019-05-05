@@ -162,9 +162,9 @@ public class Game extends Application {
         root.getChildren().add(tile3iv);
 
         char[] tiles4 = {tiles[4], tiles[5]};
-        String tile4 = new String(tiles3);
+        String tile4 = new String(tiles4);
         Image tile4i = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
-        ImageView tile4iv = new ImageView(tile3i);
+        ImageView tile4iv = new ImageView(tile4i);
         tile4iv.setFitHeight(DIMENSIONS);
         tile4iv.setFitWidth(DIMENSIONS);
         tile4iv.setX(TILE_LOCATIONS[3][1]);
