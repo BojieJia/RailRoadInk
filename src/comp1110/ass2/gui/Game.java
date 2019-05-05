@@ -3,6 +3,7 @@ package comp1110.ass2.gui;
 import comp1110.ass2.Pieces;
 import comp1110.ass2.RailroadInk;
 import javafx.application.Application;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +21,8 @@ import java.util.List;
 
 import static comp1110.ass2.RailroadInk.generateDiceRoll;
 
+
+//Authered by Harriet
 public class Game extends Application {
     /* board layout */
     private static final int VIEWER_WIDTH = 1024;
@@ -139,6 +142,7 @@ public class Game extends Application {
         tile1iv.setFitWidth(DIMENSIONS);
         tile1iv.setX(TILE_LOCATIONS[0][1]);
         tile1iv.setY(TILE_LOCATIONS[0][0]);
+        tile1iv.setCursor(Cursor.HAND);
         root.getChildren().add(tile1iv);
 
         char[] tiles2 = {tiles[2], tiles[3]};
@@ -149,6 +153,7 @@ public class Game extends Application {
         tile2iv.setFitWidth(DIMENSIONS);
         tile2iv.setX(TILE_LOCATIONS[1][1]);
         tile2iv.setY(TILE_LOCATIONS[1][0]);
+        tile2iv.setCursor(Cursor.HAND);
         root.getChildren().add(tile2iv);
 
         char[] tiles3 = {tiles[4], tiles[5]};
@@ -159,9 +164,10 @@ public class Game extends Application {
         tile3iv.setFitWidth(DIMENSIONS);
         tile3iv.setX(TILE_LOCATIONS[2][1]);
         tile3iv.setY(TILE_LOCATIONS[2][0]);
+        tile3iv.setCursor(Cursor.HAND);
         root.getChildren().add(tile3iv);
 
-        char[] tiles4 = {tiles[4], tiles[5]};
+        char[] tiles4 = {tiles[6], tiles[7]};
         String tile4 = new String(tiles4);
         Image tile4i = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
         ImageView tile4iv = new ImageView(tile4i);
@@ -169,6 +175,7 @@ public class Game extends Application {
         tile4iv.setFitWidth(DIMENSIONS);
         tile4iv.setX(TILE_LOCATIONS[3][1]);
         tile4iv.setY(TILE_LOCATIONS[3][0]);
+        tile4iv.setCursor(Cursor.HAND);
         root.getChildren().add(tile4iv);
     }
 
