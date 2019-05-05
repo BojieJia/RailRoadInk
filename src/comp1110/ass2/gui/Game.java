@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Pieces;
 import comp1110.ass2.RailroadInk;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -14,6 +15,7 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static comp1110.ass2.RailroadInk.generateDiceRoll;
@@ -35,7 +37,9 @@ public class Game extends Application {
     private final Group root = new Group();
     private final Group controls = new Group();
 
-    TextField textField;
+    private HashMap<String, String> tiles = new HashMap<>();
+
+    private TextField textField;
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -112,7 +116,10 @@ public class Game extends Application {
         Button rollDice = new Button("Roll Dice");
         rollDice.setOnAction(e -> {
             //call drawNewTiles with given text
-            drawNewTiles();
+            if(NEW_ROUND) {
+                drawNewTiles();
+                NEW_ROUND = false;
+            }
         });
         rollDice.setLayoutX(10 * DIMENSIONS);
         rollDice.setLayoutY(2 * DIMENSIONS - 35);
@@ -163,7 +170,6 @@ public class Game extends Application {
         tile4iv.setX(TILE_LOCATIONS[3][1]);
         tile4iv.setY(TILE_LOCATIONS[3][0]);
         root.getChildren().add(tile4iv);
-
     }
 
     //Authored by Harriet
