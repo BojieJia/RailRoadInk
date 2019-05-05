@@ -336,12 +336,12 @@ public class RailroadInk {
      * @return true if placement sequence is valid
      */
 
-    public static boolean notCover(String boradString) {
+    public static boolean notCover(String boardString) {
 
-        for (int i = 0; i < boradString.length(); i += 5) {
-            for (int j = 0; j < boradString.length(); j += 5) {
-                String s1 = boradString.substring(i, i + 5);
-                String s2 = boradString.substring(j, j + 5);
+        for (int i = 0; i < boardString.length(); i += 5) {
+            for (int j = 0; j < boardString.length(); j += 5) {
+                String s1 = boardString.substring(i, i + 5);
+                String s2 = boardString.substring(j, j + 5);
                 if (i != j && s1.charAt(2) == s2.charAt(2) && s1.charAt(3) == s2.charAt(3)) {
                     return false;
                 }

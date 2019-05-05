@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.RailroadInk;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,12 +16,19 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static comp1110.ass2.RailroadInk.generateDiceRoll;
+
 public class Game extends Application {
     /* board layout */
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
 
     private static final int DIMENSIONS = 80;
+
+    private static boolean NEWROUND = true;
+    private static final int[][] TILE_LOCATIONS = {{3 * DIMENSIONS - 35, 10 * DIMENSIONS}, {4 * DIMENSIONS, 10 * DIMENSIONS}, {5 * DIMENSIONS + 35, 10 * DIMENSIONS}};
+
+    private static int TILES_TO_PLAY = 3;
 
     private static final String URI_BASE = "assets/";
 
@@ -82,6 +90,8 @@ public class Game extends Application {
     /**
      * Create a basic text field for input and a refresh button.
      */
+
+    //Edits by Harriet
     private void makeControls() {
         Label label1 = new Label("Placement:");
         textField = new TextField();
@@ -89,8 +99,10 @@ public class Game extends Application {
         Button button = new Button("Refresh");
         button.setOnAction(e -> {
             //call makePlacement with given text
-            makePlacement(textField.getText());
-            textField.clear();
+            if(NEWROUND) {
+                makePlacement(textField.getText());
+                textField.clear();
+            }
         });
         HBox hb = new HBox();
         hb.getChildren().addAll(label1, textField, button);
@@ -98,6 +110,29 @@ public class Game extends Application {
         hb.setLayoutX(115);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
         controls.getChildren().add(hb);
+
+        Button rollDice = new Button("Roll Dice");
+        rollDice.setOnAction(e -> {
+            //call drawNewTiles with given text
+            drawNewTiles();
+        });
+        rollDice.setLayoutX(10 * DIMENSIONS);
+        rollDice.setLayoutY(2 * DIMENSIONS - 35);
+        controls.getChildren().add(rollDice);
+
+    }
+
+    void drawNewTiles() {
+        char[] tiles = RailroadInk.generateDiceRoll().toCharArray();
+
+        char[] tiles1 = {tiles[0], tiles[1]};
+        String tile1 = tiles1.toString();
+
+        char[] tiles2 = {tiles[2], tiles[3]};
+        String tile2 = tiles1.toString();
+
+        char[] tiles3 = {tiles[4], tiles[5]};
+        String tile3 = tiles1.toString();
     }
 
     //Authored by Harriet
@@ -105,7 +140,6 @@ public class Game extends Application {
 
         //Draw grid
         for(int k = 1; k < 9; k++) {
-
             Line line1 = new Line();
             line1.setStartX(DIMENSIONS * k);
             line1.setStartY(DIMENSIONS);
@@ -121,7 +155,6 @@ public class Game extends Application {
             line2.setEndY(DIMENSIONS * k);
 
             root.getChildren().add(line2);
-
         }
 
         //Draw exit tiles
@@ -145,7 +178,6 @@ public class Game extends Application {
             imageView.setX(hx - DIMENSIONS);
             imageView.setY(hy);
 
-
             root.getChildren().add(imageView);
 
             int ry = ((railroadExits[i][0] - 'A')) * DIMENSIONS;
@@ -164,6 +196,45 @@ public class Game extends Application {
 
             root.getChildren().add(imageView2);
         }
+
+        int offset = -35;
+
+        for(int p = 0; p < 3; p++) {
+
+            Line line1 = new Line();
+            line1.setStartX(DIMENSIONS * 10);
+            line1.setStartY((p + 3) * DIMENSIONS + offset);
+            line1.setEndX(DIMENSIONS * 11);
+            line1.setEndY((p + 3) * DIMENSIONS + offset);
+
+            root.getChildren().add(line1);
+
+            Line line2 = new Line();
+            line2.setStartX(DIMENSIONS * 10);
+            line2.setStartY((p + 3) * DIMENSIONS + offset);
+            line2.setEndX(DIMENSIONS * 10);
+            line2.setEndY((p + 4) * DIMENSIONS + offset);
+
+            root.getChildren().add(line2);
+
+            Line line3 = new Line();
+            line3.setStartX(DIMENSIONS * 10);
+            line3.setStartY((p + 4) * DIMENSIONS + offset);
+            line3.setEndX(DIMENSIONS * 11);
+            line3.setEndY((p + 4) * DIMENSIONS + offset);
+
+            root.getChildren().add(line3);
+
+            Line line4 = new Line();
+            line4.setStartX(DIMENSIONS * 11);
+            line4.setStartY((p + 3) * DIMENSIONS + offset);
+            line4.setEndX(DIMENSIONS * 11);
+            line4.setEndY((p + 4) * DIMENSIONS + offset);
+
+            root.getChildren().add(line4);
+
+            offset = offset + 35;
+        }
     }
 
     @Override
@@ -177,19 +248,21 @@ public class Game extends Application {
         makeControls();
         drawBoard();
 
-        int hy = 2 * DIMENSIONS + 34;
-        int hx = 10 * DIMENSIONS;
+        int hy = 3 * DIMENSIONS - 35;
+        int hx = 11 * DIMENSIONS - 20;
 
-        Image image = new Image(Game.class.getResourceAsStream("assets/B2.png"));
-        ImageView imageView = new ImageView(image);
+        for(int i = 0; i < 3; i++) {
+            Image image = new Image(Game.class.getResourceAsStream("assets/B2.png"));
+            ImageView imageView = new ImageView(image);
 
-        imageView.setFitHeight(DIMENSIONS);
-        imageView.setFitWidth(DIMENSIONS);
+            imageView.setFitHeight(DIMENSIONS);
+            imageView.setFitWidth(DIMENSIONS);
 
-        imageView.setX(hx);
-        imageView.setY(hy);
+            imageView.setX(TILE_LOCATIONS[i][1]);
+            imageView.setY(TILE_LOCATIONS[i][0]);
 
-        root.getChildren().add(imageView);
+            root.getChildren().add(imageView);
+        }
 
         primaryStage.setScene(play);
         primaryStage.show();
