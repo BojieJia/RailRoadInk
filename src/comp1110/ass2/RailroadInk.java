@@ -349,6 +349,7 @@ public class RailroadInk {
         }
         return true;
     }
+
     public static boolean isExit(String boardString) {
 
         for (int i = 0; i < boardString.length(); i += 5) {
@@ -454,6 +455,7 @@ public class RailroadInk {
         return true;
 
     }
+
     public static boolean  isValidPlacementSequence (String boardString)  {
         if(notCover(boardString)&&isExit(boardString)&&isNeighbor(boardString)){
             return true;
