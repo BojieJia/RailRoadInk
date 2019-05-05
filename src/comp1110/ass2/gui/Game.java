@@ -25,10 +25,10 @@ public class Game extends Application {
 
     private static final int DIMENSIONS = 80;
 
-    private static boolean NEWROUND = true;
-    private static final int[][] TILE_LOCATIONS = {{3 * DIMENSIONS - 35, 10 * DIMENSIONS}, {4 * DIMENSIONS, 10 * DIMENSIONS}, {5 * DIMENSIONS + 35, 10 * DIMENSIONS}};
+    private static boolean NEW_ROUND = true;
+    private static final int[][] TILE_LOCATIONS = {{3 * DIMENSIONS - 35, 10 * DIMENSIONS}, {4 * DIMENSIONS, 10 * DIMENSIONS}, {5 * DIMENSIONS + 35, 10 * DIMENSIONS}, {6 * DIMENSIONS + 70, 10 * DIMENSIONS}};
 
-    private static int TILES_TO_PLAY = 3;
+    private static int TILES_TO_PLAY = 4;
 
     private static final String URI_BASE = "assets/";
 
@@ -99,10 +99,8 @@ public class Game extends Application {
         Button button = new Button("Refresh");
         button.setOnAction(e -> {
             //call makePlacement with given text
-            if(NEWROUND) {
-                makePlacement(textField.getText());
-                textField.clear();
-            }
+            makePlacement(textField.getText());
+            textField.clear();
         });
         HBox hb = new HBox();
         hb.getChildren().addAll(label1, textField, button);
@@ -123,16 +121,49 @@ public class Game extends Application {
     }
 
     void drawNewTiles() {
-        char[] tiles = RailroadInk.generateDiceRoll().toCharArray();
+        String tileString = RailroadInk.generateDiceRoll();
+        char[] tiles = tileString.toCharArray();
 
         char[] tiles1 = {tiles[0], tiles[1]};
-        String tile1 = tiles1.toString();
+        String tile1 = new String(tiles1);
+        Image tile1i = new Image(Game.class.getResourceAsStream("assets/"+ tile1 + ".png"));
+        ImageView tile1iv = new ImageView(tile1i);
+        tile1iv.setFitHeight(DIMENSIONS);
+        tile1iv.setFitWidth(DIMENSIONS);
+        tile1iv.setX(TILE_LOCATIONS[0][1]);
+        tile1iv.setY(TILE_LOCATIONS[0][0]);
+        root.getChildren().add(tile1iv);
 
         char[] tiles2 = {tiles[2], tiles[3]};
-        String tile2 = tiles1.toString();
+        String tile2 = new String(tiles2);
+        Image tile2i = new Image(Game.class.getResourceAsStream("assets/"+ tile2 + ".png"));
+        ImageView tile2iv = new ImageView(tile2i);
+        tile2iv.setFitHeight(DIMENSIONS);
+        tile2iv.setFitWidth(DIMENSIONS);
+        tile2iv.setX(TILE_LOCATIONS[1][1]);
+        tile2iv.setY(TILE_LOCATIONS[1][0]);
+        root.getChildren().add(tile2iv);
 
         char[] tiles3 = {tiles[4], tiles[5]};
-        String tile3 = tiles1.toString();
+        String tile3 = new String(tiles3);
+        Image tile3i = new Image(Game.class.getResourceAsStream("assets/"+ tile3 + ".png"));
+        ImageView tile3iv = new ImageView(tile3i);
+        tile3iv.setFitHeight(DIMENSIONS);
+        tile3iv.setFitWidth(DIMENSIONS);
+        tile3iv.setX(TILE_LOCATIONS[2][1]);
+        tile3iv.setY(TILE_LOCATIONS[2][0]);
+        root.getChildren().add(tile3iv);
+
+        char[] tiles4 = {tiles[4], tiles[5]};
+        String tile4 = new String(tiles3);
+        Image tile4i = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
+        ImageView tile4iv = new ImageView(tile3i);
+        tile4iv.setFitHeight(DIMENSIONS);
+        tile4iv.setFitWidth(DIMENSIONS);
+        tile4iv.setX(TILE_LOCATIONS[3][1]);
+        tile4iv.setY(TILE_LOCATIONS[3][0]);
+        root.getChildren().add(tile4iv);
+
     }
 
     //Authored by Harriet
@@ -199,7 +230,7 @@ public class Game extends Application {
 
         int offset = -35;
 
-        for(int p = 0; p < 3; p++) {
+        for(int p = 0; p < 4; p++) {
 
             Line line1 = new Line();
             line1.setStartX(DIMENSIONS * 10);
@@ -247,22 +278,6 @@ public class Game extends Application {
 
         makeControls();
         drawBoard();
-
-        int hy = 3 * DIMENSIONS - 35;
-        int hx = 11 * DIMENSIONS - 20;
-
-        for(int i = 0; i < 3; i++) {
-            Image image = new Image(Game.class.getResourceAsStream("assets/B2.png"));
-            ImageView imageView = new ImageView(image);
-
-            imageView.setFitHeight(DIMENSIONS);
-            imageView.setFitWidth(DIMENSIONS);
-
-            imageView.setX(TILE_LOCATIONS[i][1]);
-            imageView.setY(TILE_LOCATIONS[i][0]);
-
-            root.getChildren().add(imageView);
-        }
 
         primaryStage.setScene(play);
         primaryStage.show();
