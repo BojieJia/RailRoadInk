@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.RailroadInk;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -12,24 +13,28 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A very simple viewer for tile placements in the Railroad Ink game.
- * <p>
- * NOTE: This class is separate from your main game class.  This
- * class does not play a game, it just illustrates various tile placements.
- */
-public class Viewer extends Application {
+import static comp1110.ass2.RailroadInk.generateDiceRoll;
+
+public class Game extends Application {
     /* board layout */
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
 
     private static final int DIMENSIONS = 80;
 
+    private static boolean NEW_ROUND = true;
+    private static final int[][] TILE_LOCATIONS = {{3 * DIMENSIONS - 35, 10 * DIMENSIONS}, {4 * DIMENSIONS, 10 * DIMENSIONS}, {5 * DIMENSIONS + 35, 10 * DIMENSIONS}, {6 * DIMENSIONS + 70, 10 * DIMENSIONS}};
+
+    private static int TILES_TO_PLAY = 4;
+
     private static final String URI_BASE = "assets/";
 
     private final Group root = new Group();
     private final Group controls = new Group();
+
     TextField textField;
 
     /**
@@ -39,7 +44,7 @@ public class Viewer extends Application {
      */
 
     //Authored by Harriet
-    void makePlacement(String placement) {
+    private void makePlacement(String placement) {
 
         char[] array = placement.toCharArray();
 
@@ -54,7 +59,7 @@ public class Viewer extends Application {
             String piece = new String(arrayPieceName);
 
             //create a new image using current piece visual
-            Image image = new Image(Viewer.class.getResourceAsStream("assets/" + piece + ".png"));
+            Image image = new Image(Game.class.getResourceAsStream("assets/" + piece + ".png"));
             ImageView imageView = new ImageView(image);
 
             if (Character.getNumericValue(array[i + 4]) > 3) {
@@ -85,6 +90,8 @@ public class Viewer extends Application {
     /**
      * Create a basic text field for input and a refresh button.
      */
+
+    //Edits by Harriet
     private void makeControls() {
         Label label1 = new Label("Placement:");
         textField = new TextField();
@@ -101,14 +108,69 @@ public class Viewer extends Application {
         hb.setLayoutX(115);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
         controls.getChildren().add(hb);
+
+        Button rollDice = new Button("Roll Dice");
+        rollDice.setOnAction(e -> {
+            //call drawNewTiles with given text
+            drawNewTiles();
+        });
+        rollDice.setLayoutX(10 * DIMENSIONS);
+        rollDice.setLayoutY(2 * DIMENSIONS - 35);
+        controls.getChildren().add(rollDice);
+
+    }
+
+    void drawNewTiles() {
+        String tileString = RailroadInk.generateDiceRoll();
+        char[] tiles = tileString.toCharArray();
+
+        char[] tiles1 = {tiles[0], tiles[1]};
+        String tile1 = new String(tiles1);
+        Image tile1i = new Image(Game.class.getResourceAsStream("assets/"+ tile1 + ".png"));
+        ImageView tile1iv = new ImageView(tile1i);
+        tile1iv.setFitHeight(DIMENSIONS);
+        tile1iv.setFitWidth(DIMENSIONS);
+        tile1iv.setX(TILE_LOCATIONS[0][1]);
+        tile1iv.setY(TILE_LOCATIONS[0][0]);
+        root.getChildren().add(tile1iv);
+
+        char[] tiles2 = {tiles[2], tiles[3]};
+        String tile2 = new String(tiles2);
+        Image tile2i = new Image(Game.class.getResourceAsStream("assets/"+ tile2 + ".png"));
+        ImageView tile2iv = new ImageView(tile2i);
+        tile2iv.setFitHeight(DIMENSIONS);
+        tile2iv.setFitWidth(DIMENSIONS);
+        tile2iv.setX(TILE_LOCATIONS[1][1]);
+        tile2iv.setY(TILE_LOCATIONS[1][0]);
+        root.getChildren().add(tile2iv);
+
+        char[] tiles3 = {tiles[4], tiles[5]};
+        String tile3 = new String(tiles3);
+        Image tile3i = new Image(Game.class.getResourceAsStream("assets/"+ tile3 + ".png"));
+        ImageView tile3iv = new ImageView(tile3i);
+        tile3iv.setFitHeight(DIMENSIONS);
+        tile3iv.setFitWidth(DIMENSIONS);
+        tile3iv.setX(TILE_LOCATIONS[2][1]);
+        tile3iv.setY(TILE_LOCATIONS[2][0]);
+        root.getChildren().add(tile3iv);
+
+        char[] tiles4 = {tiles[4], tiles[5]};
+        String tile4 = new String(tiles3);
+        Image tile4i = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
+        ImageView tile4iv = new ImageView(tile3i);
+        tile4iv.setFitHeight(DIMENSIONS);
+        tile4iv.setFitWidth(DIMENSIONS);
+        tile4iv.setX(TILE_LOCATIONS[3][1]);
+        tile4iv.setY(TILE_LOCATIONS[3][0]);
+        root.getChildren().add(tile4iv);
+
     }
 
     //Authored by Harriet
     void drawBoard() {
 
         //Draw grid
-        for(int k = 0; k < 9; k++) {
-
+        for(int k = 1; k < 9; k++) {
             Line line1 = new Line();
             line1.setStartX(DIMENSIONS * k);
             line1.setStartY(DIMENSIONS);
@@ -124,7 +186,6 @@ public class Viewer extends Application {
             line2.setEndY(DIMENSIONS * k);
 
             root.getChildren().add(line2);
-
         }
 
         //Draw exit tiles
@@ -137,7 +198,7 @@ public class Viewer extends Application {
             int hy = ((highwayExits[i][0] - 'A')) * DIMENSIONS;
             int hx = (Character.getNumericValue(highwayExits[i][1])) * DIMENSIONS;
 
-            Image image = new Image(Viewer.class.getResourceAsStream("assets/HighExit.png"));
+            Image image = new Image(Game.class.getResourceAsStream("assets/HighExit.png"));
             ImageView imageView = new ImageView(image);
 
             imageView.setRotate(360.0 / 4 * (int)highwayExits[i][2]);
@@ -148,13 +209,12 @@ public class Viewer extends Application {
             imageView.setX(hx - DIMENSIONS);
             imageView.setY(hy);
 
-
             root.getChildren().add(imageView);
 
             int ry = ((railroadExits[i][0] - 'A')) * DIMENSIONS;
             int rx = (Character.getNumericValue(railroadExits[i][1])) * DIMENSIONS;
 
-            Image image2 = new Image(Viewer.class.getResourceAsStream("assets/RailExit.png"));
+            Image image2 = new Image(Game.class.getResourceAsStream("assets/RailExit.png"));
             ImageView imageView2 = new ImageView(image2);
 
             imageView2.setRotate(360.0 / 4 * (int)railroadExits[i][2]);
@@ -167,20 +227,59 @@ public class Viewer extends Application {
 
             root.getChildren().add(imageView2);
         }
+
+        int offset = -35;
+
+        for(int p = 0; p < 4; p++) {
+
+            Line line1 = new Line();
+            line1.setStartX(DIMENSIONS * 10);
+            line1.setStartY((p + 3) * DIMENSIONS + offset);
+            line1.setEndX(DIMENSIONS * 11);
+            line1.setEndY((p + 3) * DIMENSIONS + offset);
+
+            root.getChildren().add(line1);
+
+            Line line2 = new Line();
+            line2.setStartX(DIMENSIONS * 10);
+            line2.setStartY((p + 3) * DIMENSIONS + offset);
+            line2.setEndX(DIMENSIONS * 10);
+            line2.setEndY((p + 4) * DIMENSIONS + offset);
+
+            root.getChildren().add(line2);
+
+            Line line3 = new Line();
+            line3.setStartX(DIMENSIONS * 10);
+            line3.setStartY((p + 4) * DIMENSIONS + offset);
+            line3.setEndX(DIMENSIONS * 11);
+            line3.setEndY((p + 4) * DIMENSIONS + offset);
+
+            root.getChildren().add(line3);
+
+            Line line4 = new Line();
+            line4.setStartX(DIMENSIONS * 11);
+            line4.setStartY((p + 3) * DIMENSIONS + offset);
+            line4.setEndX(DIMENSIONS * 11);
+            line4.setEndY((p + 4) * DIMENSIONS + offset);
+
+            root.getChildren().add(line4);
+
+            offset = offset + 35;
+        }
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setTitle("StepsGame Viewer");
-        Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
+        primaryStage.setTitle("Railroad Ink");
+        Scene play = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
 
         makeControls();
         drawBoard();
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(play);
         primaryStage.show();
 
     }

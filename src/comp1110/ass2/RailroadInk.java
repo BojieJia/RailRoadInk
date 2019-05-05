@@ -336,24 +336,19 @@ public class RailroadInk {
      * @return true if placement sequence is valid
      */
 
-    public static boolean notCover(String boardString) {
+    public static boolean notCover(String boradString) {
 
-        for (int i = 0; i < boardString.length(); i+=5) {
-            for (int j = 0; j < boardString.length(); j+=5) {
-
-                String s1 = boardString.substring(i, i + 5);
-                String s2 = boardString.substring(j, j + 5);
-
+        for (int i = 0; i < boradString.length(); i += 5) {
+            for (int j = 0; j < boradString.length(); j += 5) {
+                String s1 = boradString.substring(i, i + 5);
+                String s2 = boradString.substring(j, j + 5);
                 if (i != j && s1.charAt(2) == s2.charAt(2) && s1.charAt(3) == s2.charAt(3)) {
                     return false;
                 }
             }
         }
-
         return true;
     }
-
-
     public static boolean isExit(String boardString) {
 
         boolean haveExit = false;
@@ -434,47 +429,28 @@ public class RailroadInk {
             }
 
 
-        }
-
-           // if ((s.charAt(2) == 'A' && (s.charAt(3) == '1' || s.charAt(3) == '5') && tile.north != '1')
-             //       || (s.charAt(2) == 'A' && s.charAt(3) == '3' && tile.north != '2')
-              //      || (s.charAt(2) == 'B' && s.charAt(3) == '0' && tile.west != '2')
-               //     || (s.charAt(2) == 'B' && s.charAt(3) == '6' && tile.east != '2')
-               //     || (s.charAt(2) == 'D' && s.charAt(3) == '0' && tile.west != '1')
-                //    || (s.charAt(2) == 'D' && s.charAt(3) == '6' && tile.east != '1')
-                 //   || (s.charAt(2) == 'F' && s.charAt(3) == '0' && tile.west != '2')
-                   // || (s.charAt(2) == 'F' && s.charAt(3) == '6' && tile.east != '2')
-                   // || (s.charAt(2) == 'G' && (s.charAt(3) == '1' || s.charAt(3) == '5') && tile.south != '1')
-                   // || (s.charAt(2) == 'G' && s.charAt(3) == '3' && tile.south != '2')) {
-
-        return haveExit;
+        return true;
     }
 
     public static boolean isNeighbor(String boardString){
 
         boolean connect[] = new boolean[boardString.length()];
         for(int i=0;i<boardString.length();i+=5){
-
             for(int j=0;j<boardString.length();j+=5){
-
                 String s1=boardString.substring(i,i+5);
                 String s2=boardString.substring(j,j+5);
                 String t1=s1.substring(0,2)+s1.charAt(4);
                 String t2=s2.substring(0,2)+s2.charAt(4);
                 Tile tile1=Tile.valueOf(t1);
                 Tile tile2=Tile.valueOf(t2);
-
                 char row1=s1.charAt(2);
                 char row2=s2.charAt(2);
                 char column1=s1.charAt(3);
                 char column2=s2.charAt(3);
-
                 if(row1==row2&&(column1-column2)==1){
-
-                    if(tile1.west!=0&&tile1.west==tile2.east) {
-                        connect[i] = true;
-                    }
-                    if (tile1.west!=0&&tile2.east!=0&&tile1.west!=tile2.east){
+                    if(tile1.south==0|| tile2.north==0)
+                        continue;
+                    if (tile1.south!=tile2.north){
                         return false;
                     }
                 }
@@ -507,12 +483,11 @@ public class RailroadInk {
                     }
                 }
             }
-
         }//check weather the neighbors are valid
 
         for(int i=0;i<boardString.length();i+=5) {
             String s=boardString.substring(i,i+5);
-           
+
             if (!connect[i]&&!isExit(s))  {
                 return false;
             }
@@ -524,6 +499,12 @@ public class RailroadInk {
         if(notCover(boardString)&&isExit(boardString)&&isNeighbor(boardString)){
             return true;
         }
+
+
+
+
+
+
         // FIXME Task 6: determine whether the given placement sequence is valid
         return false;
     }
