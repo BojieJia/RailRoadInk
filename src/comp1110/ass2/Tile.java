@@ -153,17 +153,5 @@ public enum Tile {
         this.west=west;
     }
 
-    private int[] value(){
-        int[] f=new int[4];
-        f[0]=this.north;
-        f[1]=this.east;
-        f[2]=this.south;
-        f[3]=this.west;
-        return f;
-    }
-    public int[] getvalue(){
-
-        return this.value();
-    }
 
 }
