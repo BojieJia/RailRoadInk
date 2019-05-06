@@ -1,7 +1,10 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Pieces;
 import comp1110.ass2.RailroadInk;
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,15 +12,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static comp1110.ass2.RailroadInk.generateDiceRoll;
 
+
+//Authored by Harriet
 public class Game extends Application {
     /* board layout */
     private static final int VIEWER_WIDTH = 1024;
@@ -35,7 +42,12 @@ public class Game extends Application {
     private final Group root = new Group();
     private final Group controls = new Group();
 
-    TextField textField;
+    private HashMap<String, String> tiles = new HashMap<>();
+
+    private TextField textField;
+
+    double orgSceneX, orgSceneY;
+    double orgTranslateX, orgTranslateY;
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -112,7 +124,10 @@ public class Game extends Application {
         Button rollDice = new Button("Roll Dice");
         rollDice.setOnAction(e -> {
             //call drawNewTiles with given text
-            drawNewTiles();
+            if(NEW_ROUND) {
+                drawNewTiles();
+                NEW_ROUND = false;
+            }
         });
         rollDice.setLayoutX(10 * DIMENSIONS);
         rollDice.setLayoutY(2 * DIMENSIONS - 35);
@@ -132,6 +147,9 @@ public class Game extends Application {
         tile1iv.setFitWidth(DIMENSIONS);
         tile1iv.setX(TILE_LOCATIONS[0][1]);
         tile1iv.setY(TILE_LOCATIONS[0][0]);
+        tile1iv.setCursor(Cursor.HAND);
+        tile1iv.setOnMousePressed(clickTile);
+        tile1iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile1iv);
 
         char[] tiles2 = {tiles[2], tiles[3]};
@@ -142,6 +160,9 @@ public class Game extends Application {
         tile2iv.setFitWidth(DIMENSIONS);
         tile2iv.setX(TILE_LOCATIONS[1][1]);
         tile2iv.setY(TILE_LOCATIONS[1][0]);
+        tile2iv.setCursor(Cursor.HAND);
+        tile2iv.setOnMousePressed(clickTile);
+        tile2iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile2iv);
 
         char[] tiles3 = {tiles[4], tiles[5]};
@@ -152,19 +173,48 @@ public class Game extends Application {
         tile3iv.setFitWidth(DIMENSIONS);
         tile3iv.setX(TILE_LOCATIONS[2][1]);
         tile3iv.setY(TILE_LOCATIONS[2][0]);
+        tile3iv.setCursor(Cursor.HAND);
+        tile3iv.setOnMousePressed(clickTile);
+        tile3iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile3iv);
 
-        char[] tiles4 = {tiles[4], tiles[5]};
-        String tile4 = new String(tiles3);
+        char[] tiles4 = {tiles[6], tiles[7]};
+        String tile4 = new String(tiles4);
         Image tile4i = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
-        ImageView tile4iv = new ImageView(tile3i);
+        ImageView tile4iv = new ImageView(tile4i);
         tile4iv.setFitHeight(DIMENSIONS);
         tile4iv.setFitWidth(DIMENSIONS);
         tile4iv.setX(TILE_LOCATIONS[3][1]);
         tile4iv.setY(TILE_LOCATIONS[3][0]);
+        tile4iv.setCursor(Cursor.HAND);
+        tile4iv.setOnMousePressed(clickTile);
+        tile4iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile4iv);
-
     }
+
+    EventHandler<MouseEvent> clickTile = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent t) {
+            orgSceneX = t.getSceneX();
+            orgSceneY = t.getSceneY();
+            orgTranslateX = ((ImageView)(t.getSource())).getTranslateX();
+            orgTranslateY = ((ImageView)(t.getSource())).getTranslateY();
+        }
+    };
+
+    EventHandler<MouseEvent> dragTile = new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent t) {
+            double offsetX = t.getSceneX() - orgSceneX;
+            double offsetY = t.getSceneY() - orgSceneY;
+            double newTranslateX = orgTranslateX + offsetX;
+            double newTranslateY = orgTranslateY + offsetY;
+
+            ((ImageView)(t.getSource())).setTranslateX(newTranslateX);
+            ((ImageView)(t.getSource())).setTranslateY(newTranslateY);
+        }
+    };
 
     //Authored by Harriet
     void drawBoard() {

@@ -46,7 +46,6 @@ public class GenerateDiceRollTest {
             assertFalse("Expected dice B to be rolled once, but you rolled it " + b + " time/s: " + roll, b != 1);
             assertFalse("Expected dice A and B but you rolled a different die" + x + " time/s " + roll, x != 0);
         }
-
     }
 
     private char[][] validFace = {{'0', '1', '2', '3', '4', '5'}, {'0', '1', '2'}};

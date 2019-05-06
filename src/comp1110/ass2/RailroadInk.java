@@ -1,9 +1,15 @@
 package comp1110.ass2;
 
 import java.sql.SQLOutput;
+import java.util.HashMap;
 import java.util.Random;
 
 public class RailroadInk {
+
+
+
+    public HashMap<String, String> board = new HashMap<>();
+
     /**
      * Determine whether a tile placement string is well-formed:
      * - it consists of exactly 5 characters;
@@ -16,7 +22,6 @@ public class RailroadInk {
      * @param tilePlacementString a candidate tile placement string
      * @return true if the tile placement is well formed
      */
-
     //Authored by Harriet
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
         boolean firstSecond = false;
@@ -25,7 +30,6 @@ public class RailroadInk {
         boolean fifth = false;
 
         char[] array = tilePlacementString.toCharArray();
-
 
         //check if string is the right length
         if(tilePlacementString.length() == 5) {
@@ -73,7 +77,6 @@ public class RailroadInk {
                 return false;
             }
         }
-
 
         //If all elements are true return
         if(firstSecond && third && fourth && fifth) {
@@ -209,6 +212,13 @@ public class RailroadInk {
 
     //Authored by Harriet
     public static char[] fixOrientation(String tilePlacementString) {
+
+        if(tilePlacementString.length()!= 5) {
+            throw new IllegalArgumentException("Invalid placement String: String too long");
+        } else if (!isTilePlacementWellFormed(tilePlacementString)){
+            throw new IllegalArgumentException("Invalid placement String");
+        }
+
         char[] array = tilePlacementString.toCharArray();
 
         char[] nameArray = {array[0], array[1]};
@@ -270,6 +280,8 @@ public class RailroadInk {
                     n = p.west;
                     e = p.south;
                     s = p.east;
+                } else {
+                    throw new IndexOutOfBoundsException("Tried to pass an invalid orientation");
                 }
             }
         }
@@ -281,6 +293,13 @@ public class RailroadInk {
 
     //Authored by Harriet
     public static char connectionLocation(String tilePlacementStringA, String tilePlacementStringB) {
+
+        if (!isTilePlacementWellFormed(tilePlacementStringA)){
+            throw new IllegalArgumentException("Invalid placement String: tilePlacementStringA");
+        } else if (!isTilePlacementWellFormed(tilePlacementStringB)){
+            throw new IllegalArgumentException("Invalid placement String: tilePlacementStringB");
+        }
+
         char[] p1 = tilePlacementStringA.toCharArray();
         char[] p2 = tilePlacementStringB.toCharArray();
 
@@ -336,8 +355,8 @@ public class RailroadInk {
      * @return true if placement sequence is valid
      */
 
+    //Authored by Bojie
     public static boolean notCover(String boardString) {
-
         for (int i = 0; i < boardString.length(); i += 5) {
             for (int j = 0; j < boardString.length(); j += 5) {
                 String s1 = boardString.substring(i, i + 5);
@@ -349,6 +368,8 @@ public class RailroadInk {
         }
         return true;
     }
+
+    //Authored by Bojie
     public static boolean isExit(String boardString) {
 
         boolean haveExit = false;
@@ -433,6 +454,7 @@ public class RailroadInk {
         return haveExit;
     }
 
+    //Authored by Bojie
     public static boolean isNeighbor(String boardString){
 
         boolean connect[] = new boolean[boardString.length()];
@@ -449,7 +471,6 @@ public class RailroadInk {
                 char column1=s1.charAt(3);
                 char column2=s2.charAt(3);
                 if(row1==row2&&(column1-column2)==1){
-
                     if(tile1.west!=0&&tile1.west==tile2.east) {
                         connect[i] = true;
                     }
@@ -470,11 +491,9 @@ public class RailroadInk {
                     if (tile1.north!=0&&tile1.north==tile2.south){
                         connect[i]=true;
                     }
-
                     if (tile1.north!=0&&tile2.south!=0&&tile1.north!=tile2.south){
                         return false;
                     }
-
                 }
                 else if (column1==column2&&(row2-row1)==1){
                     if (tile1.south!=0&&tile1.south==tile2.north){
@@ -498,11 +517,12 @@ public class RailroadInk {
         return true;
 
     }
+
+    //Authored by Bojie
     public static boolean  isValidPlacementSequence (String boardString)  {
         if(notCover(boardString)&&isExit(boardString)&&isNeighbor(boardString)){
             return true;
         }
-        // FIXME Task 6: determine whether the given placement sequence is valid
         return false;
     }
 
@@ -516,18 +536,20 @@ public class RailroadInk {
      *
      * @return a String representing the die roll e.g. A0A4A3B2
      */
+
+    //Authored by Harriet
     public static String generateDiceRoll() {
-        // FIXME Task 7: generate a dice roll
         //generate a number between 0-5 for A or 0-2 for B
         //convert number to a char, return string.
-        return "A" + (char)(rollNumber(6) + '0') + "A" + (char)(rollNumber(6) + '0')
-                + "A" + (char)(rollNumber(6) + '0') + "B" + (char)(rollNumber(2) + '0');
+        return "A" + (char)(rollNumber(5, 0) + '0') + "A" + (char)(rollNumber(5, 0) + '0')
+                + "A" + (char)(rollNumber(5, 0) + '0') + "B" + (char)(rollNumber(2, 0) + '0');
     }
 
-    public static int rollNumber(int max) {
+    //Authored by Harriet
+    public static int rollNumber(int max, int min) {
         //generate a number from 0 to max - 1;
         Random rand = new Random();
-        int value = rand.nextInt(max);
+        int value = rand.nextInt((max - min) + 1) + min;
         return value;
     }
 
@@ -817,6 +839,9 @@ public class RailroadInk {
      */
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
+
+
+
         return null;
     }
 
@@ -841,6 +866,16 @@ public class RailroadInk {
 
     public static int longestRailway(String boardString) {
         return 0;
+    }
+
+    public static String boardListToBoardString(HashMap<String, String> boardList) {
+        String boardString = "";
+        for(String str : boardList.keySet()) {
+            char[] tileNameOrientationArray = boardList.get(str).toCharArray();
+            boardString = boardString + tileNameOrientationArray[0] + tileNameOrientationArray[1] + str + tileNameOrientationArray[2];
+        }
+
+        return boardString;
     }
 
 }
