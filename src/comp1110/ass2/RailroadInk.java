@@ -520,14 +520,14 @@ public class RailroadInk {
         // FIXME Task 7: generate a dice roll
         //generate a number between 0-5 for A or 0-2 for B
         //convert number to a char, return string.
-        return "A" + (char)(rollNumber(6) + '0') + "A" + (char)(rollNumber(6) + '0')
-                + "A" + (char)(rollNumber(6) + '0') + "B" + (char)(rollNumber(2) + '0');
+        return "A" + (char)(rollNumber(5, 0) + '0') + "A" + (char)(rollNumber(5, 0) + '0')
+                + "A" + (char)(rollNumber(5, 0) + '0') + "B" + (char)(rollNumber(2, 0) + '0');
     }
 
-    public static int rollNumber(int max) {
+    public static int rollNumber(int max, int min) {
         //generate a number from 0 to max - 1;
         Random rand = new Random();
-        int value = rand.nextInt(max);
+        int value = rand.nextInt((max - min) + 1) + min;
         return value;
     }
 
@@ -594,6 +594,9 @@ public class RailroadInk {
     public static int longestRailway(String boardString) {
         return 0;
     }
+
+
+
 
 }
 

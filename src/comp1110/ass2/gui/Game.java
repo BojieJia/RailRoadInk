@@ -149,7 +149,7 @@ public class Game extends Application {
         tile1iv.setY(TILE_LOCATIONS[0][0]);
         tile1iv.setCursor(Cursor.HAND);
         tile1iv.setOnMousePressed(clickTile);
-        tile1iv.setOnMouseDragged(clickTile);
+        tile1iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile1iv);
 
         char[] tiles2 = {tiles[2], tiles[3]};
@@ -162,7 +162,7 @@ public class Game extends Application {
         tile2iv.setY(TILE_LOCATIONS[1][0]);
         tile2iv.setCursor(Cursor.HAND);
         tile2iv.setOnMousePressed(clickTile);
-        tile2iv.setOnMouseDragged(clickTile);
+        tile2iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile2iv);
 
         char[] tiles3 = {tiles[4], tiles[5]};
@@ -175,7 +175,7 @@ public class Game extends Application {
         tile3iv.setY(TILE_LOCATIONS[2][0]);
         tile3iv.setCursor(Cursor.HAND);
         tile3iv.setOnMousePressed(clickTile);
-        tile3iv.setOnMouseDragged(clickTile);
+        tile3iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile3iv);
 
         char[] tiles4 = {tiles[6], tiles[7]};
@@ -188,7 +188,7 @@ public class Game extends Application {
         tile4iv.setY(TILE_LOCATIONS[3][0]);
         tile4iv.setCursor(Cursor.HAND);
         tile4iv.setOnMousePressed(clickTile);
-        tile4iv.setOnMouseDragged(clickTile);
+        tile4iv.setOnMouseDragged(dragTile);
         root.getChildren().add(tile4iv);
     }
 
