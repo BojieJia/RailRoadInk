@@ -136,9 +136,16 @@ public class Game extends Application {
     }
 
     void drawNewTiles() {
+        //Generate a new string (then char array) of tiles for this round
         String tileString = RailroadInk.generateDiceRoll();
         char[] tiles = tileString.toCharArray();
 
+        //For each of the four tiles, find the name of the tile,
+        //then find the image that tile relates to,
+        //then create a new imageview for the tile, setting the dimensions and location of it
+        //set the cursor to be a hand when on the image
+        //execute the clickTile event if clicked and the dragTile event if dragged
+        //finally add the tile to root
         char[] tiles1 = {tiles[0], tiles[1]};
         String tile1 = new String(tiles1);
         Image tile1i = new Image(Game.class.getResourceAsStream("assets/"+ tile1 + ".png"));
@@ -192,16 +199,20 @@ public class Game extends Application {
         root.getChildren().add(tile4iv);
     }
 
+    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
     EventHandler<MouseEvent> clickTile = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent t) {
+            //get the origin of the the event
             orgSceneX = t.getSceneX();
             orgSceneY = t.getSceneY();
+            //move the image with the
             orgTranslateX = ((ImageView)(t.getSource())).getTranslateX();
             orgTranslateY = ((ImageView)(t.getSource())).getTranslateY();
         }
     };
 
+    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
     EventHandler<MouseEvent> dragTile = new EventHandler<MouseEvent>() {
 
         @Override
@@ -211,6 +222,7 @@ public class Game extends Application {
             double newTranslateX = orgTranslateX + offsetX;
             double newTranslateY = orgTranslateY + offsetY;
 
+            //Move the imageview with the mouse
             ((ImageView)(t.getSource())).setTranslateX(newTranslateX);
             ((ImageView)(t.getSource())).setTranslateY(newTranslateY);
         }
@@ -243,19 +255,25 @@ public class Game extends Application {
         char[][] highwayExits = { {'A', '3', '0'}, {'A', '7', '0'}, {'E', '1', '3'}, {'E', '9', '1'}, {'I', '3', '2'}, {'I', '7', '2'}};
         char[][] railroadExits = { {'A', '5', '0'}, {'C', '1', '3'}, {'C', '9', '1'}, {'G', '1', '3'}, {'G', '9', '1'}, {'I', '5', '2'}};
 
+        //For every element in the arrays
         for(int i = 0; i < highwayExits.length; i++) {
 
+            //Set the x location and y location of the highway tile
             int hy = ((highwayExits[i][0] - 'A')) * DIMENSIONS;
             int hx = (Character.getNumericValue(highwayExits[i][1])) * DIMENSIONS;
 
+            //Add the highway exit image to an imageview
             Image image = new Image(Game.class.getResourceAsStream("assets/HighExit.png"));
             ImageView imageView = new ImageView(image);
 
+            //Set the orientation of the highway tile
             imageView.setRotate(360.0 / 4 * (int)highwayExits[i][2]);
 
+            //Set the height and width of the ImageView
             imageView.setFitHeight(DIMENSIONS);
             imageView.setFitWidth(DIMENSIONS);
 
+            //Set the x and y of the ImageView
             imageView.setX(hx - DIMENSIONS);
             imageView.setY(hy);
 
