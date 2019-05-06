@@ -18,11 +18,17 @@ Task 2 - Harriet
 Task 3 - Bojie
 Task 4 - Harriet
 Task 5 - If time allows
-Task 6 - If time allows
 
 ## Week 6
 
-...
+It was decided the tasks would be allocated as follows:
+
+Task 6 - Bojie
+Task 7 - Harriet
+Task 8 - Bojie
+Task 9 - Harriet
+Task 5 - If time allows
+Task 6 - If time allows
 
 ## Mid-Semester Break
 
