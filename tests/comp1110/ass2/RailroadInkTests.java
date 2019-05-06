@@ -9,9 +9,18 @@ import static org.junit.Assert.*;
 //Authored by Harriet
 public class RailroadInkTests {
 
-
-
     //All features arrays are from data found from assets/RotationImages.png
+    static final String[][] fixOrientationTesters = {
+            {"A4A50", "hnhn"},
+            {"B2G51", "rhrh"},
+            {"S1B37", "rrrh"},
+            {"B0D34", "hnrn"},
+            {"A2B43", "rrnr"},
+            {"A1A45", "nrnr"},
+            {"S3B32", "rrrr"},
+            {"S1B35", "rhrr"}
+    };
+
     @Test
     public void testFixOrientation0() {
         String tileString = "A0A10";
@@ -84,6 +93,19 @@ public class RailroadInkTests {
                 " but got: " + new String(orientatedFeatures), featuresOfA07, orientatedFeatures);
     }
 
+    @Test
+    public void testFixOrientationDifferent() {
+        for (String[] str : fixOrientationTesters) {
+            char[] orientatedFeatures = RailroadInk.fixOrientation(str[0]);
+            assertArrayEquals("Not valid", orientatedFeatures, str[1].toCharArray());
+        }
+    }
+
+
+
+
+
+
     @Test(expected = IndexOutOfBoundsException.class)
     public void testFixOrientationTooBig() {
         String tileString = "A0A19";
@@ -98,7 +120,8 @@ public class RailroadInkTests {
 
     @Test
     public void testConnectionLocationNorth() {
-
+        String tileStringA = "A0A17";
+        String tileStringB = "A0A17";
     }
 
     @Test
