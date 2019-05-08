@@ -6,8 +6,6 @@ import java.util.Random;
 
 public class RailroadInk {
 
-
-
     public HashMap<String, String> board = new HashMap<>();
 
     /**
@@ -126,9 +124,7 @@ public class RailroadInk {
                 //check the amount of special tiles
             }
         }
-
         return false;
-
     }
 
 
@@ -549,7 +545,7 @@ public class RailroadInk {
     public static int rollNumber(int max, int min) {
         //generate a number from 0 to max - 1;
         Random rand = new Random();
-        int value = rand.nextInt((max - min) + 1) + min;
+        int value = rand.nextInt(max + 1 - min) + min;
         return value;
     }
 
@@ -823,8 +819,6 @@ public class RailroadInk {
         return num;
 
     }
-
-
 
 
 
