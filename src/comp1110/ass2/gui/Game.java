@@ -46,8 +46,14 @@ public class Game extends Application {
 
     private TextField textField;
 
-    double orgSceneX, orgSceneY;
-    double orgTranslateX, orgTranslateY;
+    private double orgSceneX, orgSceneY;
+    private double orgTranslateX, orgTranslateY;
+
+    private double imgX, imgY;
+
+    private boolean DRAGGED = false;
+
+    private String recentImg;
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -157,6 +163,7 @@ public class Game extends Application {
         tile1iv.setCursor(Cursor.HAND);
         tile1iv.setOnMousePressed(clickTile);
         tile1iv.setOnMouseDragged(dragTile);
+        tile1iv.setOnMouseReleased(dropTile);
         root.getChildren().add(tile1iv);
 
         char[] tiles2 = {tiles[2], tiles[3]};
@@ -170,6 +177,7 @@ public class Game extends Application {
         tile2iv.setCursor(Cursor.HAND);
         tile2iv.setOnMousePressed(clickTile);
         tile2iv.setOnMouseDragged(dragTile);
+        tile2iv.setOnMouseReleased(dropTile);
         root.getChildren().add(tile2iv);
 
         char[] tiles3 = {tiles[4], tiles[5]};
@@ -183,6 +191,7 @@ public class Game extends Application {
         tile3iv.setCursor(Cursor.HAND);
         tile3iv.setOnMousePressed(clickTile);
         tile3iv.setOnMouseDragged(dragTile);
+        tile3iv.setOnMouseReleased(dropTile);
         root.getChildren().add(tile3iv);
 
         char[] tiles4 = {tiles[6], tiles[7]};
@@ -196,11 +205,12 @@ public class Game extends Application {
         tile4iv.setCursor(Cursor.HAND);
         tile4iv.setOnMousePressed(clickTile);
         tile4iv.setOnMouseDragged(dragTile);
+        tile4iv.setOnMouseReleased(dropTile);
         root.getChildren().add(tile4iv);
     }
 
     //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
-    EventHandler<MouseEvent> clickTile = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> clickTile = new EventHandler<>() {
         @Override
         public void handle(MouseEvent t) {
             //get the origin of the the event
@@ -213,8 +223,23 @@ public class Game extends Application {
     };
 
     //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
-    EventHandler<MouseEvent> dragTile = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> dropTile = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent t) {
+            double offsetX = t.getSceneX() - orgSceneX;
+            double offsetY = t.getSceneY() - orgSceneY;
+            imgX = orgTranslateX + offsetX;
+            imgY = orgTranslateY + offsetY;
 
+            drawTile(orgTranslateX + offsetX, orgTranslateY + offsetY, (ImageView)(t.getSource()));
+
+            root.getChildren().remove(t.getSource());
+            DRAGGED = true;
+        }
+    };
+
+    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
+    EventHandler<MouseEvent> dragTile = new EventHandler<>() {
         @Override
         public void handle(MouseEvent t) {
             double offsetX = t.getSceneX() - orgSceneX;
@@ -225,8 +250,28 @@ public class Game extends Application {
             //Move the imageview with the mouse
             ((ImageView)(t.getSource())).setTranslateX(newTranslateX);
             ((ImageView)(t.getSource())).setTranslateY(newTranslateY);
+
         }
     };
+
+    void drawTile(double x, double y, ImageView imageV) {
+
+        Image img = imageV.getImage();
+
+        System.out.println(img.getUrl());
+
+        ImageView tile = new ImageView(img);
+        tile.setFitHeight(DIMENSIONS);
+        tile.setFitWidth(DIMENSIONS);
+        tile.setX(x + 10);
+        tile.setY(y + 10);
+        root.getChildren().add(tile);
+
+        System.out.println("Inside drawTile");
+
+        TILES_TO_PLAY--;
+    }
+
 
     //Authored by Harriet
     void drawBoard() {
@@ -336,6 +381,12 @@ public class Game extends Application {
         }
     }
 
+    void checkGameState() {
+        if(TILES_TO_PLAY == 0) {
+            NEW_ROUND = true;
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -346,6 +397,7 @@ public class Game extends Application {
 
         makeControls();
         drawBoard();
+        checkGameState();
 
         primaryStage.setScene(play);
         primaryStage.show();

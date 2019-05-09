@@ -872,25 +872,5 @@ public class RailroadInk {
         return boardString;
     }
 
-    public static void main(String[] args) {
-        /*{"A4A50", "hnhn"},
-        {"B2G51", "rhrh"},
-        {"S1B37", "rrrh"},
-        {"B0D34", "hnrn"},
-        {"A2B43", "rrnr"},
-        {"A1A45", "nrnr"},
-        {"S3B32", "rrrr"},
-        {"S1B35", "rhrr"}*/
-
-        System.out.println(new String(fixOrientation("A4A50")));
-        System.out.println(new String(fixOrientation("B2G51")));
-        System.out.println(new String(fixOrientation("S1B37")));
-        System.out.println(new String(fixOrientation("B0D34")));
-        System.out.println(new String(fixOrientation("A2B43")));
-        System.out.println(new String(fixOrientation("A1A45")));
-        System.out.println(new String(fixOrientation("S3B32")));
-        System.out.println(new String(fixOrientation("S1B35")));
-    }
-
 }
 
