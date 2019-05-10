@@ -22,6 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
+//TODO Add tiles to hashmap
+//TODO Check placement against hashmap
+//TODO return tile to origin if invalid placement
+
 //Authored by Harriet
 public class Game extends Application {
     /* board layout */
