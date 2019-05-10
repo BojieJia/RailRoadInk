@@ -57,7 +57,10 @@ public class Game extends Application {
     ImageView t3;
     ImageView t4;
 
-    int T1_ROTATION = 0;
+    private int T1_ROTATION = 0;
+    private int T2_ROTATION = 0;
+    private int T3_ROTATION = 0;
+    private int T4_ROTATION = 0;
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -134,11 +137,9 @@ public class Game extends Application {
         Button rollDice = new Button("Roll Dice");
         rollDice.setOnAction(e -> {
             //call drawNewTiles with given text
-            System.out.println(TILES_TO_PLAY);
             if(TILES_TO_PLAY == 0) {
                 drawNewTiles();
                 TILES_TO_PLAY = 4;
-                System.out.println(TILES_TO_PLAY);
             }
         });
         rollDice.setLayoutX(10 * DIMENSIONS);
@@ -147,13 +148,55 @@ public class Game extends Application {
 
         Button setDimensions1 = new Button("Rotate");
         setDimensions1.setOnAction(e -> {
-            //call drawNewTiles with given text
+            //set tile1's rotation
             T1_ROTATION++;
+            if(T1_ROTATION >= 4) {
+                T1_ROTATION = T1_ROTATION % 4;
+            }
             t1.setRotate(360.0 / 4 * T1_ROTATION);
         });
         setDimensions1.setLayoutX(TILE_LOCATIONS[0][1] + 90);
         setDimensions1.setLayoutY(TILE_LOCATIONS[0][0] + DIMENSIONS/3);
         controls.getChildren().add(setDimensions1);
+
+        Button setDimensions2 = new Button("Rotate");
+        setDimensions2.setOnAction(e -> {
+            //set tile2's rotation
+            T2_ROTATION++;
+            if(T2_ROTATION >= 4) {
+                T2_ROTATION = T2_ROTATION % 4;
+            }
+            t2.setRotate(360.0 / 4 * T2_ROTATION);
+        });
+        setDimensions2.setLayoutX(TILE_LOCATIONS[1][1] + 90);
+        setDimensions2.setLayoutY(TILE_LOCATIONS[1][0] + DIMENSIONS/3);
+        controls.getChildren().add(setDimensions2);
+
+        Button setDimensions3 = new Button("Rotate");
+        setDimensions3.setOnAction(e -> {
+            //set tile3's rotation
+            T3_ROTATION++;
+            if(T3_ROTATION >= 4) {
+                T3_ROTATION = T3_ROTATION % 4;
+            }
+            t3.setRotate(360.0 / 4 * T3_ROTATION);
+        });
+        setDimensions3.setLayoutX(TILE_LOCATIONS[2][1] + 90);
+        setDimensions3.setLayoutY(TILE_LOCATIONS[2][0] + DIMENSIONS/3);
+        controls.getChildren().add(setDimensions3);
+
+        Button setDimensions4 = new Button("Rotate");
+        setDimensions4.setOnAction(e -> {
+            //set tile4's rotation
+            T4_ROTATION++;
+            if(T4_ROTATION >= 4) {
+                T4_ROTATION = T4_ROTATION % 4;
+            }
+            t4.setRotate(360.0 / 4 * T4_ROTATION);
+        });
+        setDimensions4.setLayoutX(TILE_LOCATIONS[3][1] + 90);
+        setDimensions4.setLayoutY(TILE_LOCATIONS[3][0] + DIMENSIONS/3);
+        controls.getChildren().add(setDimensions4);
 
     }
 
@@ -265,7 +308,7 @@ public class Game extends Application {
             double x = t.getSceneX();
             double y = t.getSceneY();
 
-            drawTile(x, y, i1);
+            drawTile(x, y, i1, T1_ROTATION);
 
             root.getChildren().remove((ImageView)(t.getSource()));
         }
@@ -279,7 +322,7 @@ public class Game extends Application {
             double y = t.getSceneY();
 
 
-            drawTile(x, y, i2);
+            drawTile(x, y, i2, T2_ROTATION);
 
             root.getChildren().remove((ImageView)(t.getSource()));
         }
@@ -293,7 +336,7 @@ public class Game extends Application {
             double y = t.getSceneY();
 
 
-            drawTile(x, y, i3);
+            drawTile(x, y, i3, T3_ROTATION);
 
             root.getChildren().remove((ImageView)(t.getSource()));
         }
@@ -306,13 +349,13 @@ public class Game extends Application {
             double x = t.getSceneX();
             double y = t.getSceneY();
 
-            drawTile(x, y, i4);
+            drawTile(x, y, i4, T4_ROTATION);
 
             root.getChildren().remove((ImageView)(t.getSource()));
         }
     };
 
-    private void drawTile(double x, double y, String imageURL) {
+    private void drawTile(double x, double y, String imageURL, int rotation) {
         Image img = new Image(Game.class.getResourceAsStream(imageURL));
         ImageView tile = new ImageView(img);
         tile.setFitHeight(DIMENSIONS);
@@ -320,9 +363,8 @@ public class Game extends Application {
         int[] location = snapToGrid(x, y);
         tile.setX(location[0]);
         tile.setY(location[1]);
+        tile.setRotate(360.0 / 4 * rotation);
         root.getChildren().add(tile);
-
-        System.out.print(x + " " + y);
 
         TILES_TO_PLAY--;
     }
