@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static comp1110.ass2.RailroadInk.generateDiceRoll;
-
 
 //Authored by Harriet
 public class Game extends Application {
@@ -35,7 +33,7 @@ public class Game extends Application {
     private static boolean NEW_ROUND = true;
     private static final int[][] TILE_LOCATIONS = {{3 * DIMENSIONS - 35, 10 * DIMENSIONS}, {4 * DIMENSIONS, 10 * DIMENSIONS}, {5 * DIMENSIONS + 35, 10 * DIMENSIONS}, {6 * DIMENSIONS + 70, 10 * DIMENSIONS}};
 
-    private static int TILES_TO_PLAY = 4;
+    private int TILES_TO_PLAY = 0;
 
     private static final String URI_BASE = "assets/";
 
@@ -49,11 +47,17 @@ public class Game extends Application {
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
 
-    private double imgX, imgY;
+    private String i1;
+    private String i2;
+    private String i3;
+    private String i4;
 
-    private boolean DRAGGED = false;
+    ImageView t1;
+    ImageView t2;
+    ImageView t3;
+    ImageView t4;
 
-    private String recentImg;
+    int T1_ROTATION = 0;
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -130,14 +134,26 @@ public class Game extends Application {
         Button rollDice = new Button("Roll Dice");
         rollDice.setOnAction(e -> {
             //call drawNewTiles with given text
-            if(NEW_ROUND) {
+            System.out.println(TILES_TO_PLAY);
+            if(TILES_TO_PLAY == 0) {
                 drawNewTiles();
-                NEW_ROUND = false;
+                TILES_TO_PLAY = 4;
+                System.out.println(TILES_TO_PLAY);
             }
         });
         rollDice.setLayoutX(10 * DIMENSIONS);
         rollDice.setLayoutY(2 * DIMENSIONS - 35);
         controls.getChildren().add(rollDice);
+
+        Button setDimensions1 = new Button("Rotate");
+        setDimensions1.setOnAction(e -> {
+            //call drawNewTiles with given text
+            T1_ROTATION++;
+            t1.setRotate(360.0 / 4 * T1_ROTATION);
+        });
+        setDimensions1.setLayoutX(TILE_LOCATIONS[0][1] + 90);
+        setDimensions1.setLayoutY(TILE_LOCATIONS[0][0] + DIMENSIONS/3);
+        controls.getChildren().add(setDimensions1);
 
     }
 
@@ -154,59 +170,63 @@ public class Game extends Application {
         //finally add the tile to root
         char[] tiles1 = {tiles[0], tiles[1]};
         String tile1 = new String(tiles1);
-        Image tile1i = new Image(Game.class.getResourceAsStream("assets/"+ tile1 + ".png"));
-        ImageView tile1iv = new ImageView(tile1i);
-        tile1iv.setFitHeight(DIMENSIONS);
-        tile1iv.setFitWidth(DIMENSIONS);
-        tile1iv.setX(TILE_LOCATIONS[0][1]);
-        tile1iv.setY(TILE_LOCATIONS[0][0]);
-        tile1iv.setCursor(Cursor.HAND);
-        tile1iv.setOnMousePressed(clickTile);
-        tile1iv.setOnMouseDragged(dragTile);
-        tile1iv.setOnMouseReleased(dropTile);
-        root.getChildren().add(tile1iv);
+        Image image1 = new Image(Game.class.getResourceAsStream("assets/"+ tile1 + ".png"));
+        i1 = "assets/" + tile1 + ".png";
+        t1 = new ImageView(image1);
+        t1.setFitHeight(DIMENSIONS);
+        t1.setFitWidth(DIMENSIONS);
+        t1.setX(TILE_LOCATIONS[0][1]);
+        t1.setY(TILE_LOCATIONS[0][0]);
+        t1.setCursor(Cursor.HAND);
+        t1.setOnMousePressed(clickTile);
+        t1.setOnMouseDragged(dragTile);
+        t1.setOnMouseReleased(dropTile1);
+        root.getChildren().add(t1);
 
         char[] tiles2 = {tiles[2], tiles[3]};
         String tile2 = new String(tiles2);
-        Image tile2i = new Image(Game.class.getResourceAsStream("assets/"+ tile2 + ".png"));
-        ImageView tile2iv = new ImageView(tile2i);
-        tile2iv.setFitHeight(DIMENSIONS);
-        tile2iv.setFitWidth(DIMENSIONS);
-        tile2iv.setX(TILE_LOCATIONS[1][1]);
-        tile2iv.setY(TILE_LOCATIONS[1][0]);
-        tile2iv.setCursor(Cursor.HAND);
-        tile2iv.setOnMousePressed(clickTile);
-        tile2iv.setOnMouseDragged(dragTile);
-        tile2iv.setOnMouseReleased(dropTile);
-        root.getChildren().add(tile2iv);
+        Image image2 = new Image(Game.class.getResourceAsStream("assets/"+ tile2 + ".png"));
+        i2 = "assets/"+ tile2 + ".png";
+        t2 = new ImageView(image2);
+        t2.setFitHeight(DIMENSIONS);
+        t2.setFitWidth(DIMENSIONS);
+        t2.setX(TILE_LOCATIONS[1][1]);
+        t2.setY(TILE_LOCATIONS[1][0]);
+        t2.setCursor(Cursor.HAND);
+        t2.setOnMousePressed(clickTile);
+        t2.setOnMouseDragged(dragTile);
+        t2.setOnMouseReleased(dropTile2);
+        root.getChildren().add(t2);
 
         char[] tiles3 = {tiles[4], tiles[5]};
         String tile3 = new String(tiles3);
-        Image tile3i = new Image(Game.class.getResourceAsStream("assets/"+ tile3 + ".png"));
-        ImageView tile3iv = new ImageView(tile3i);
-        tile3iv.setFitHeight(DIMENSIONS);
-        tile3iv.setFitWidth(DIMENSIONS);
-        tile3iv.setX(TILE_LOCATIONS[2][1]);
-        tile3iv.setY(TILE_LOCATIONS[2][0]);
-        tile3iv.setCursor(Cursor.HAND);
-        tile3iv.setOnMousePressed(clickTile);
-        tile3iv.setOnMouseDragged(dragTile);
-        tile3iv.setOnMouseReleased(dropTile);
-        root.getChildren().add(tile3iv);
+        Image image3 = new Image(Game.class.getResourceAsStream("assets/"+ tile3 + ".png"));
+        i3 = "assets/" + tile3 + ".png";
+        t3 = new ImageView(image3);
+        t3.setFitHeight(DIMENSIONS);
+        t3.setFitWidth(DIMENSIONS);
+        t3.setX(TILE_LOCATIONS[2][1]);
+        t3.setY(TILE_LOCATIONS[2][0]);
+        t3.setCursor(Cursor.HAND);
+        t3.setOnMousePressed(clickTile);
+        t3.setOnMouseDragged(dragTile);
+        t3.setOnMouseReleased(dropTile3);
+        root.getChildren().add(t3);
 
         char[] tiles4 = {tiles[6], tiles[7]};
         String tile4 = new String(tiles4);
-        Image tile4i = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
-        ImageView tile4iv = new ImageView(tile4i);
-        tile4iv.setFitHeight(DIMENSIONS);
-        tile4iv.setFitWidth(DIMENSIONS);
-        tile4iv.setX(TILE_LOCATIONS[3][1]);
-        tile4iv.setY(TILE_LOCATIONS[3][0]);
-        tile4iv.setCursor(Cursor.HAND);
-        tile4iv.setOnMousePressed(clickTile);
-        tile4iv.setOnMouseDragged(dragTile);
-        tile4iv.setOnMouseReleased(dropTile);
-        root.getChildren().add(tile4iv);
+        Image image4 = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
+        i4 = "assets/"+ tile4 + ".png";
+        t4 = new ImageView(image4);
+        t4.setFitHeight(DIMENSIONS);
+        t4.setFitWidth(DIMENSIONS);
+        t4.setX(TILE_LOCATIONS[3][1]);
+        t4.setY(TILE_LOCATIONS[3][0]);
+        t4.setCursor(Cursor.HAND);
+        t4.setOnMousePressed(clickTile);
+        t4.setOnMouseDragged(dragTile);
+        t4.setOnMouseReleased(dropTile4);
+        root.getChildren().add(t4);
     }
 
     //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
@@ -219,22 +239,6 @@ public class Game extends Application {
             //move the image with the
             orgTranslateX = ((ImageView)(t.getSource())).getTranslateX();
             orgTranslateY = ((ImageView)(t.getSource())).getTranslateY();
-        }
-    };
-
-    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
-    EventHandler<MouseEvent> dropTile = new EventHandler<>() {
-        @Override
-        public void handle(MouseEvent t) {
-            double offsetX = t.getSceneX() - orgSceneX;
-            double offsetY = t.getSceneY() - orgSceneY;
-            imgX = orgTranslateX + offsetX;
-            imgY = orgTranslateY + offsetY;
-
-            drawTile(orgTranslateX + offsetX, orgTranslateY + offsetY, (ImageView)(t.getSource()));
-
-            root.getChildren().remove(t.getSource());
-            DRAGGED = true;
         }
     };
 
@@ -254,27 +258,104 @@ public class Game extends Application {
         }
     };
 
-    void drawTile(double x, double y, ImageView imageV) {
+    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
+    EventHandler<MouseEvent> dropTile1 = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent t) {
+            double x = t.getSceneX();
+            double y = t.getSceneY();
 
-        Image img = imageV.getImage();
+            drawTile(x, y, i1);
 
-        System.out.println(img.getUrl());
+            root.getChildren().remove((ImageView)(t.getSource()));
+        }
+    };
 
+    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
+    EventHandler<MouseEvent> dropTile2 = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent t) {
+            double x = t.getSceneX();
+            double y = t.getSceneY();
+
+
+            drawTile(x, y, i2);
+
+            root.getChildren().remove((ImageView)(t.getSource()));
+        }
+    };
+
+    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
+    EventHandler<MouseEvent> dropTile3 = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent t) {
+            double x = t.getSceneX();
+            double y = t.getSceneY();
+
+
+            drawTile(x, y, i3);
+
+            root.getChildren().remove((ImageView)(t.getSource()));
+        }
+    };
+
+    //code adapted from <http://java-buddy.blogspot.com/2013/07/javafx-drag-and-move-something.html> by Harriet
+    EventHandler<MouseEvent> dropTile4 = new EventHandler<>() {
+        @Override
+        public void handle(MouseEvent t) {
+            double x = t.getSceneX();
+            double y = t.getSceneY();
+
+            drawTile(x, y, i4);
+
+            root.getChildren().remove((ImageView)(t.getSource()));
+        }
+    };
+
+    private void drawTile(double x, double y, String imageURL) {
+        Image img = new Image(Game.class.getResourceAsStream(imageURL));
         ImageView tile = new ImageView(img);
         tile.setFitHeight(DIMENSIONS);
         tile.setFitWidth(DIMENSIONS);
-        tile.setX(x + 10);
-        tile.setY(y + 10);
+        int[] location = snapToGrid(x, y);
+        tile.setX(location[0]);
+        tile.setY(location[1]);
         root.getChildren().add(tile);
 
-        System.out.println("Inside drawTile");
+        System.out.print(x + " " + y);
 
         TILES_TO_PLAY--;
     }
 
+    private int[] snapToGrid(double x, double y) {
+        int[][] xValues = new int[7][2];
+        int[][] yValues = new int[7][2];
+        int[] finalLocation = {DIMENSIONS, DIMENSIONS};
+
+        for(int i = 0; i < 7; i++) {
+            xValues[i][0] = i * DIMENSIONS + DIMENSIONS;
+            xValues[i][1] = i * DIMENSIONS + 2 * DIMENSIONS;
+        }
+
+        for(int i = 0; i < 7; i++) {
+            yValues[i][0] = i * DIMENSIONS + DIMENSIONS;
+            yValues[i][1] = i * DIMENSIONS + 2 * DIMENSIONS;
+        }
+
+        for(int i = 0; i < 7; i++) {
+            if(x > xValues[i][0] && x < xValues[i][1]) {
+                finalLocation[0] = i * DIMENSIONS + DIMENSIONS;
+            }
+            if(y > yValues[i][0] && y < yValues[i][1]) {
+                finalLocation[1] = i * DIMENSIONS + DIMENSIONS;
+            }
+        }
+        return finalLocation;
+    }
+
 
     //Authored by Harriet
-    void drawBoard() {
+    private void drawBoard() {
 
         //Draw grid
         for(int k = 1; k < 9; k++) {
@@ -381,12 +462,6 @@ public class Game extends Application {
         }
     }
 
-    void checkGameState() {
-        if(TILES_TO_PLAY == 0) {
-            NEW_ROUND = true;
-        }
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -397,7 +472,6 @@ public class Game extends Application {
 
         makeControls();
         drawBoard();
-        checkGameState();
 
         primaryStage.setScene(play);
         primaryStage.show();
