@@ -633,7 +633,6 @@ public class RailroadInk {
        return score;
     }
 
-
      public static int whichExit(String piece){
         for(int i=0;i<exits.length;i++){
             String location=piece.substring(2,4);
@@ -668,8 +667,6 @@ public class RailroadInk {
          // if direction=2: s2 is on the south of s1
          // if direction=3: s2 is on the west of s1.
      }
-
-
 
     public static int exitNumber(String pieces, int orderOfPieces, int direction, String firstexit,String boardString){
         String location=pieces.substring(2,4);

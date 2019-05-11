@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 //TODO Add in S tiles
+//TODO add in game end
 
 //Authored by Harriet
 public class Game extends Application {
@@ -132,7 +133,7 @@ public class Game extends Application {
                 TILES_TO_PLAY = 4;
                 ROUND++;
                 if(ROUND > 7) {
-                    root.getChildren().removeAll();
+                    root.getChildren().clear();
                     endGame();
                 }
                 T1_ROTATION = 0;
@@ -178,7 +179,7 @@ public class Game extends Application {
             if(T3_ROTATION >= 4) {
                 T3_ROTATION = 0;
             }
-            t3.setRotate(360.0 / 4 * T4_ROTATION);
+            t3.setRotate(360.0 / 4 * T3_ROTATION);
         });
         setDimensions3.setLayoutX(TILE_LOCATIONS[2][1] + 90);
         setDimensions3.setLayoutY(TILE_LOCATIONS[2][0] + DIMENSIONS/3);
@@ -339,7 +340,7 @@ public class Game extends Application {
             double x = t.getSceneX();
             double y = t.getSceneY();
 
-            boolean drawT = drawTile(x, y, i1, T1_ROTATION);
+            boolean drawT = drawTile(x, y, i1, T1_ROTATION, T1_FLIP);
 
             if(drawT) {
                 root.getChildren().remove((ImageView) (t.getSource()));
@@ -371,7 +372,7 @@ public class Game extends Application {
             double y = t.getSceneY();
 
 
-            boolean drawT = drawTile(x, y, i2, T2_ROTATION);
+            boolean drawT = drawTile(x, y, i2, T2_ROTATION, T2_FLIP);
 
             if(drawT) {
                 root.getChildren().remove((ImageView) (t.getSource()));
@@ -403,7 +404,7 @@ public class Game extends Application {
             double y = t.getSceneY();
 
 
-            boolean drawT = drawTile(x, y, i3, T3_ROTATION);
+            boolean drawT = drawTile(x, y, i3, T3_ROTATION, T3_FLIP);
 
             if(drawT) {
                 root.getChildren().remove((ImageView) (t.getSource()));
@@ -433,7 +434,7 @@ public class Game extends Application {
             double x = t.getSceneX();
             double y = t.getSceneY();
 
-            boolean drawT = drawTile(x, y, i4, T4_ROTATION);
+            boolean drawT = drawTile(x, y, i4, T4_ROTATION, T4_FLIP);
 
             if(drawT) {
                 root.getChildren().remove((ImageView) (t.getSource()));
@@ -456,12 +457,20 @@ public class Game extends Application {
         }
     };
 
-    private boolean drawTile(double x, double y, String tileName, int rotation) {
+    private boolean drawTile(double x, double y, String tileName, int rotation, int orientation) {
         char tileY = (char)('A' + (int)y/DIMENSIONS - 1);
         String tileX = Integer.toString((int)x/(DIMENSIONS) - 1);
 
+        int orientationValue;
+
+        if(orientation == -1) {
+            orientationValue = rotation + 4;
+        } else {
+            orientationValue = rotation;
+        }
+
         String tileLocation = tileY + tileX;
-        String tileString = tileName + tileLocation + rotation;
+        String tileString = tileName + tileLocation + orientationValue;
 
         String boardString = RailroadInk.boardListToBoardString(tiles) + tileString;
 
@@ -476,6 +485,7 @@ public class Game extends Application {
             tile.setX(location[0]);
             tile.setY(location[1]);
             tile.setRotate(360.0 / 4 * rotation);
+            tile.setScaleX(orientation);
             root.getChildren().add(tile);
 
             TILES_TO_PLAY--;
@@ -621,7 +631,7 @@ public class Game extends Application {
         }
     }
 
-    void endGame() {
+    private void endGame() {
         String boardString = RailroadInk.boardListToBoardString(tiles);
 
         //Creating a Text object
