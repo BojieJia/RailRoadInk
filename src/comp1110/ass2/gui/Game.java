@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,6 @@ import java.util.List;
 
 //TODO Add tiles to hashmap
 //TODO Check placement against hashmap
-//TODO return tile to origin if invalid placement
 
 //Authored by Harriet
 public class Game extends Application {
@@ -216,9 +216,8 @@ public class Game extends Application {
         //execute the clickTile event if clicked and the dragTile event if dragged
         //finally add the tile to root
         char[] tiles1 = {tiles[0], tiles[1]};
-        String tile1 = new String(tiles1);
-        Image image1 = new Image(Game.class.getResourceAsStream("assets/"+ tile1 + ".png"));
-        i1 = "assets/" + tile1 + ".png";
+        i1= new String(tiles1);
+        Image image1 = new Image(Game.class.getResourceAsStream("assets/"+ i1 + ".png"));
         t1 = new ImageView(image1);
         t1.setFitHeight(DIMENSIONS);
         t1.setFitWidth(DIMENSIONS);
@@ -231,9 +230,8 @@ public class Game extends Application {
         root.getChildren().add(t1);
 
         char[] tiles2 = {tiles[2], tiles[3]};
-        String tile2 = new String(tiles2);
-        Image image2 = new Image(Game.class.getResourceAsStream("assets/"+ tile2 + ".png"));
-        i2 = "assets/"+ tile2 + ".png";
+        i2 = new String(tiles2);
+        Image image2 = new Image(Game.class.getResourceAsStream("assets/"+ i2 + ".png"));
         t2 = new ImageView(image2);
         t2.setFitHeight(DIMENSIONS);
         t2.setFitWidth(DIMENSIONS);
@@ -246,9 +244,9 @@ public class Game extends Application {
         root.getChildren().add(t2);
 
         char[] tiles3 = {tiles[4], tiles[5]};
-        String tile3 = new String(tiles3);
-        Image image3 = new Image(Game.class.getResourceAsStream("assets/"+ tile3 + ".png"));
-        i3 = "assets/" + tile3 + ".png";
+        i3 = new String(tiles3);
+        Image image3 = new Image(Game.class.getResourceAsStream("assets/"+ i3 + ".png"));
+        //i3 = "assets/" + tile3 + ".png";
         t3 = new ImageView(image3);
         t3.setFitHeight(DIMENSIONS);
         t3.setFitWidth(DIMENSIONS);
@@ -261,9 +259,9 @@ public class Game extends Application {
         root.getChildren().add(t3);
 
         char[] tiles4 = {tiles[6], tiles[7]};
-        String tile4 = new String(tiles4);
-        Image image4 = new Image(Game.class.getResourceAsStream("assets/"+ tile4 + ".png"));
-        i4 = "assets/"+ tile4 + ".png";
+        i4 = new String(tiles4);
+        Image image4 = new Image(Game.class.getResourceAsStream("assets/"+ i4 + ".png"));
+        //i4 = "assets/"+ tile4 + ".png";
         t4 = new ImageView(image4);
         t4.setFitHeight(DIMENSIONS);
         t4.setFitWidth(DIMENSIONS);
@@ -293,14 +291,12 @@ public class Game extends Application {
     EventHandler<MouseEvent> dragTile = new EventHandler<>() {
         @Override
         public void handle(MouseEvent t) {
-            double offsetX = t.getSceneX() - orgSceneX;
-            double offsetY = t.getSceneY() - orgSceneY;
-            double newTranslateX = orgTranslateX + offsetX;
-            double newTranslateY = orgTranslateY + offsetY;
+            double x = t.getSceneX() - orgSceneX;
+            double y = t.getSceneY() - orgSceneY;
 
             //Move the imageview with the mouse
-            ((ImageView)(t.getSource())).setTranslateX(newTranslateX);
-            ((ImageView)(t.getSource())).setTranslateY(newTranslateY);
+            ((ImageView)(t.getSource())).setTranslateX(x);
+            ((ImageView)(t.getSource())).setTranslateY(y);
 
         }
     };
@@ -312,9 +308,25 @@ public class Game extends Application {
             double x = t.getSceneX();
             double y = t.getSceneY();
 
-            drawTile(x, y, i1, T1_ROTATION);
+            boolean drawT = drawTile(x, y, i1, T1_ROTATION);
 
-            root.getChildren().remove((ImageView)(t.getSource()));
+            if(drawT) {
+                root.getChildren().remove((ImageView) (t.getSource()));
+            } else {
+                root.getChildren().remove((ImageView) (t.getSource()));
+                Image image1 = new Image(Game.class.getResourceAsStream("assets/"+ i1 + ".png"));
+                //i1 = "assets/" + tile1 + ".png";
+                t1 = new ImageView(image1);
+                t1.setFitHeight(DIMENSIONS);
+                t1.setFitWidth(DIMENSIONS);
+                t1.setX(TILE_LOCATIONS[0][1]);
+                t1.setY(TILE_LOCATIONS[0][0]);
+                t1.setCursor(Cursor.HAND);
+                t1.setOnMousePressed(clickTile);
+                t1.setOnMouseDragged(dragTile);
+                t1.setOnMouseReleased(dropTile1);
+                root.getChildren().add(t1);
+            }
         }
     };
 
@@ -326,9 +338,25 @@ public class Game extends Application {
             double y = t.getSceneY();
 
 
-            drawTile(x, y, i2, T2_ROTATION);
+            boolean drawT = drawTile(x, y, i2, T2_ROTATION);
 
-            root.getChildren().remove((ImageView)(t.getSource()));
+            if(drawT) {
+                root.getChildren().remove((ImageView) (t.getSource()));
+            } else {
+                root.getChildren().remove((ImageView) (t.getSource()));
+                Image image2 = new Image(Game.class.getResourceAsStream("assets/"+ i2 + ".png"));
+                //i2 = "assets/"+ tile2 + ".png";
+                t2 = new ImageView(image2);
+                t2.setFitHeight(DIMENSIONS);
+                t2.setFitWidth(DIMENSIONS);
+                t2.setX(TILE_LOCATIONS[1][1]);
+                t2.setY(TILE_LOCATIONS[1][0]);
+                t2.setCursor(Cursor.HAND);
+                t2.setOnMousePressed(clickTile);
+                t2.setOnMouseDragged(dragTile);
+                t2.setOnMouseReleased(dropTile2);
+                root.getChildren().add(t2);
+            }
         }
     };
 
@@ -340,9 +368,24 @@ public class Game extends Application {
             double y = t.getSceneY();
 
 
-            drawTile(x, y, i3, T3_ROTATION);
+            boolean drawT = drawTile(x, y, i3, T3_ROTATION);
 
-            root.getChildren().remove((ImageView)(t.getSource()));
+            if(drawT) {
+                root.getChildren().remove((ImageView) (t.getSource()));
+            } else {
+                root.getChildren().remove((ImageView) (t.getSource()));
+                Image image3 = new Image(Game.class.getResourceAsStream("assets/"+ i3 + ".png"));
+                t3 = new ImageView(image3);
+                t3.setFitHeight(DIMENSIONS);
+                t3.setFitWidth(DIMENSIONS);
+                t3.setX(TILE_LOCATIONS[2][1]);
+                t3.setY(TILE_LOCATIONS[2][0]);
+                t3.setCursor(Cursor.HAND);
+                t3.setOnMousePressed(clickTile);
+                t3.setOnMouseDragged(dragTile);
+                t3.setOnMouseReleased(dropTile3);
+                root.getChildren().add(t3);
+            }
         }
     };
 
@@ -353,24 +396,51 @@ public class Game extends Application {
             double x = t.getSceneX();
             double y = t.getSceneY();
 
-            drawTile(x, y, i4, T4_ROTATION);
+            boolean drawT = drawTile(x, y, i4, T4_ROTATION);
 
-            root.getChildren().remove((ImageView)(t.getSource()));
+            if(drawT) {
+                root.getChildren().remove((ImageView) (t.getSource()));
+            } else {
+                root.getChildren().remove((ImageView) (t.getSource()));
+                Image image4 = new Image(Game.class.getResourceAsStream("assets/"+ i4 + ".png"));
+                t4 = new ImageView(image4);
+                t4.setFitHeight(DIMENSIONS);
+                t4.setFitWidth(DIMENSIONS);
+                t4.setX(TILE_LOCATIONS[3][1]);
+                t4.setY(TILE_LOCATIONS[3][0]);
+                t4.setCursor(Cursor.HAND);
+                t4.setOnMousePressed(clickTile);
+                t4.setOnMouseDragged(dragTile);
+                t4.setOnMouseReleased(dropTile4);
+                root.getChildren().add(t4);
+            }
         }
     };
 
-    private void drawTile(double x, double y, String imageURL, int rotation) {
-        Image img = new Image(Game.class.getResourceAsStream(imageURL));
-        ImageView tile = new ImageView(img);
-        tile.setFitHeight(DIMENSIONS);
-        tile.setFitWidth(DIMENSIONS);
-        int[] location = snapToGrid(x, y);
-        tile.setX(location[0]);
-        tile.setY(location[1]);
-        tile.setRotate(360.0 / 4 * rotation);
-        root.getChildren().add(tile);
+    private boolean drawTile(double x, double y, String tileName, int rotation) {
 
-        TILES_TO_PLAY--;
+        char tileY = (char)('A' + (int)y/DIMENSIONS - 1);
+        String tileX = Integer.toString((int)x/(DIMENSIONS) - 1);
+
+        String tileLocation = tileY + tileX;
+        String tileString = tileName + tileLocation + rotation;
+
+        if(RailroadInk.isTilePlacementWellFormed(tileString)) {
+            Image img = new Image(Game.class.getResourceAsStream("assets/" + tileName + ".png"));
+            ImageView tile = new ImageView(img);
+            tile.setFitHeight(DIMENSIONS);
+            tile.setFitWidth(DIMENSIONS);
+            int[] location = snapToGrid(x, y);
+            tile.setX(location[0]);
+            tile.setY(location[1]);
+            tile.setRotate(360.0 / 4 * rotation);
+            root.getChildren().add(tile);
+            tiles.put(tileLocation, tileString);
+            TILES_TO_PLAY--;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private int[] snapToGrid(double x, double y) {
@@ -396,6 +466,7 @@ public class Game extends Application {
                 finalLocation[1] = i * DIMENSIONS + DIMENSIONS;
             }
         }
+
         return finalLocation;
     }
 
