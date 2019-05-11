@@ -14,7 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.sql.SQLOutput;
@@ -22,49 +27,46 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-//TODO Add tiles to hashmap
-//TODO Check placement against hashmap
+//TODO Add in S tiles
 
 //Authored by Harriet
 public class Game extends Application {
-    /* board layout */
+    //setup variables
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
-
-    private static final int DIMENSIONS = 80;
-
-    private static boolean NEW_ROUND = true;
-    private static final int[][] TILE_LOCATIONS = {{3 * DIMENSIONS - 35, 10 * DIMENSIONS}, {4 * DIMENSIONS, 10 * DIMENSIONS}, {5 * DIMENSIONS + 35, 10 * DIMENSIONS}, {6 * DIMENSIONS + 70, 10 * DIMENSIONS}};
-
-    private int TILES_TO_PLAY = 0;
-
-    private static final String URI_BASE = "assets/";
-
+    private TextField textField;
     private final Group root = new Group();
     private final Group controls = new Group();
+    private static final int DIMENSIONS = 80;
+    private static final int[][] TILE_LOCATIONS = {{3 * DIMENSIONS - 35, 10 * DIMENSIONS}, {4 * DIMENSIONS, 10 * DIMENSIONS},
+            {5 * DIMENSIONS + 35, 10 * DIMENSIONS}, {6 * DIMENSIONS + 70, 10 * DIMENSIONS}};
 
+    //updated values
     private HashMap<String, String> tiles = new HashMap<>();
-
-    private TextField textField;
-
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
+    private int TILES_TO_PLAY = 0;
+    private int ROUND = 0;
 
     private String i1;
     private String i2;
     private String i3;
     private String i4;
 
-    ImageView t1;
-    ImageView t2;
-    ImageView t3;
-    ImageView t4;
+    private ImageView t1;
+    private ImageView t2;
+    private ImageView t3;
+    private ImageView t4;
 
     private int T1_ROTATION = 0;
     private int T2_ROTATION = 0;
     private int T3_ROTATION = 0;
     private int T4_ROTATION = 0;
+
+    private int T1_FLIP = 1;
+    private int T2_FLIP = 1;
+    private int T3_FLIP = 1;
+    private int T4_FLIP = 1;
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -122,28 +124,21 @@ public class Game extends Application {
 
     //Edits by Harriet
     private void makeControls() {
-        Label label1 = new Label("Placement:");
-        textField = new TextField();
-        textField.setPrefWidth(300);
-        Button button = new Button("Refresh");
-        button.setOnAction(e -> {
-            //call makePlacement with given text
-            makePlacement(textField.getText());
-            textField.clear();
-        });
-        HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField, button);
-        hb.setSpacing(10);
-        hb.setLayoutX(115);
-        hb.setLayoutY(VIEWER_HEIGHT - 50);
-        controls.getChildren().add(hb);
-
         Button rollDice = new Button("Roll Dice");
         rollDice.setOnAction(e -> {
             //call drawNewTiles with given text
             if(TILES_TO_PLAY == 0) {
                 drawNewTiles();
                 TILES_TO_PLAY = 4;
+                ROUND++;
+                if(ROUND > 7) {
+                    root.getChildren().removeAll();
+                    endGame();
+                }
+                T1_ROTATION = 0;
+                T2_ROTATION = 0;
+                T3_ROTATION = 0;
+                T4_ROTATION = 0;
             }
         });
         rollDice.setLayoutX(10 * DIMENSIONS);
@@ -155,7 +150,7 @@ public class Game extends Application {
             //set tile1's rotation
             T1_ROTATION++;
             if(T1_ROTATION >= 4) {
-                T1_ROTATION = T1_ROTATION % 4;
+                T1_ROTATION = 0;
             }
             t1.setRotate(360.0 / 4 * T1_ROTATION);
         });
@@ -168,7 +163,7 @@ public class Game extends Application {
             //set tile2's rotation
             T2_ROTATION++;
             if(T2_ROTATION >= 4) {
-                T2_ROTATION = T2_ROTATION % 4;
+                T2_ROTATION = 0;
             }
             t2.setRotate(360.0 / 4 * T2_ROTATION);
         });
@@ -181,9 +176,9 @@ public class Game extends Application {
             //set tile3's rotation
             T3_ROTATION++;
             if(T3_ROTATION >= 4) {
-                T3_ROTATION = T3_ROTATION % 4;
+                T3_ROTATION = 0;
             }
-            t3.setRotate(360.0 / 4 * T3_ROTATION);
+            t3.setRotate(360.0 / 4 * T4_ROTATION);
         });
         setDimensions3.setLayoutX(TILE_LOCATIONS[2][1] + 90);
         setDimensions3.setLayoutY(TILE_LOCATIONS[2][0] + DIMENSIONS/3);
@@ -194,13 +189,49 @@ public class Game extends Application {
             //set tile4's rotation
             T4_ROTATION++;
             if(T4_ROTATION >= 4) {
-                T4_ROTATION = T4_ROTATION % 4;
+                T4_ROTATION = 0;
             }
             t4.setRotate(360.0 / 4 * T4_ROTATION);
         });
         setDimensions4.setLayoutX(TILE_LOCATIONS[3][1] + 90);
         setDimensions4.setLayoutY(TILE_LOCATIONS[3][0] + DIMENSIONS/3);
         controls.getChildren().add(setDimensions4);
+
+        Button flip1 = new Button("Flip");
+        flip1.setOnAction(e -> {
+            T1_FLIP = T1_FLIP * -1;
+            t1.setScaleX(T1_FLIP);
+        });
+        flip1.setLayoutX(TILE_LOCATIONS[0][1] + 90);
+        flip1.setLayoutY(TILE_LOCATIONS[0][0] + 2* DIMENSIONS/3);
+        controls.getChildren().add(flip1);
+
+        Button flip2 = new Button("Flip");
+        flip2.setOnAction(e -> {
+            T2_FLIP = T2_FLIP * -1;
+            t2.setScaleX(T2_FLIP);
+        });
+        flip2.setLayoutX(TILE_LOCATIONS[1][1] + 90);
+        flip2.setLayoutY(TILE_LOCATIONS[1][0] + 2 * DIMENSIONS/3);
+        controls.getChildren().add(flip2);
+
+        Button flip3 = new Button("Flip");
+        flip3.setOnAction(e -> {
+            T3_FLIP = T3_FLIP * -1;
+            t3.setScaleX(T3_FLIP);
+        });
+        flip3.setLayoutX(TILE_LOCATIONS[2][1] + 90);
+        flip3.setLayoutY(TILE_LOCATIONS[2][0] + 2* DIMENSIONS/3);
+        controls.getChildren().add(flip3);
+
+        Button flip4 = new Button("Flip");
+        flip4.setOnAction(e -> {
+            T4_FLIP = T4_FLIP * -1;
+            t4.setScaleX(T4_FLIP);
+        });
+        flip4.setLayoutX(TILE_LOCATIONS[3][1] + 90);
+        flip4.setLayoutY(TILE_LOCATIONS[3][0] + 2 * DIMENSIONS/3);
+        controls.getChildren().add(flip4);
 
     }
 
@@ -321,6 +352,8 @@ public class Game extends Application {
                 t1.setFitWidth(DIMENSIONS);
                 t1.setX(TILE_LOCATIONS[0][1]);
                 t1.setY(TILE_LOCATIONS[0][0]);
+                t1.setScaleX(T1_FLIP);
+                t1.setRotate(360.0 / 4 * T1_ROTATION);
                 t1.setCursor(Cursor.HAND);
                 t1.setOnMousePressed(clickTile);
                 t1.setOnMouseDragged(dragTile);
@@ -351,6 +384,8 @@ public class Game extends Application {
                 t2.setFitWidth(DIMENSIONS);
                 t2.setX(TILE_LOCATIONS[1][1]);
                 t2.setY(TILE_LOCATIONS[1][0]);
+                t2.setScaleX(T2_FLIP);
+                t2.setRotate(360.0 / 4 * T2_ROTATION);
                 t2.setCursor(Cursor.HAND);
                 t2.setOnMousePressed(clickTile);
                 t2.setOnMouseDragged(dragTile);
@@ -380,6 +415,8 @@ public class Game extends Application {
                 t3.setFitWidth(DIMENSIONS);
                 t3.setX(TILE_LOCATIONS[2][1]);
                 t3.setY(TILE_LOCATIONS[2][0]);
+                t3.setScaleX(T3_FLIP);
+                t3.setRotate(360.0 / 4 * T3_ROTATION);
                 t3.setCursor(Cursor.HAND);
                 t3.setOnMousePressed(clickTile);
                 t3.setOnMouseDragged(dragTile);
@@ -408,6 +445,8 @@ public class Game extends Application {
                 t4.setFitWidth(DIMENSIONS);
                 t4.setX(TILE_LOCATIONS[3][1]);
                 t4.setY(TILE_LOCATIONS[3][0]);
+                t4.setScaleX(T4_FLIP);
+                t4.setRotate(360.0 / 4 * T4_ROTATION);
                 t4.setCursor(Cursor.HAND);
                 t4.setOnMousePressed(clickTile);
                 t4.setOnMouseDragged(dragTile);
@@ -418,14 +457,17 @@ public class Game extends Application {
     };
 
     private boolean drawTile(double x, double y, String tileName, int rotation) {
-
         char tileY = (char)('A' + (int)y/DIMENSIONS - 1);
         String tileX = Integer.toString((int)x/(DIMENSIONS) - 1);
 
         String tileLocation = tileY + tileX;
         String tileString = tileName + tileLocation + rotation;
 
-        if(RailroadInk.isTilePlacementWellFormed(tileString)) {
+        String boardString = RailroadInk.boardListToBoardString(tiles) + tileString;
+
+        if(RailroadInk.isValidPlacementSequence(boardString)) {
+            tiles.put(tileLocation, tileString);
+
             Image img = new Image(Game.class.getResourceAsStream("assets/" + tileName + ".png"));
             ImageView tile = new ImageView(img);
             tile.setFitHeight(DIMENSIONS);
@@ -435,7 +477,7 @@ public class Game extends Application {
             tile.setY(location[1]);
             tile.setRotate(360.0 / 4 * rotation);
             root.getChildren().add(tile);
-            tiles.put(tileLocation, tileString);
+
             TILES_TO_PLAY--;
             return true;
         } else {
@@ -579,6 +621,35 @@ public class Game extends Application {
         }
     }
 
+    void endGame() {
+        String boardString = RailroadInk.boardListToBoardString(tiles);
+
+        //Creating a Text object
+        Text text = new Text();
+
+        //Setting font to the text
+        text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
+
+        //setting the position of the text
+        text.setX(50);
+        text.setY(130);
+
+        //Setting the color
+        text.setFill(Color.BROWN);
+
+        //Setting the Stroke
+        text.setStrokeWidth(2);
+
+        // Setting the stroke color
+        text.setStroke(Color.BLUE);
+
+        //Setting the text to be added.
+        text.setText("Hi how are you");
+
+        root.getChildren().add(text);
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -592,6 +663,5 @@ public class Game extends Application {
 
         primaryStage.setScene(play);
         primaryStage.show();
-
     }
 }

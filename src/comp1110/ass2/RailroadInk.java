@@ -821,8 +821,6 @@ public class RailroadInk {
     }
 
 
-
-
     /**
      * Given a valid boardString and a dice roll for the round,
      * return a String representing an ordered sequence of valid piece placements for the round.
@@ -865,10 +863,8 @@ public class RailroadInk {
     public static String boardListToBoardString(HashMap<String, String> boardList) {
         String boardString = "";
         for(String str : boardList.keySet()) {
-            char[] tileNameOrientationArray = boardList.get(str).toCharArray();
-            boardString = boardString + tileNameOrientationArray[0] + tileNameOrientationArray[1] + str + tileNameOrientationArray[2];
+            boardString = boardString + boardList.get(str);
         }
-
         return boardString;
     }
 
