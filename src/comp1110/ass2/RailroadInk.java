@@ -838,6 +838,20 @@ public class RailroadInk {
         String placementSequence = "";
 
         String[] tileStringArray = {tileString1, tileString2, tileString3, tileString4};
+
+        /*String[] tileStringArray1A = {tileString1, tileString2, tileString3, tileString4};
+        String[] tileStringArray1D = {tileString1, tileString2, tileString4, tileString3};
+        String[] tileStringArray1B = {tileString1, tileString3, tileString4, tileString2};
+        String[] tileStringArray1E = {tileString1, tileString3, tileString2, tileString4};
+        String[] tileStringArray1C = {tileString1, tileString4, tileString2, tileString3};
+        String[] tileStringArray1F = {tileString1, tileString4, tileString3, tileString2};
+
+        String[] tileStringArray1 = {tileString4, tileString1, tileString2, tileString3};
+        String[] tileStringArray2 = {tileString3, tileString4, tileString1, tileString2};
+        String[] tileStringArray3 = {tileString2, tileString3, tileString4 tileString1};*/
+
+
+
         boolean found = false;
 
         for(int k = 0; k < 4; k++) {
