@@ -907,16 +907,79 @@ public class RailroadInk {
      */
     public static int getAdvancedScore(String boardString) {
         // FIXME Task 12: compute the total score including bonus points
-        return longestHighway(boardString) + longestRailway(boardString);
+        int maxRailWay= 0;
+        int maxHighWay= 0;
+
+        for (int i = 0; i < TouchPile.length; i++) {
+            TouchPile[i] = false;
+        }
+
+        for(int i=0;i<boardString.length();i+=5){
+            String piece=boardString.substring(i,i+5);
+            String type=piece.charAt(0)+""+piece.charAt(1)+piece.charAt(4);
+            Tile tile=Tile.valueOf(type);
+            if(tile.north==1) {
+                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 0, tile.north,1,boardString));
+            }
+            if(tile.east==1) {
+                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 1, tile.east,1,boardString));
+            }
+            if(tile.south==1) {
+                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 2, tile.south,1,boardString));
+            }
+            if(tile.west==1) {
+                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 3, tile.west,1,boardString));
+            }
+            if(tile.north==2) {
+                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 0, tile.north,1,boardString));
+            }
+            if(tile.east==2) {
+                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 1, tile.east,1,boardString));
+            }
+            if(tile.south==2) {
+                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 2, tile.south,1,boardString));
+            }
+            if(tile.west==2) {
+                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 3, tile.west,1,boardString));
+            }
+
+            System.out.println(maxRailWay);
+
+
+        }
+        System.out.println("advanced scores are "+maxHighWay+"  "+maxRailWay);
+        return maxHighWay+maxRailWay+getBasicScore(boardString);
     }
 
-    public static int longestHighway(String boardString) {
-        return 0;
+    public static int findMaxLength(String piece, int orderOfNumber, int direction, int type, int deep, String boardString) {
+        int length = deep;
+        for (int i = 0; i < boardString.length(); i += 5) {
+            String s=boardString.substring(i,i+5);
+            if (!TouchPile[i/5]&&areConnectedNeighbours(piece,s)&&isValidDirection(piece,s,direction)) {
+                TouchPile[orderOfNumber]=true;
+                String next=s;
+                String nextType=next.charAt(0)+""+next.charAt(1)+next.charAt(4);
+                Tile nextTile=Tile.valueOf(nextType);
+                if(nextTile.north==type) {
+                    length=Math.max(length,findMaxLength(next,i/5,0,type,deep+1,boardString));
+                }
+                if(nextTile.east==type){
+                    length=Math.max(length,findMaxLength(next,i/5,1,type,deep+1,boardString));
+                }
+                if(nextTile.south==type){
+                    length=Math.max(length,findMaxLength(next,i/5,2,type,deep+1,boardString));
+                }
+                if(nextTile.west==type){
+                    length=Math.max(length,findMaxLength(next,i/5,3,type,deep+1,boardString));
+                }
+                TouchPile[orderOfNumber]=false;
+
+
+            }
+        }
+        return length;
     }
 
-    public static int longestRailway(String boardString) {
-        return 0;
-    }
 
     public static String boardListToBoardString(HashMap<String, String> boardList) {
         String boardString = "";
