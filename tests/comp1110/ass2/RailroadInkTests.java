@@ -8,7 +8,6 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 //Authored by Harriet
-/**
 public class RailroadInkTests {
 
     //Tests for RailroadInk.fixOrientation()
@@ -146,8 +145,6 @@ public class RailroadInkTests {
 
     //Tests for RailroadInk.connectionLocation()
     //All features arrays are from data found from assets/RotationImages.png
-
-/**
     static final String[][] connectionNorth = {
             {"A4B50", "A3A53"},
             {"B2G51", "S3F51"},
@@ -286,4 +283,3 @@ public class RailroadInkTests {
     }
 
 }
-*/
