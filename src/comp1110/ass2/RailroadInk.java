@@ -1028,7 +1028,6 @@ public class RailroadInk {
         return length;
     }
 
-
     public static String boardListToBoardString(HashMap<String, String> boardList) {
         String boardString = "";
         for(String str : boardList.keySet()) {
