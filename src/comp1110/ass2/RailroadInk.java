@@ -564,91 +564,73 @@ public class RailroadInk {
      * @param boardString a board string representing a completed game
      * @return integer (positive or negative) for score *not* considering longest rail/highway
      */
+
+
     public static boolean touchExit[] =new boolean[12];
-    public static boolean TouchPile []=new boolean[50];
-    public static String exits[]=new String[]{"A1","A3","A5","B0","B6","D0","D6","F0","F6","G1","G3","G5"};
+    public static boolean TouchPile[]=new boolean[50];
+    public static String exits[]=new String[]{"A1","A3","A5","B6","D6","F6","G5","G3","G1","F0","D0","B0"};
 
     public static int getBasicScore(String boardString) {
         // FIXME Task 8: compute the basic score
 
         int num=boardString.length()/5;
         int score=0;
+        int finalPoints[] = new int[]{0,0,4,8,12,16,20,24,28,32,36,40,45};
+
+
+        for(int i=0;i<touchExit.length;i++) {
+            touchExit[i]=false;
+        }
+        for(int i=0;i<TouchPile.length;i++){
+            TouchPile[i]=false;
+        }
 
         String exitP = "";
         for(int i=0;i<12;i++){
             int exitNum=1;
-            int k=0;
-            int points=0;
+            int k=-1;
             for(int j=0;j<boardString.length();j+=5){
                 String s=boardString.substring(j,j+5);
                 String t=s.substring(2,4);
-                if(t==exits[i]){
+                if(t.equals(exits[i])){
                      exitP=s;
                      k=j/5;
                 }
             }
             //find pieces connected with exits
-            if(!touchExit[i]){
+            if(!touchExit[i]) {
                 touchExit[i] = true;
-                int direction[]=new int[]{0,1,2,3};
-                for(int j=0;j<4;j++){
-                    exitNum+=exitNumber(exitP,k,j,exits[i],boardString);
+                int direction[] = new int[]{0, 1, 2, 3};
+                for (int j = 0; j < 4; j++) {
+                    if (k >= 0) {
+                        //System.out.println("K= "+k);
+                        exitNum += exitNumber(exitP, k, j, exits[i], boardString);
+                    }
                 }
-            }//calculate the total number of exits
-            if(exitNum==0){
-                points+=0;
             }
-            if(exitNum==2){
-                points+=4;
-            }
-            if(exitNum==3){
-                points+=8;
-            }
-            if(exitNum==4){
-                points+=12;
-            }
-            if(exitNum==5){
-                points+=16;
-            }
-            if(exitNum==6){
-                points+=20;
-            }
-            if(exitNum==7){
-                points+=24;
-            }
-            if(exitNum==8){
-                points+=28;
-            }
-            if(exitNum==9){
-                points+=32;
-            }
-            if(exitNum==10){
-                points+=36;
-            }
-            if(exitNum==11){
-                points+=40;
-            }
-            if(exitNum==12){
-                points+=45;
-            }
-            score=points;
+
+            //calculate the total number of exits
+            score+=finalPoints[exitNum];
+            System.out.println(exitNum);
         }
         score=score+centreGridNum(boardString)-missEdges(boardString);
-       return score;
+        System.out.println(score);
+        return score;
     }
 
 
      public static int whichExit(String piece){
         for(int i=0;i<exits.length;i++){
             String location=piece.substring(2,4);
-            if(exits[i]==location){
+            if(exits[i].equals(location)){
                 return i;
             }
         }
-         return -1;
+        return -1;
      }
 
      public static boolean isValidDirection(String string1, String string2, int direction){
+
         char row1 = string1.charAt(2);
         char row2 = string2.charAt(2);
         char column1 = string1.charAt(3);
@@ -676,152 +658,226 @@ public class RailroadInk {
 
 
     public static int exitNumber(String pieces, int orderOfPieces, int direction, String firstexit,String boardString){
-        String location=pieces.substring(2,4);
-        if(pieces.charAt(2)=='A'&&direction==0){
-            if((pieces.charAt(3)=='1'||pieces.charAt(3)=='3'||pieces.charAt(3)=='5')&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
+
+        String location=pieces.charAt(2)+""+pieces.charAt(3);
+
+        //System.out.println(pieces + orderOfPieces+"  "+direction);
+        if(!location.equals(firstexit)) {
+            int isAnExit = -1;
+            for(int i=0;i<12;i++) {
+                if(location.equals(exits[i])) {
+                    isAnExit = i;
+                }
             }
-            else {
+
+            if(isAnExit>=0&& direction==isAnExit/3) {
+                if(!touchExit[isAnExit]) {
+                    touchExit[isAnExit] = true;
+                    return 1;
+                }
                 return 0;
             }
+            /*
+            if(pieces.charAt(2)=='A'&&direction==0){
+                if((pieces.charAt(3)=='1'||pieces.charAt(3)=='3'||pieces.charAt(3)=='5')&&!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            if(pieces.charAt(2)=='B'&&direction==3){
+                if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            if(pieces.charAt(2)=='B'&&direction==1){
+                if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            if(pieces.charAt(2)=='D'&&direction==3){
+                if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            if(pieces.charAt(2)=='D'&&pieces.charAt(3)=='6'&&direction==1){
+                if(!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            if(pieces.charAt(2)=='F'&&direction==3){
+                if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            if(pieces.charAt(2)=='F'&&direction==1){
+                if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            if(pieces.charAt(2)=='G'&&direction==2){
+                if((pieces.charAt(3)=='1'||pieces.charAt(3)=='3'||pieces.charAt(3)=='5')&&!touchExit[whichExit(pieces)]){
+                    touchExit[whichExit(pieces)]=true;
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+            */
         }
-        if(pieces.charAt(2)=='B'&&direction==3){
-            if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
-        if(pieces.charAt(2)=='B'&&direction==1){
-            if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
-        if(pieces.charAt(2)=='D'&&direction==3){
-            if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
-        if(pieces.charAt(2)=='D'&&direction==1){
-            if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
-        if(pieces.charAt(2)=='F'&&direction==3){
-            if(pieces.charAt(3)=='0'&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
-        if(pieces.charAt(2)=='F'&&direction==1){
-            if(pieces.charAt(3)=='6'&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
-        if(pieces.charAt(2)=='G'&&direction==2){
-            if((pieces.charAt(3)=='1'||pieces.charAt(3)=='3'||pieces.charAt(3)=='5')&&!touchExit[whichExit(pieces)]){
-                touchExit[whichExit(pieces)]=true;
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        }
+        //System.out.println(pieces + orderOfPieces+"  "+direction+" once more");
         //judge the number of exits on the edge
         int total=0;
         for(int i=0;i<boardString.length();i+=5){
             String s=boardString.substring(i,i+5);
-            if(areConnectedNeighbours(s,pieces)&&isValidDirection(pieces,s,direction)&&!touchExit[i/5]) {
+            if(areConnectedNeighbours(s,pieces)&&isValidDirection(pieces,s,direction)) {
                 String next=s;
-                touchExit[whichExit(pieces)]=true;// 把走过的路标记为true
-                if(next.substring(0,2)=="B2"){
-                    total +=exitNumber(next,i/5,direction,firstexit,boardString);
+                TouchPile[orderOfPieces]=true;// 把走过的路标记为true
+                if(s.substring(0,2).equals("B2")){
+                    //TouchPile[i/5] = false;
+                    total +=exitNumber(s,i/5,direction,firstexit,boardString);
                 }
-                else {
+
+                else if(!TouchPile[i/5]){
                     total += exitNumber(next, i / 5, 0, firstexit, boardString);
                     total += exitNumber(next, i / 5, 1, firstexit, boardString);
                     total += exitNumber(next, i / 5, 2, firstexit, boardString);
                     total += exitNumber(next, i / 5, 3, firstexit, boardString);
                 }
-                touchExit[whichExit(pieces)] = false;
+                TouchPile[orderOfPieces] = false;
             }
         }
         return total;
     }
+
+
     public static int centreGridNum(String boardString){
         int num=0;
-        for(int i=0;i<boardString.length();i++){
-            String location=boardString.substring(i+2,i+4);
-
-            if(location=="C2"||location=="C3"||location=="C4"
-            ||location=="D2"||location=="D3"||location=="D4"
-                    ||location=="E2"||location=="E3"||location=="E4"){
+        for(int i=0;i<boardString.length();i+=5){
+            String location= boardString.substring(i+2,i+4);
+            if(location.equals("C2")||location.equals("C3")||location.equals("C4")||
+                    location.equals("D2")||location.equals("D3")||location.equals("D4")||
+                    location.equals("E2")||location.equals("E3")||location.equals("E4")){
                 num++;
             }
         }
         return num;
     }
+
+    public static boolean isBoardExist(String boardString, String piece){
+        for(int i=0;i<boardString.length();i+=5){
+            String location=boardString.substring(i+2,i+4);
+            if(location.equals(piece)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String searchTile(String boardString, String location){
+        String output="";
+        for(int i=0;i<boardString.length();i+=5){
+            String s=boardString.substring(i+2,i+4);
+            if(s.equals(location)){
+                output=boardString.charAt(i)+""+boardString.charAt(i+1)+boardString.charAt(i+4);
+                return output;
+            }
+        }
+        return output;
+    }
+
+
     public  static int missEdges(String boardString){
         int num=0;
-        for(int i=0;i<boardString.length();i++){
+        for(int i=0;i<boardString.length();i+=5){
             String str1=boardString.charAt(i)+""+boardString.charAt(i+1)+boardString.charAt(i+4);
             char row1=boardString.charAt(i+2);
             char volumn1=boardString.charAt(i+3);
             Tile tile1=Tile.valueOf(str1);
-            //check the north
-            for(int j=0;j<boardString.length();j++){
-                String str2=boardString.charAt(j)+""+boardString.charAt(j+1)+boardString.charAt(j+4);
-                char row2=boardString.charAt(j+2);
-                char volumn2=boardString.charAt(j+3);
-                Tile tile2=Tile.valueOf(str2);
-                if(j!=i&&volumn1==volumn2&&row1-row2==1){
-                    if(tile1.north!=0&&tile2.south==0){
-                        num++;
-                    }
-                }//check the north
-                if(j!=i&&volumn1==volumn2&&row2-row1==1){
-                    if(tile1.south!=0&&tile2.north==0){
-                        num++;
-                    }
-                }//check the south
-                if(j!=i&&row1==row2&&volumn1-volumn2==1){
-                    if(tile1.west!=0&&tile2.east==1){
-                        num++;
-                    }
-                }//check the west
-                if(j!=i&&row1==row2&&volumn2-volumn1==1){
-                    if(tile1.east!=0&&tile2.west==1){
+
+            if(tile1.north!=0&&row1!='A'){
+                char row2=(char)(row1-1);
+                String N=row2+""+volumn1;
+
+                if (!isBoardExist(boardString,N)){
+                    num++;
+                }
+                else if(isBoardExist(boardString,N)){
+                    Tile tile2=Tile.valueOf(searchTile(boardString,N));
+                    if(tile2.south==0){
                         num++;
                     }
                 }
-
             }
+            if(tile1.east!=0&&volumn1!='6'){
+                String E=row1+""+(char)(volumn1+1);
 
+                if (!isBoardExist(boardString,E)){
+                    num++;
+                }
+
+
+                else if(isBoardExist(boardString,E)){
+                    Tile tile2=Tile.valueOf(searchTile(boardString,E));
+                    if(tile2.west==0){
+                        num++;
+                    }
+                }
+            }
+            if(tile1.south!=0&&row1!='G'){
+                String S=(char)(row1+1)+""+volumn1;
+                if (!isBoardExist(boardString,S)){
+                    num++;
+                }
+                else if(isBoardExist(boardString,S)){
+                    Tile tile2=Tile.valueOf(searchTile(boardString,S));
+                    if(tile2.north==0){
+                        num++;
+                    }
+                }
+            }
+            if(tile1.west!=0&&volumn1!='0'){
+                String W=row1+""+(char)(volumn1-1);
+                if (!isBoardExist(boardString,W)){
+                    num++;
+                }
+                else if(isBoardExist(boardString,W)){
+
+                    Tile tile2=Tile.valueOf(searchTile(boardString,W));
+                    if(tile2.east==0){
+                        num++;
+                    }
+                }
+            }
         }
         return num;
-
     }
 
 
