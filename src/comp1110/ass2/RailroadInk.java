@@ -763,6 +763,7 @@ public class RailroadInk {
         }
         return total;
     }
+
     public static int centreGridNum(String boardString){
         int num=0;
         for(int i=0;i<boardString.length();i++){
@@ -776,6 +777,7 @@ public class RailroadInk {
         }
         return num;
     }
+
     public  static int missEdges(String boardString){
         int num=0;
         for(int i=0;i<boardString.length();i++){
@@ -828,10 +830,37 @@ public class RailroadInk {
      */
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
+        String tileString1 = diceRoll.toCharArray()[0] + "" + diceRoll.toCharArray()[1] + "A0" + "0";
+        String tileString2 = diceRoll.toCharArray()[2]+ "" + diceRoll.toCharArray()[3] + "A0" + "0";
+        String tileString3 = diceRoll.toCharArray()[4]+ "" + diceRoll.toCharArray()[5] + "A0" + "0";
+        String tileString4 = diceRoll.toCharArray()[6]+ "" + diceRoll.toCharArray()[7] + "A0" + "0";
 
+        String placementSequence = "";
 
+        String[] tileStringArray = {tileString1, tileString2, tileString3, tileString4};
+        boolean found = false;
 
-        return null;
+        for(int k = 0; k < 4; k++) {
+            char[] tile = tileStringArray[k].toCharArray();
+            for(char c = 'A'; c < 'H' && !found; c++){
+                tile[2] = c;
+                for (char j = '0'; j < '7' && !found; j++) {
+                    tile[3] = j;
+                    for(char i = '0'; i < '8' && !found; i++) {
+                        tile[4] = i;
+                        String tileString = "" + tile[0] + tile[1] + tile[2] + tile[3] + tile[4];
+                        if(isValidPlacementSequence(boardString + tileString)) {
+                            boardString = boardString + tileString;
+                            placementSequence = placementSequence + tileString;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            found = false;
+        }
+
+        return placementSequence;
     }
 
     /**
