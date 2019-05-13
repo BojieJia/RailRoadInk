@@ -22,6 +22,18 @@ public class RailroadInk {
      * @return true if the tile placement is well formed
      */
     //Authored by Harriet
+
+
+    /**
+     * reviewed by Bojie Jia
+     * Feature: use toCharArray to divide String to several chars, which is more efficient than charAt
+     * it is a little bit not well-documented,and I fix them
+     * the program decomposition is appropriate
+     * it follows Java code conventions
+     *
+     * @param tilePlacementString
+     * @return
+     */
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
         boolean firstSecond = false;
         boolean third = false;
@@ -607,8 +619,10 @@ public class RailroadInk {
 
             //calculate the total number of exits
             score += finalPoints[exitNum];
+            System.out.println(exitNum);
         }
         score = score + centreGridNum(boardString) - missEdges(boardString);
+        System.out.println(score);
         return score;
     }
 
@@ -874,53 +888,11 @@ public class RailroadInk {
      * @return a String representing an ordered sequence of valid piece placements for the current round
      * @see RailroadInk#generateDiceRoll()
      */
-    //Authored by Harriet
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
-        String tileString1 = diceRoll.toCharArray()[0] + "" + diceRoll.toCharArray()[1] + "A0" + "0";
-        String tileString2 = diceRoll.toCharArray()[2] + "" + diceRoll.toCharArray()[3] + "A0" + "0";
-        String tileString3 = diceRoll.toCharArray()[4] + "" + diceRoll.toCharArray()[5] + "A0" + "0";
-        String tileString4 = diceRoll.toCharArray()[6] + "" + diceRoll.toCharArray()[7] + "A0" + "0";
-
-        String placementSequence = "";
-
-        String[] tileStringArray = {tileString1, tileString2, tileString3, tileString4};
-
-        /*String[] tileStringArray1A = {tileString1, tileString2, tileString3, tileString4};
-        String[] tileStringArray1D = {tileString1, tileString2, tileString4, tileString3};
-        String[] tileStringArray1B = {tileString1, tileString3, tileString4, tileString2};
-        String[] tileStringArray1E = {tileString1, tileString3, tileString2, tileString4};
-        String[] tileStringArray1C = {tileString1, tileString4, tileString2, tileString3};
-        String[] tileStringArray1F = {tileString1, tileString4, tileString3, tileString2};
-
-        String[] tileStringArray1 = {tileString4, tileString1, tileString2, tileString3};
-        String[] tileStringArray2 = {tileString3, tileString4, tileString1, tileString2};
-        String[] tileStringArray3 = {tileString2, tileString3, tileString4 tileString1};*/
 
 
-        boolean found = false;
-
-        for (int k = 0; k < 4; k++) {
-            char[] tile = tileStringArray[k].toCharArray();
-            for (char c = 'A'; c < 'H' && !found; c++) {
-                tile[2] = c;
-                for (char j = '0'; j < '7' && !found; j++) {
-                    tile[3] = j;
-                    for (char i = '0'; i < '8' && !found; i++) {
-                        tile[4] = i;
-                        String tileString = "" + tile[0] + tile[1] + tile[2] + tile[3] + tile[4];
-                        if (isValidPlacementSequence(boardString + tileString)) {
-                            boardString = boardString + tileString;
-                            placementSequence = placementSequence + tileString;
-                            found = true;
-                        }
-                    }
-                }
-            }
-            found = false;
-        }
-
-        return placementSequence;
+        return null;
     }
 
     /**
@@ -935,77 +907,45 @@ public class RailroadInk {
      */
     public static int getAdvancedScore(String boardString) {
         // FIXME Task 12: compute the total score including bonus points
-        int maxRailWay= 0;
-        int maxHighWay= 0;
-
-        for (int i = 0; i < TouchPile.length; i++) {
-            TouchPile[i] = false;
-        }
-
-        for(int i=0;i<boardString.length();i+=5){
-            String piece=boardString.substring(i,i+5);
-            String type=piece.charAt(0)+""+piece.charAt(1)+piece.charAt(4);
-            Tile tile=Tile.valueOf(type);
-            if(tile.north==1) {
-                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 0, tile.north,1,boardString));
-                }
-            if(tile.east==1) {
-                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 1, tile.east,1,boardString));
-            }
-            if(tile.south==1) {
-                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 2, tile.south,1,boardString));
-            }
-            if(tile.west==1) {
-                maxHighWay = Math.max(maxHighWay, findMaxLength(piece, i / 5, 3, tile.west,1,boardString));
-            }
-            if(tile.north==2) {
-                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 0, tile.north,1,boardString));
-            }
-            if(tile.east==2) {
-                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 1, tile.east,1,boardString));
-            }
-            if(tile.south==2) {
-                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 2, tile.south,1,boardString));
-            }
-            if(tile.west==2) {
-                maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 3, tile.west,1,boardString));
-            }
-
-            System.out.println(maxRailWay);
-
-
-        }
-        System.out.println("advanced scores are "+maxHighWay+"  "+maxRailWay);
-        return maxHighWay+maxRailWay+getBasicScore(boardString);
+        return longestHighway(boardString) + longestRailway(boardString);
     }
 
-    public static int findMaxLength(String piece, int orderOfNumber, int direction, int type, int deep, String boardString) {
-        int length = deep;
-        for (int i = 0; i < boardString.length(); i += 5) {
-            String s=boardString.substring(i,i+5);
-            if (!TouchPile[i/5]&&areConnectedNeighbours(piece,s)&&isValidDirection(piece,s,direction)) {
-                TouchPile[orderOfNumber]=true;
-                String next=s;
-                String nextType=next.charAt(0)+""+next.charAt(1)+next.charAt(4);
-                Tile nextTile=Tile.valueOf(nextType);
-                if(nextTile.north==type) {
-                    length=Math.max(length,findMaxLength(next,i/5,0,type,deep+1,boardString));
-                }
-                if(nextTile.east==type){
-                    length=Math.max(length,findMaxLength(next,i/5,1,type,deep+1,boardString));
-                }
-                if(nextTile.south==type){
-                    length=Math.max(length,findMaxLength(next,i/5,2,type,deep+1,boardString));
-                }
-                if(nextTile.west==type){
-                    length=Math.max(length,findMaxLength(next,i/5,3,type,deep+1,boardString));
-                }
-                TouchPile[orderOfNumber]=false;
+    public static int longestHighway(String boardString) {
+        return 0;
+    }
 
+    public static int longestRailway(String boardString) {
+        return 0;
+    }
 
-            }
+    public static String boardListToBoardString(HashMap<String, String> boardList) {
+        String boardString = "";
+        for (String str : boardList.keySet()) {
+            char[] tileNameOrientationArray = boardList.get(str).toCharArray();
+            boardString = boardString + tileNameOrientationArray[0] + tileNameOrientationArray[1] + str + tileNameOrientationArray[2];
         }
-        return length;
+
+        return boardString;
+    }
+
+    public static void main(String[] args) {
+        /*{"A4A50", "hnhn"},
+        {"B2G51", "rhrh"},
+        {"S1B37", "rrrh"},
+        {"B0D34", "hnrn"},
+        {"A2B43", "rrnr"},
+        {"A1A45", "nrnr"},
+        {"S3B32", "rrrr"},
+        {"S1B35", "rhrr"}*/
+
+        System.out.println(new String(fixOrientation("A4A50")));
+        System.out.println(new String(fixOrientation("B2G51")));
+        System.out.println(new String(fixOrientation("S1B37")));
+        System.out.println(new String(fixOrientation("B0D34")));
+        System.out.println(new String(fixOrientation("A2B43")));
+        System.out.println(new String(fixOrientation("A1A45")));
+        System.out.println(new String(fixOrientation("S3B32")));
+        System.out.println(new String(fixOrientation("S1B35")));
     }
 
 }
