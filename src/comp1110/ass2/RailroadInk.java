@@ -467,7 +467,7 @@ public class RailroadInk {
                 char column1=s1.charAt(3);
                 char column2=s2.charAt(3);
                 if(row1==row2&&(column1-column2)==1){
-                    if(tile1.west!=0&&tile1.west==tile2.east) {
+                    if(tile1.west!=0 && tile1.west==tile2.east) {
                         connect[i] = true;
                     }
                     if (tile1.west!=0&&tile2.east!=0&&tile1.west!=tile2.east){
@@ -505,7 +505,6 @@ public class RailroadInk {
 
         for(int i=0;i<boardString.length();i+=5) {
             String s=boardString.substring(i,i+5);
-
             if (!connect[i]&&!isExit(s))  {
                 return false;
             }
@@ -515,7 +514,7 @@ public class RailroadInk {
     }
 
     //Authored by Bojie
-    public static boolean  isValidPlacementSequence (String boardString)  {
+    public static boolean isValidPlacementSequence (String boardString)  {
         if(notCover(boardString)&&isExit(boardString)&&isNeighbor(boardString)){
             return true;
         }
