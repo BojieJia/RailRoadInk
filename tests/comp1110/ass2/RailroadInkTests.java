@@ -3,6 +3,7 @@ package comp1110.ass2;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -267,6 +268,18 @@ public class RailroadInkTests {
         int min = 0;
         int number = RailroadInk.rollNumber(max, min);
         assertEquals("Got " + number + " but expected " + max, number, 0);
+    }
+
+
+    //Test for RailroadInk.boardListToBoardString
+    @Test()
+    public void testBoardListToBoardStringThreeStrings() {
+        HashMap<String, String> board = new HashMap<>();
+        board.put("A5", "A4A59");
+        board.put("G1", "S2G11");
+        board.put("G4", "S5G42");
+        String list = RailroadInk.boardListToBoardString(board);
+        assertEquals("Got " + list + " but expected " + "A4A59S2G11S5G42", list, "A4A59S2G11S5G42");
     }
 
 }
