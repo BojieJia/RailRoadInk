@@ -828,6 +828,7 @@ public class RailroadInk {
      * @return a String representing an ordered sequence of valid piece placements for the current round
      * @see RailroadInk#generateDiceRoll()
      */
+    //Authored by Harriet
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
         String tileString1 = diceRoll.toCharArray()[0] + "" + diceRoll.toCharArray()[1] + "A0" + "0";
