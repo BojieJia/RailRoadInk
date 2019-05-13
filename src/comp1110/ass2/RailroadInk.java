@@ -549,7 +549,7 @@ public class RailroadInk {
     public static int rollNumber(int max, int min) {
         //generate a number from 0 to max - 1;
         Random rand = new Random();
-        int value = rand.nextInt((max - min) + 1) + min;
+        int value = rand.nextInt(max + 1 - min) + min;
         return value;
     }
 
@@ -895,11 +895,53 @@ public class RailroadInk {
      */
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
+        String tileString1 = diceRoll.toCharArray()[0] + "" + diceRoll.toCharArray()[1] + "A0" + "0";
+        String tileString2 = diceRoll.toCharArray()[2]+ "" + diceRoll.toCharArray()[3] + "A0" + "0";
+        String tileString3 = diceRoll.toCharArray()[4]+ "" + diceRoll.toCharArray()[5] + "A0" + "0";
+        String tileString4 = diceRoll.toCharArray()[6]+ "" + diceRoll.toCharArray()[7] + "A0" + "0";
+
+        String placementSequence = "";
+
+        String[] tileStringArray = {tileString1, tileString2, tileString3, tileString4};
+
+        /*String[] tileStringArray1A = {tileString1, tileString2, tileString3, tileString4};
+        String[] tileStringArray1D = {tileString1, tileString2, tileString4, tileString3};
+        String[] tileStringArray1B = {tileString1, tileString3, tileString4, tileString2};
+        String[] tileStringArray1E = {tileString1, tileString3, tileString2, tileString4};
+        String[] tileStringArray1C = {tileString1, tileString4, tileString2, tileString3};
+        String[] tileStringArray1F = {tileString1, tileString4, tileString3, tileString2};
+
+        String[] tileStringArray1 = {tileString4, tileString1, tileString2, tileString3};
+        String[] tileStringArray2 = {tileString3, tileString4, tileString1, tileString2};
+        String[] tileStringArray3 = {tileString2, tileString3, tileString4 tileString1};*/
 
 
 
-        return null;
+        boolean found = false;
+
+        for(int k = 0; k < 4; k++) {
+            char[] tile = tileStringArray[k].toCharArray();
+            for(char c = 'A'; c < 'H' && !found; c++){
+                tile[2] = c;
+                for (char j = '0'; j < '7' && !found; j++) {
+                    tile[3] = j;
+                    for(char i = '0'; i < '8' && !found; i++) {
+                        tile[4] = i;
+                        String tileString = "" + tile[0] + tile[1] + tile[2] + tile[3] + tile[4];
+                        if(isValidPlacementSequence(boardString + tileString)) {
+                            boardString = boardString + tileString;
+                            placementSequence = placementSequence + tileString;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            found = false;
+        }
+
+        return placementSequence;
     }
+
 
     /**
      * Given the current state of a game board, output an integer representing the sum of all the factors contributing
@@ -927,32 +969,9 @@ public class RailroadInk {
     public static String boardListToBoardString(HashMap<String, String> boardList) {
         String boardString = "";
         for(String str : boardList.keySet()) {
-            char[] tileNameOrientationArray = boardList.get(str).toCharArray();
-            boardString = boardString + tileNameOrientationArray[0] + tileNameOrientationArray[1] + str + tileNameOrientationArray[2];
+            boardString = boardString + boardList.get(str);
         }
-
         return boardString;
     }
-
-    public static void main(String[] args) {
-        /*{"A4A50", "hnhn"},
-        {"B2G51", "rhrh"},
-        {"S1B37", "rrrh"},
-        {"B0D34", "hnrn"},
-        {"A2B43", "rrnr"},
-        {"A1A45", "nrnr"},
-        {"S3B32", "rrrr"},
-        {"S1B35", "rhrr"}*/
-
-        System.out.println(new String(fixOrientation("A4A50")));
-        System.out.println(new String(fixOrientation("B2G51")));
-        System.out.println(new String(fixOrientation("S1B37")));
-        System.out.println(new String(fixOrientation("B0D34")));
-        System.out.println(new String(fixOrientation("A2B43")));
-        System.out.println(new String(fixOrientation("A1A45")));
-        System.out.println(new String(fixOrientation("S3B32")));
-        System.out.println(new String(fixOrientation("S1B35")));
-    }
-
 }
 
