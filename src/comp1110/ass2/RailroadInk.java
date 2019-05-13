@@ -560,10 +560,12 @@ public class RailroadInk {
      * @param boardString a board string representing a completed game
      * @return integer (positive or negative) for score *not* considering longest rail/highway
      */
+    //Authored by Bojie
     public static boolean touchExit[] =new boolean[12];
     public static boolean TouchPile []=new boolean[50];
     public static String exits[]=new String[]{"A1","A3","A5","B0","B6","D0","D6","F0","F6","G1","G3","G5"};
 
+    //Authored by Bojie
     public static int getBasicScore(String boardString) {
         // FIXME Task 8: compute the basic score
 
@@ -633,7 +635,8 @@ public class RailroadInk {
        return score;
     }
 
-     public static int whichExit(String piece){
+    //Authored by Bojie
+    public static int whichExit(String piece){
         for(int i=0;i<exits.length;i++){
             String location=piece.substring(2,4);
             if(exits[i]==location){
@@ -641,9 +644,10 @@ public class RailroadInk {
             }
         }
          return -1;
-     }
+    }
 
-     public static boolean isValidDirection(String string1, String string2, int direction){
+    //Authored by Bojie
+    public static boolean isValidDirection(String string1, String string2, int direction){
         char row1 = string1.charAt(2);
         char row2 = string2.charAt(2);
         char column1 = string1.charAt(3);
@@ -666,8 +670,9 @@ public class RailroadInk {
          // if direction=1: s2 is on the east of s1
          // if direction=2: s2 is on the south of s1
          // if direction=3: s2 is on the west of s1.
-     }
+    }
 
+    //Authored by Bojie
     public static int exitNumber(String pieces, int orderOfPieces, int direction, String firstexit,String boardString){
         String location=pieces.substring(2,4);
         if(pieces.charAt(2)=='A'&&direction==0){
@@ -764,6 +769,7 @@ public class RailroadInk {
         return total;
     }
 
+    //Authored by Bojie
     public static int centreGridNum(String boardString){
         int num=0;
         for(int i=0;i<boardString.length();i++){
@@ -778,6 +784,7 @@ public class RailroadInk {
         return num;
     }
 
+    //Authored by Bojie
     public  static int missEdges(String boardString){
         int num=0;
         for(int i=0;i<boardString.length();i++){
