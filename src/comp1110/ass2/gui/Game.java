@@ -100,8 +100,6 @@ public class Game extends Application {
         rollDice.setOnAction(e -> {
             //if all tiles have been played
             if(TILES_TO_PLAY == 0) {
-                //call the draw new tiles method
-                drawNewTiles();
                 //set tiles to play to 4 and S tiles played to 0
                 TILES_TO_PLAY = 4;
                 S_PLAYED = 0;
@@ -112,11 +110,20 @@ public class Game extends Application {
                     root.getChildren().clear();
                     endGame();
                 }
-                //reset the rotation of all the new tiles
+
+                //reset the rotation and flip of all the new tiles
                 T1_ROTATION = 0;
                 T2_ROTATION = 0;
                 T3_ROTATION = 0;
                 T4_ROTATION = 0;
+
+                T1_FLIP = 1;
+                T2_FLIP = 1;
+                T3_FLIP = 1;
+                T4_FLIP = 1;
+
+                //call the draw new tiles method
+                drawNewTiles();
             }
         });
         //set the location of the button and add to controls
@@ -990,7 +997,7 @@ public class Game extends Application {
     //Code from https://www.tutorialspoint.com/javafx/javafx_text.htm, edits by Harriet
     private void endGame() {
         String boardString = RailroadInk.boardListToBoardString(tiles);
-        //int Score = RailroadInk.getBasicScore(boardString);
+        int score = RailroadInk.getAdvancedScore(boardString);
 
         //Creating a Text object
         Text text = new Text();
@@ -1006,7 +1013,7 @@ public class Game extends Application {
         // Setting the stroke color
         text.setStroke(Color.BLUE);
         //Setting the text to be added.
-        text.setText("Hi how are you");
+        text.setText("You scored: " + Integer.toString(score));
 
         root.getChildren().add(text);
 

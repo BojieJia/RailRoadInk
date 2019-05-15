@@ -611,10 +611,10 @@ public class RailroadInk {
 
             //calculate the total number of exits
             score+=finalPoints[exitNum];
-            System.out.println(exitNum);
+            //System.out.println(exitNum);
         }
         score=score+centreGridNum(boardString)-missEdges(boardString);
-        System.out.println(score);
+        //System.out.println(score);
         return score;
     }
 
@@ -991,11 +991,11 @@ public class RailroadInk {
                 maxRailWay = Math.max(maxRailWay, findMaxLength(piece, i / 5, 3, tile.west,1,boardString));
             }
 
-            System.out.println(maxRailWay);
+            //System.out.println(maxRailWay);
 
 
         }
-        System.out.println("advanced scores are "+maxHighWay+"  "+maxRailWay);
+        //System.out.println("advanced scores are "+maxHighWay+"  "+maxRailWay);
         return maxHighWay+maxRailWay+getBasicScore(boardString);
     }
 

@@ -102,8 +102,17 @@ public class MultiPlayer extends Application {
         rollDice.setOnAction(e -> {
             //if all tiles have been played
             if(TILES_TO_PLAY == 0) {
-                //call the draw new tiles method
-                drawNewTiles();
+                //reset the rotation and flip of all the new tiles
+                T1_ROTATION = 0;
+                T2_ROTATION = 0;
+                T3_ROTATION = 0;
+                T4_ROTATION = 0;
+
+                T1_FLIP = 1;
+                T2_FLIP = 1;
+                T3_FLIP = 1;
+                T4_FLIP = 1;
+
                 //set tiles to play to 4 and S tiles played to 0
                 TILES_TO_PLAY = 4;
                 S_PLAYED = 0;
@@ -114,11 +123,8 @@ public class MultiPlayer extends Application {
                     root.getChildren().clear();
                     endGame();
                 }
-                //reset the rotation of all the new tiles
-                T1_ROTATION = 0;
-                T2_ROTATION = 0;
-                T3_ROTATION = 0;
-                T4_ROTATION = 0;
+                //call the draw new tiles method
+                drawNewTiles();
             }
         });
         //set the location of the button and add to controls
@@ -827,6 +833,7 @@ public class MultiPlayer extends Application {
         //Draw grid for computer
         for(int k = 9; k < 17; k++) {
             Line line1 = new Line();
+            line1.setStroke(Color.RED);
             line1.setStartX(DIMENSIONS * k + DIMENSIONS/2);
             line1.setStartY(DIMENSIONS);
             line1.setEndX(DIMENSIONS * k + DIMENSIONS/2);
@@ -835,6 +842,7 @@ public class MultiPlayer extends Application {
             root.getChildren().add(line1);
 
             Line line2 = new Line();
+            line2.setStroke(Color.RED);
             line2.setStartX(DIMENSIONS * 9 + DIMENSIONS/2);
             line2.setStartY(DIMENSIONS * (k - 8));
             line2.setEndX(DIMENSIONS * 16 + DIMENSIONS/2);
