@@ -9,17 +9,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+//TODO add in theme music? and sound effects
+//TODO add in an instruction screen
+//TODO make title prettier
+
 public class Game extends Application {
 
     static Stage classStage = new Stage();
 
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
-    private TextField textField;
     private final Group root = new Group();
     private final Group controls = new Group();
     private final Group board = new Group();
-    private static final int DIMENSIONS = 75;
 
     @Override
     public void start(Stage primaryStage) {
