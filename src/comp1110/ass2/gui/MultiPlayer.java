@@ -41,6 +41,7 @@ public class MultiPlayer extends Application {
     private static int[][] SPECIAL_LOCATIONS = new int[6][2];
     private static int[][] TILE_LOCATIONS = new int [4][2];
     private HashMap<String, String> tiles = new HashMap<>();
+    private String computerBoardString = "";
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
     private int TILES_TO_PLAY = 0;
@@ -120,15 +121,17 @@ public class MultiPlayer extends Application {
                 //set tiles to play to 4 and S tiles played to 0
                 TILES_TO_PLAY = 4;
                 S_PLAYED = 0;
+
+                //call the draw new tiles method
+                drawNewTiles();
+
                 //increase the round counter
                 ROUND++;
-                if(ROUND > 7) {
+                if(ROUND > 1) {
                     //if all rounds have been played clear the root children and run the end game method
                     root.getChildren().clear();
                     endGame();
                 }
-                //call the draw new tiles method
-                drawNewTiles();
             }
         });
         //set the location of the button and add to controls
@@ -1062,7 +1065,7 @@ public class MultiPlayer extends Application {
     //Code from https://www.tutorialspoint.com/javafx/javafx_text.htm, edits by Harriet
     private void endGame() {
         String boardString = RailroadInk.boardListToBoardString(tiles);
-        //int Score = RailroadInk.getBasicScore(boardString);
+        int score = RailroadInk.getAdvancedScore(boardString);
 
         //Creating a Text object
         Text text = new Text();
@@ -1078,13 +1081,15 @@ public class MultiPlayer extends Application {
         // Setting the stroke color
         text.setStroke(Color.BLUE);
         //Setting the text to be added.
-        text.setText("Hi how are you");
+        text.setText("Game Over." + '\n' + '\n' +  "You scored: " + Integer.toString(score) + '\n'+ "The computer scored: " + Integer.toString(score));
 
         root.getChildren().add(text);
 
     }
 
-    void makePlacement(String placement) {
+    private void makePlacement(String placement) {
+
+        computerBoardString = computerBoardString + placement;
 
         char[] array = placement.toCharArray();
 
