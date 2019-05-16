@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 public class Game extends Application {
 
+    static Stage classStage = new Stage();
+
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
     private TextField textField;
@@ -20,7 +22,9 @@ public class Game extends Application {
     private static final int DIMENSIONS = 75;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        classStage = primaryStage ;
+
         primaryStage.setTitle("Railroad Ink");
         Scene play = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 

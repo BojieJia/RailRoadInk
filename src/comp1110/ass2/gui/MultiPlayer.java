@@ -21,10 +21,8 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 
 //TODO make it so the game ends if a tile can't be played
-//TODO make it so your turn doesn't end before playing a special
 //TODO add in theme music? and sound effects
-//TODO add in a start screen?
-//TODO add in game end - show score, etc
+//TODO fix game end - show score, etc
 
 //Authored by Harriet
 public class MultiPlayer extends Application {

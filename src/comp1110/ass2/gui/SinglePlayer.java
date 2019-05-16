@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 //TODO make it so the game ends if a tile can't be played
 //TODO add in theme music? and sound effects
+//TODO show round number
 
 //Authored by Harriet
 public class SinglePlayer extends Application {
@@ -120,7 +121,7 @@ public class SinglePlayer extends Application {
                 //call the draw new tiles method
                 drawNewTiles();
 
-                if(ROUND > 1) {
+                if(ROUND > 7) {
                     //if all rounds have been played clear the root children and run the end game method
                     root.getChildren().clear();
                     root.getChildren().add(board);
@@ -1015,12 +1016,35 @@ public class SinglePlayer extends Application {
         text.setStroke(Color.BLUE);
         //Setting the text to be added.
         text.setText("Game Over." + '\n' + '\n' +  "You scored: " + Integer.toString(score));
-
         root.getChildren().add(text);
+
+
+        Button menu = new Button("Main Menu");
+        menu.setOnAction(e -> {
+            Game ctc = new Game();
+            ctc.start(Game.classStage);
+            classStage.close();
+        });
+        //set the x and y of the button and add to root
+        menu.setLayoutX(9*DIMENSIONS - 10);
+        menu.setLayoutY(4*DIMENSIONS);
+        root.getChildren().add(menu);
+
+        Button exit = new Button("Exit");
+        exit.setOnAction(e -> {
+            classStage.close();
+        });
+        //set the x and y of the button and add to root
+        exit.setLayoutX(9*DIMENSIONS - 10);
+        exit.setLayoutY(4*DIMENSIONS + DIMENSIONS/2);
+        root.getChildren().add(exit);
+
     }
 
     @Override
     public void start(Stage primaryStage) {
+        classStage = primaryStage ;
+
         primaryStage.setTitle("Railroad Ink");
         Scene play = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
