@@ -91,6 +91,7 @@ public class MultiPlayer extends Application {
 
     private int S_PLAYED = 0;
 
+    private String ROLL;
 
     /**
      * Makes all of the controls for the game
@@ -102,6 +103,11 @@ public class MultiPlayer extends Application {
         rollDice.setOnAction(e -> {
             //if all tiles have been played
             if(TILES_TO_PLAY == 0) {
+
+                if(ROUND > 0) {
+                    makePlacement(RailroadInk.generateMove(RailroadInk.boardListToBoardString(tiles), ROLL));
+                }
+
                 //reset the rotation and flip of all the new tiles
                 T1_ROTATION = 0;
                 T2_ROTATION = 0;
@@ -376,8 +382,8 @@ public class MultiPlayer extends Application {
      */
     void drawNewTiles() {
         //Generate a new string (then char array) of tiles for this round
-        String tileString = RailroadInk.generateDiceRoll();
-        char[] tiles = tileString.toCharArray();
+        ROLL = RailroadInk.generateDiceRoll();
+        char[] tiles = ROLL.toCharArray();
 
         //For each of the four tiles, find the name of the tile, setting the image class variable for that tile to it,
         //then find the image that tile relates to,
@@ -388,7 +394,7 @@ public class MultiPlayer extends Application {
         //finally add the tile to root
         char[] tiles1 = {tiles[0], tiles[1]};
         i1 = new String(tiles1);
-        t1 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i1 + ".png")), DIMENSIONS, TILE_LOCATIONS[0][1], TILE_LOCATIONS[0][0], T1_FLIP, T1_ROTATION);
+        t1 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i1 + ".png")), DIMENSIONS, TILE_LOCATIONS[0][1], TILE_LOCATIONS[0][0], T1_FLIP, T1_ROTATION);
         t1.setOnMousePressed(clickTile);
         t1.setOnMouseDragged(dragTile);
         t1.setOnMouseReleased(dropTile1);
@@ -396,7 +402,7 @@ public class MultiPlayer extends Application {
 
         char[] tiles2 = {tiles[2], tiles[3]};
         i2 = new String(tiles2);
-        t2 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i2 + ".png")), DIMENSIONS, TILE_LOCATIONS[1][1], TILE_LOCATIONS[1][0], T2_FLIP, T2_ROTATION);
+        t2 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i2 + ".png")), DIMENSIONS, TILE_LOCATIONS[1][1], TILE_LOCATIONS[1][0], T2_FLIP, T2_ROTATION);
         t2.setOnMousePressed(clickTile);
         t2.setOnMouseDragged(dragTile);
         t2.setOnMouseReleased(dropTile2);
@@ -404,7 +410,7 @@ public class MultiPlayer extends Application {
 
         char[] tiles3 = {tiles[4], tiles[5]};
         i3 = new String(tiles3);
-        t3 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i3 + ".png")), DIMENSIONS, TILE_LOCATIONS[2][1], TILE_LOCATIONS[2][0], T3_FLIP, T3_ROTATION);
+        t3 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i3 + ".png")), DIMENSIONS, TILE_LOCATIONS[2][1], TILE_LOCATIONS[2][0], T3_FLIP, T3_ROTATION);
         t3.setOnMousePressed(clickTile);
         t3.setOnMouseDragged(dragTile);
         t3.setOnMouseReleased(dropTile3);
@@ -412,7 +418,7 @@ public class MultiPlayer extends Application {
 
         char[] tiles4 = {tiles[6], tiles[7]};
         i4 = new String(tiles4);
-        t4 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i4 + ".png")), DIMENSIONS, TILE_LOCATIONS[3][1], TILE_LOCATIONS[3][0], T4_FLIP, T4_ROTATION);
+        t4 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i4 + ".png")), DIMENSIONS, TILE_LOCATIONS[3][1], TILE_LOCATIONS[3][0], T4_FLIP, T4_ROTATION);
         t4.setOnMousePressed(clickTile);
         t4.setOnMouseDragged(dragTile);
         t4.setOnMouseReleased(dropTile4);
@@ -476,7 +482,7 @@ public class MultiPlayer extends Application {
                 //remove the imageview from root and recreate the tile in its starting position
                 //(reset the tile)
                 root.getChildren().remove((ImageView) (t.getSource()));
-                t1 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i1 + ".png")), DIMENSIONS, TILE_LOCATIONS[0][1], TILE_LOCATIONS[0][0], T1_FLIP, T1_ROTATION);
+                t1 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i1 + ".png")), DIMENSIONS, TILE_LOCATIONS[0][1], TILE_LOCATIONS[0][0], T1_FLIP, T1_ROTATION);
                 t1.setOnMousePressed(clickTile);
                 t1.setOnMouseDragged(dragTile);
                 t1.setOnMouseReleased(dropTile1);
@@ -498,8 +504,8 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                t2 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i2 + ".png")), DIMENSIONS, TILE_LOCATIONS[1][1], TILE_LOCATIONS[1][0], T2_FLIP, T2_ROTATION);
-                Image image2 = new Image(Game.class.getResourceAsStream("assets/"+ i2 + ".png"));
+                t2 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i2 + ".png")), DIMENSIONS, TILE_LOCATIONS[1][1], TILE_LOCATIONS[1][0], T2_FLIP, T2_ROTATION);
+                Image image2 = new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i2 + ".png"));
                 t2.setOnMousePressed(clickTile);
                 t2.setOnMouseDragged(dragTile);
                 t2.setOnMouseReleased(dropTile2);
@@ -521,7 +527,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                t3 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i3 + ".png")), DIMENSIONS, TILE_LOCATIONS[2][1], TILE_LOCATIONS[2][0], T3_FLIP, T3_ROTATION);
+                t3 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i3 + ".png")), DIMENSIONS, TILE_LOCATIONS[2][1], TILE_LOCATIONS[2][0], T3_FLIP, T3_ROTATION);
                 t3.setOnMousePressed(clickTile);
                 t3.setOnMouseDragged(dragTile);
                 t3.setOnMouseReleased(dropTile3);
@@ -543,7 +549,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                t4 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/"+ i4 + ".png")), DIMENSIONS, TILE_LOCATIONS[3][1], TILE_LOCATIONS[3][0], T4_FLIP, T4_ROTATION);
+                t4 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/"+ i4 + ".png")), DIMENSIONS, TILE_LOCATIONS[3][1], TILE_LOCATIONS[3][0], T4_FLIP, T4_ROTATION);
                 t4.setOnMousePressed(clickTile);
                 t4.setOnMouseDragged(dragTile);
                 t4.setOnMouseReleased(dropTile4);
@@ -567,7 +573,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView)(t.getSource()));
             } else {
                 root.getChildren().remove((ImageView)(t.getSource()));
-                s0 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S0.png")), DIMENSIONS, SPECIAL_LOCATIONS[0][0], SPECIAL_LOCATIONS[0][1], S0_FLIP, S0_ROTATION);
+                s0 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S0.png")), DIMENSIONS, SPECIAL_LOCATIONS[0][0], SPECIAL_LOCATIONS[0][1], S0_FLIP, S0_ROTATION);
                 s0.setOnMousePressed(clickTile);
                 s0.setOnMouseDragged(dragTile);
                 s0.setOnMouseReleased(dropTileS0);
@@ -590,7 +596,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                s1 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S1.png")), DIMENSIONS, SPECIAL_LOCATIONS[1][0], SPECIAL_LOCATIONS[1][1], S1_FLIP, S1_ROTATION);
+                s1 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S1.png")), DIMENSIONS, SPECIAL_LOCATIONS[1][0], SPECIAL_LOCATIONS[1][1], S1_FLIP, S1_ROTATION);
                 s1.setOnMousePressed(clickTile);
                 s1.setOnMouseDragged(dragTile);
                 s1.setOnMouseReleased(dropTileS1);
@@ -612,7 +618,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                s2 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S2.png")), DIMENSIONS, SPECIAL_LOCATIONS[2][0], SPECIAL_LOCATIONS[2][1], S2_FLIP, S2_ROTATION);
+                s2 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S2.png")), DIMENSIONS, SPECIAL_LOCATIONS[2][0], SPECIAL_LOCATIONS[2][1], S2_FLIP, S2_ROTATION);
                 s2.setOnMousePressed(clickTile);
                 s2.setOnMouseDragged(dragTile);
                 s2.setOnMouseReleased(dropTileS2);
@@ -634,7 +640,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                s3 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S3.png")), DIMENSIONS, SPECIAL_LOCATIONS[3][0], SPECIAL_LOCATIONS[3][1], S3_FLIP, S3_ROTATION);
+                s3 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S3.png")), DIMENSIONS, SPECIAL_LOCATIONS[3][0], SPECIAL_LOCATIONS[3][1], S3_FLIP, S3_ROTATION);
                 s3.setOnMousePressed(clickTile);
                 s3.setOnMouseDragged(dragTile);
                 s3.setOnMouseReleased(dropTileS3);
@@ -657,7 +663,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                s4 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S4.png")), DIMENSIONS, SPECIAL_LOCATIONS[4][0], SPECIAL_LOCATIONS[4][1], S4_FLIP, S4_ROTATION);
+                s4 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S4.png")), DIMENSIONS, SPECIAL_LOCATIONS[4][0], SPECIAL_LOCATIONS[4][1], S4_FLIP, S4_ROTATION);
                 s4.setOnMousePressed(clickTile);
                 s4.setOnMouseDragged(dragTile);
                 s4.setOnMouseReleased(dropTileS4);
@@ -679,7 +685,7 @@ public class MultiPlayer extends Application {
                 root.getChildren().remove((ImageView) (t.getSource()));
             } else {
                 root.getChildren().remove((ImageView) (t.getSource()));
-                s5 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S5.png")), DIMENSIONS, SPECIAL_LOCATIONS[5][0], SPECIAL_LOCATIONS[5][1], S5_FLIP, S5_ROTATION);
+                s5 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S5.png")), DIMENSIONS, SPECIAL_LOCATIONS[5][0], SPECIAL_LOCATIONS[5][1], S5_FLIP, S5_ROTATION);
                 s5.setOnMousePressed(clickTile);
                 s5.setOnMouseDragged(dragTile);
                 s5.setOnMouseReleased(dropTileS5);
@@ -725,14 +731,14 @@ public class MultiPlayer extends Application {
         }
 
         //If the tile placement string is well formed
-        if(RailroadInk.isTilePlacementWellFormed(tileString)) {
+        if(RailroadInk.isTilePlacementWellFormed(tileString) && ROUND > 0) {
             //If the board string is a valid placement sequence
             if (RailroadInk.isValidPlacementSequence(boardString)) {
                 //Add the tile to the tiles HashMap
                 tiles.put(tileLocation, tileString);
 
                 //Create a new imageview with the tiles image
-                Image img = new Image(Game.class.getResourceAsStream("assets/" + tileName + ".png"));
+                Image img = new Image(SinglePlayer.class.getResourceAsStream("assets/" + tileName + ".png"));
                 ImageView tile = new ImageView(img);
                 tile.setFitHeight(DIMENSIONS);
                 tile.setFitWidth(DIMENSIONS);
@@ -865,7 +871,7 @@ public class MultiPlayer extends Application {
             int hx = (Character.getNumericValue(highwayExits[i][1])) * DIMENSIONS;
 
             //Add the highway exit image to an imageview
-            Image image = new Image(Game.class.getResourceAsStream("assets/HighExit.png"));
+            Image image = new Image(SinglePlayer.class.getResourceAsStream("assets/HighExit.png"));
             ImageView imageView = new ImageView(image);
             //Set the orientation of the highway tile
             imageView.setRotate(360.0 / 4 * (int)highwayExits[i][2]);
@@ -881,7 +887,7 @@ public class MultiPlayer extends Application {
             int ry = ((railroadExits[i][0] - 'A')) * DIMENSIONS;
             int rx = (Character.getNumericValue(railroadExits[i][1])) * DIMENSIONS;
 
-            Image image2 = new Image(Game.class.getResourceAsStream("assets/RailExit.png"));
+            Image image2 = new Image(SinglePlayer.class.getResourceAsStream("assets/RailExit.png"));
             ImageView imageView2 = new ImageView(image2);
             imageView2.setRotate(360.0 / 4 * (int)railroadExits[i][2]);
             imageView2.setFitHeight(DIMENSIONS);
@@ -899,7 +905,7 @@ public class MultiPlayer extends Application {
             int hx = (Character.getNumericValue(highwayExits[i][1])) * DIMENSIONS;
 
             //Add the highway exit image to an imageview
-            Image image = new Image(Game.class.getResourceAsStream("assets/HighExit.png"));
+            Image image = new Image(SinglePlayer.class.getResourceAsStream("assets/HighExit.png"));
             ImageView imageView = new ImageView(image);
             //Set the orientation of the highway tile
             imageView.setRotate(360.0 / 4 * (int)highwayExits[i][2]);
@@ -915,7 +921,7 @@ public class MultiPlayer extends Application {
             int ry = ((railroadExits[i][0] - 'A')) * DIMENSIONS;
             int rx = (Character.getNumericValue(railroadExits[i][1])) * DIMENSIONS;
 
-            Image image2 = new Image(Game.class.getResourceAsStream("assets/RailExit.png"));
+            Image image2 = new Image(SinglePlayer.class.getResourceAsStream("assets/RailExit.png"));
             ImageView imageView2 = new ImageView(image2);
             imageView2.setRotate(360.0 / 4 * (int)railroadExits[i][2]);
             imageView2.setFitHeight(DIMENSIONS);
@@ -1012,7 +1018,7 @@ public class MultiPlayer extends Application {
     //Authored by Harriet
     private void drawSpecial() {
         //Creating a new tile ImageView
-        s0 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S0.png")), DIMENSIONS, SPECIAL_LOCATIONS[0][0], SPECIAL_LOCATIONS[0][1], S0_FLIP, S0_ROTATION);
+        s0 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S0.png")), DIMENSIONS, SPECIAL_LOCATIONS[0][0], SPECIAL_LOCATIONS[0][1], S0_FLIP, S0_ROTATION);
         //Set mouse events
         s0.setOnMousePressed(clickTile);
         s0.setOnMouseDragged(dragTile);
@@ -1020,31 +1026,31 @@ public class MultiPlayer extends Application {
         //adds the tile to root
         root.getChildren().add(s0);
 
-        s1 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S1.png")), DIMENSIONS, SPECIAL_LOCATIONS[1][0], SPECIAL_LOCATIONS[1][1], S1_FLIP, S1_ROTATION);
+        s1 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S1.png")), DIMENSIONS, SPECIAL_LOCATIONS[1][0], SPECIAL_LOCATIONS[1][1], S1_FLIP, S1_ROTATION);
         s1.setOnMousePressed(clickTile);
         s1.setOnMouseDragged(dragTile);
         s1.setOnMouseReleased(dropTileS1);
         root.getChildren().add(s1);
 
-        s2 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S2.png")), DIMENSIONS, SPECIAL_LOCATIONS[2][0], SPECIAL_LOCATIONS[2][1], S2_FLIP, S2_ROTATION);
+        s2 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S2.png")), DIMENSIONS, SPECIAL_LOCATIONS[2][0], SPECIAL_LOCATIONS[2][1], S2_FLIP, S2_ROTATION);
         s2.setOnMousePressed(clickTile);
         s2.setOnMouseDragged(dragTile);
         s2.setOnMouseReleased(dropTileS2);
         root.getChildren().add(s2);
 
-        s3 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S3.png")), DIMENSIONS, SPECIAL_LOCATIONS[3][0], SPECIAL_LOCATIONS[3][1], S3_FLIP, S3_ROTATION);
+        s3 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S3.png")), DIMENSIONS, SPECIAL_LOCATIONS[3][0], SPECIAL_LOCATIONS[3][1], S3_FLIP, S3_ROTATION);
         s3.setOnMousePressed(clickTile);
         s3.setOnMouseDragged(dragTile);
         s3.setOnMouseReleased(dropTileS3);
         root.getChildren().add(s3);
 
-        s4 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S4.png")), DIMENSIONS, SPECIAL_LOCATIONS[4][0], SPECIAL_LOCATIONS[4][1], S4_FLIP, S4_ROTATION);
+        s4 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S4.png")), DIMENSIONS, SPECIAL_LOCATIONS[4][0], SPECIAL_LOCATIONS[4][1], S4_FLIP, S4_ROTATION);
         s4.setOnMousePressed(clickTile);
         s4.setOnMouseDragged(dragTile);
         s4.setOnMouseReleased(dropTileS4);
         root.getChildren().add(s4);
 
-        s5 = new TileImageView(new Image(Game.class.getResourceAsStream("assets/S5.png")), DIMENSIONS, SPECIAL_LOCATIONS[5][0], SPECIAL_LOCATIONS[5][1], S5_FLIP, S5_ROTATION);
+        s5 = new TileImageView(new Image(SinglePlayer.class.getResourceAsStream("assets/S5.png")), DIMENSIONS, SPECIAL_LOCATIONS[5][0], SPECIAL_LOCATIONS[5][1], S5_FLIP, S5_ROTATION);
         s5.setOnMousePressed(clickTile);
         s5.setOnMouseDragged(dragTile);
         s5.setOnMouseReleased(dropTileS5);
@@ -1078,6 +1084,49 @@ public class MultiPlayer extends Application {
 
         root.getChildren().add(text);
 
+    }
+
+    void makePlacement(String placement) {
+
+        char[] array = placement.toCharArray();
+
+        //create pieces until exhausted the list
+        for (int i = 0; i < placement.length(); i = i + 5) {
+
+            char[] arrayPieceName = {array[i], array[i+1]};
+
+            int y = (array[i + 2] - 'A') * DIMENSIONS;
+            int x = Character.getNumericValue(array[i + 3]) * DIMENSIONS;
+
+            String piece = new String(arrayPieceName);
+
+            //create a new image using current piece visual
+            Image image = new Image(Viewer.class.getResourceAsStream("assets/" + piece + ".png"));
+            ImageView imageView = new ImageView(image);
+
+            if (Character.getNumericValue(array[i + 4]) > 3) {
+                //set the image dimensions to 100
+                imageView.setFitHeight(DIMENSIONS);
+                imageView.setFitWidth(DIMENSIONS);
+                //flip the image
+                imageView.setScaleX(-1);
+                //rotate the image
+                imageView.setRotate(360.0 / 4 * ((double) Character.getNumericValue(array[4]) - 4));
+            } else {
+                //set the image dimensions
+                imageView.setFitHeight(DIMENSIONS);
+                imageView.setFitWidth(DIMENSIONS);
+                //rotate the image
+                imageView.setRotate(360.0 / 4 * (double) Character.getNumericValue(array[4]));
+            }
+
+            //set the image's location
+            imageView.setX(x + DIMENSIONS * 9 + DIMENSIONS/2);
+            imageView.setY(y + DIMENSIONS);
+
+            //add the image to root
+            root.getChildren().add(imageView);
+        }
     }
 
     @Override
@@ -1114,6 +1163,6 @@ public class MultiPlayer extends Application {
     }
 
     public static void main(String[] args) {
-        Application.launch(Game.class, args);
+        Application.launch(SinglePlayer.class, args);
     }
 }
