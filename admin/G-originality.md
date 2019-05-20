@@ -1,9 +1,7 @@
 We declare that the work we have submitted for Stage G of this assignment and all stages before it is entirely our own work, with the following documented exceptions:
 
-* The idea of using <...> to make the game run faster came from a discussion with <...> (noted in source code comments)
+How to launch an application from another application
+https://stackoverflow.com/questions/25873769/launch-javafx-application-from-another-class
+https://stackoverflow.com/questions/40265810/how-to-exit-primarystage-while-opening-a-new-stage-in-javafx
 
-* The code in class <...> is based on a solution we found when researching the problem (URL provided in source code comments)
-
-* ....
-
-Signed: Mary Jones (u2345678), Bob Smith (u3456789), and Sue Black (u0123456)
+Signed: Harriet Phillips (u6698981)
