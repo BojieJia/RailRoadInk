@@ -69,6 +69,27 @@ Task 11 - If time allows
 
 ## Week 9
 
+Completed:
+Task 8 - Bojie
+Task 9 - Harriet
+
+To continue:
+Task 10 - Bojie and Harriet
+Task 11 - Harriet
+
 ## Week 10
 
+Completed:
+Task 12 Bojie
+
+To continue:
+Task 10 - Bojie and Harriet
+Task 11 - Harriet
+
 ## Week 11
+
+To continue:
+Task 10 - Bojie and Harriet
+Task 11 - Harriet
+
+Presentation: Bojie and Harriet
