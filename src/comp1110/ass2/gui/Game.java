@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 //TODO add in an instruction screen
 //TODO make title prettier
 
+//Authored by Harriet
 public class Game extends Application {
 
     static Stage classStage = new Stage();

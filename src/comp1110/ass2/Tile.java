@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+//Authored by Bojie
 public enum Tile {
     // redefine the tiles with four numbers
     //the number represent the type of road on each side in a clockwise direction
