@@ -1022,7 +1022,6 @@ public class RailroadInk {
                 }
                 touchPile[orderOfNumber] = false;
 
-
             }
         }
         return length;
