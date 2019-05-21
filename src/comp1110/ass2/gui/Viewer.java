@@ -172,7 +172,7 @@ public class Viewer extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setTitle("StepsGame Viewer");
+        primaryStage.setTitle("Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);

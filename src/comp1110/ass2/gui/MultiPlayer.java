@@ -19,9 +19,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
+import java.util.List;
 
-//TODO make it so the game ends if a tile can't be played
 //TODO fix game end - show score, etc
+//TODO show round number
 
 //Authored by Harriet
 public class MultiPlayer extends Application {
@@ -31,7 +32,6 @@ public class MultiPlayer extends Application {
     //setup variable
     private static final int VIEWER_WIDTH = 1024;
     private static final int VIEWER_HEIGHT = 768;
-    private TextField textField;
     private final Group root = new Group();
     private final Group controls = new Group();
     private static final int DIMENSIONS = 60;
@@ -40,7 +40,9 @@ public class MultiPlayer extends Application {
     private static int[][] SPECIAL_LOCATIONS = new int[6][2];
     private static int[][] TILE_LOCATIONS = new int [4][2];
     private HashMap<String, String> tiles = new HashMap<>();
+    private HashMap<String, String> tilesInPlay = new HashMap<>();
     private String computerBoardString = "";
+    private boolean computerInPlay = true;
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
     private int TILES_TO_PLAY = 0;
@@ -102,10 +104,6 @@ public class MultiPlayer extends Application {
             //if all tiles have been played
             if(TILES_TO_PLAY == 0) {
 
-                if(ROUND > 0) {
-                    makePlacement(RailroadInk.generateMove(RailroadInk.boardListToBoardString(tiles), ROLL));
-                }
-
                 //reset the rotation and flip of all the new tiles
                 T1_ROTATION = 0;
                 T2_ROTATION = 0;
@@ -121,12 +119,35 @@ public class MultiPlayer extends Application {
                 TILES_TO_PLAY = 4;
                 S_PLAYED = 0;
 
+                if(ROUND > 0 && ROUND < 8 && computerInPlay) {
+                    String placement = RailroadInk.generateMove(computerBoardString, ROLL);
+                    //if the placement string is 4 tile placements or less
+                    if (placement.length() < 20) {
+                        //make the placement
+                        makePlacement(placement);
+                        //set computer in play to false as the computer has not played all it's tiles
+                        computerInPlay = false;
+                    } else if(placement.length() <= 20) {
+                        //make the placement
+                        makePlacement(placement);
+                        //check the pieces in placement to see if any special pieces have been played
+                        char[] placementArray = placement.toCharArray();
+                        if(placementArray[0] == 'S' || placementArray[5] == 'S' || placementArray[10] == 'S' || placementArray[15] == 'S') {
+                            //set computer in play to false as the computer has not played all it's tiles
+                            computerInPlay = false;
+                        }
+                    } else {
+                        makePlacement(placement);
+                    }
+                }
+
                 //call the draw new tiles method
                 drawNewTiles();
 
                 //increase the round counter
                 ROUND++;
-                if(ROUND > 1) {
+
+                if(ROUND > 7) {
                     //if all rounds have been played clear the root children and run the end game method
                     root.getChildren().clear();
                     endGame();
@@ -380,10 +401,15 @@ public class MultiPlayer extends Application {
     /**
      * Creates the tiles for this round
      */
-    void drawNewTiles() {
+    private void drawNewTiles() {
         //Generate a new string (then char array) of tiles for this round
         ROLL = RailroadInk.generateDiceRoll();
         char[] tiles = ROLL.toCharArray();
+
+        //If there are no tiles that can be played end the game
+        if(RailroadInk.generateMove(RailroadInk.boardListToBoardString(this.tiles), ROLL).length() == 0) {
+            endGame();
+        }
 
         //For each of the four tiles, find the name of the tile, setting the image class variable for that tile to it,
         //then find the image that tile relates to,
@@ -423,6 +449,12 @@ public class MultiPlayer extends Application {
         t4.setOnMouseDragged(dragTile);
         t4.setOnMouseReleased(dropTile4);
         root.getChildren().add(t4);
+
+        //Add the tiles to tilesInPlay
+        tilesInPlay.put(i1, i1);
+        tilesInPlay.put(i2, i2);
+        tilesInPlay.put(i3, i3);
+        tilesInPlay.put(i4, i4);
     }
 
     /**
@@ -758,6 +790,17 @@ public class MultiPlayer extends Application {
                 } else {
                     //set S_PLAYED to 1
                     S_PLAYED = 1;
+                }
+
+                //Remove the tile from tilesInPlay
+                if (tileName.toCharArray()[0] != 'S') {
+                    tilesInPlay.remove(tileName);
+                }
+                //Check if there are any tiles than can be played
+                for(String str : tilesInPlay.keySet()) {
+                    if(!RailroadInk.findPlacementForTile(RailroadInk.boardListToBoardString(tiles), str)){
+                        endGame();
+                    }
                 }
 
                 //Return true
@@ -1164,7 +1207,4 @@ public class MultiPlayer extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        Application.launch(SinglePlayer.class, args);
-    }
 }
