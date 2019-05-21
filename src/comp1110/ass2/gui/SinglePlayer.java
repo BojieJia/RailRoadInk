@@ -939,6 +939,7 @@ public class SinglePlayer extends Application {
             line1.setStartY(SPECIAL_LOCATIONS[k][1]);
             line1.setEndX(SPECIAL_LOCATIONS[k][0] + DIMENSIONS);
             line1.setEndY(SPECIAL_LOCATIONS[k][1]);
+            line1.setStroke(Color.RED);
             root.getChildren().add(line1);
 
             Line line2 = new Line();
@@ -946,7 +947,7 @@ public class SinglePlayer extends Application {
             line2.setStartY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
             line2.setEndX(SPECIAL_LOCATIONS[k][0] + DIMENSIONS);
             line2.setEndY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
-
+            line2.setStroke(Color.RED);
             root.getChildren().add(line2);
 
             Line line3 = new Line();
@@ -954,7 +955,7 @@ public class SinglePlayer extends Application {
             line3.setStartY(SPECIAL_LOCATIONS[k][1]);
             line3.setEndX(SPECIAL_LOCATIONS[k][0]);
             line3.setEndY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
-
+            line3.setStroke(Color.RED);
             root.getChildren().add(line3);
 
             Line line4 = new Line();
@@ -962,7 +963,7 @@ public class SinglePlayer extends Application {
             line4.setStartY(SPECIAL_LOCATIONS[k][1]);
             line4.setEndX(SPECIAL_LOCATIONS[k][0] + DIMENSIONS);
             line4.setEndY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
-
+            line4.setStroke(Color.RED);
             root.getChildren().add(line4);
         }
     }

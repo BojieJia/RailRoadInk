@@ -35,7 +35,7 @@ public class Rules extends Application {
                     "When placing a tile, it may be flipped or rotated in any direction, and then dragged onto the board.\n" +
                     "All four tiles must be placed, unless doing so would result in an illegal placement in which case the game ends. \n" +
                     "After placement is finished, the dice are re-rolled by pressing \"Roll Dice\" and the next round begins.\n" +
-                    "One Special Tile can be placed per round in addition to the rolled tiles.\n \n"+
+                    "One Special tile (tiles in red boxes) can be placed per round in addition to the rolled tiles.\n \n"+
                     "Legal Placements:\n" +
                     "A tile must be placed such that at least one edge connects to either an exit or a pre-existing route.\n" +
                     "Such a connection is called a valid connection. \n" +

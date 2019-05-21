@@ -9,7 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 //TODO add in theme music? and sound effects
-//TODO add in an instruction screen
 
 //Authored by Harriet
 public class Game extends Application {
