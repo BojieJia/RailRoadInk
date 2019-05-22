@@ -99,9 +99,11 @@ public class RailroadInk {
     //Authored by Bojie
     public static boolean isBoardStringWellFormed(String boardString) {
         if (boardString != null && !"".equals(boardString)) {
+
             int x = boardString.length() % 5;
             int N = boardString.length() / 5;
             boolean wellFormed = true;
+
             if (x == 0 && N > 0 && N < 32) {
                 //check the length of boardString
                 for (int k = 0; k < N; k++) {
@@ -110,7 +112,7 @@ public class RailroadInk {
                         wellFormed = false;
                     }
                 }
-                //make sure each piece placement is well-formed
+                //make sure each piece placement is well- formed
                 int count = 0;
                 for (int j = 0; j < N; j++) {
                     if (boardString.charAt(5 * j) == 'S') {
@@ -566,7 +568,6 @@ public class RailroadInk {
 
     //Authored by Bojie
     public static int getBasicScore(String boardString) {
-        // FIXME Task 8: compute the basic score
 
         int num = boardString.length() / 5;
         int score = 0;
@@ -801,7 +802,6 @@ public class RailroadInk {
 
     //Authored by Bojie and Harriet
     public static String generateMove(String boardString, String diceRoll) {
-        // FIXME Task 10: generate a valid move
         String tileString1 = diceRoll.toCharArray()[0] + "" + diceRoll.toCharArray()[1] + "A0" + "0";
         String tileString2 = diceRoll.toCharArray()[2] + "" + diceRoll.toCharArray()[3] + "A0" + "0";
         String tileString3 = diceRoll.toCharArray()[4] + "" + diceRoll.toCharArray()[5] + "A0" + "0";
@@ -874,7 +874,7 @@ public class RailroadInk {
                     }//specialTile里面的第s位是否被用过
                     char t='0';
                     t += s;
-                   String specialType="S"+t;
+                    String specialType="S"+t;
 
                     for (char c = 'A'; c < 'H'; c++) {
                         for (char j = '0'; j < '7'; j++) {
@@ -889,42 +889,58 @@ public class RailroadInk {
                                     haveAddedSpecial = true;
                                 }
 
-                                }
                             }
                         }
                     }
                 }
-
             }
-
-
-
-
-
-            return placementSequence;
         }
+        return placementSequence;
+    }
+
+    public static boolean findPlacementForTile(String boardString, String tileName) {
+        String tileString1 = tileName + "A0" + "0";
+        boolean found = false;
+
+        char[] tile = tileString1.toCharArray();
+        for(char c = 'A'; c < 'H' && !found; c++){
+            tile[2] = c;
+            for (char j = '0'; j < '7' && !found; j++) {
+                tile[3] = j;
+                for(char i = '0'; i < '8' && !found; i++) {
+                    tile[4] = i;
+                    String tileString = "" + tile[0] + tile[1] + tile[2] + tile[3] + tile[4];
+                    if(isValidPlacementSequence(boardString + tileString)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
 
 
-        /**
-         * Given the current state of a game board, output an integer representing the sum of all the factors contributing
-         * to `getBasicScore`, as well as those attributed to:
-         * <p>
-         * * Longest railroad
-         * * Longest highway
-         *
-         * @param boardString a board string representing a completed game
-         * @return integer (positive or negative) for final score (not counting expansion packs)
-         */
+    /**
+     * Given the current state of a game board, output an integer representing the sum of all the factors contributing
+     * to `getBasicScore`, as well as those attributed to:
+     * <p>
+     * * Longest railroad
+     * * Longest highway
+     *
+     * @param boardString a board string representing a completed game
+     * @return integer (positive or negative) for final score (not counting expansion packs)
+     */
 
-        /**
-         *In this task, use one Method "findMaxLength" (based on depth-first-search) to find the max length Railway and Highway
-         *
-         */
+    /**
+     *In this task, use one Method "findMaxLength" (based on depth-first-search) to find the max length Railway and Highway
+     *
+     */
 
-        public static int getAdvancedScore (String boardString){
-            // FIXME Task 12: compute the total score including bonus points
-            int maxRailWay = 0;
-            int maxHighWay = 0;
+    //Authored by Bojie
+    public static int getAdvancedScore (String boardString){
+        int maxRailWay = 0;
+        int maxHighWay = 0;
 
         for (int i = 0; i < touchPile.length; i++) {
             touchPile[i] = false;
@@ -983,7 +999,7 @@ public class RailroadInk {
 
     //Authored by Bojie
     public static int findMaxLength (String piece,int orderOfNumber, int direction, int type, int deep, String
-    boardString){
+            boardString){
         int length = deep;
         for (int i = 0; i < boardString.length(); i += 5) {
             String s = boardString.substring(i, i + 5);
@@ -1006,20 +1022,21 @@ public class RailroadInk {
                 }
                 touchPile[orderOfNumber] = false;
 
-
-                }
             }
-            return length;
         }
-
-
-        public static String boardListToBoardString (HashMap < String, String > boardList){
-            String boardString = "";
-            for (String str : boardList.keySet()) {
-                boardString = boardString + boardList.get(str);
-            }
-            return boardString;
-        }
+        return length;
     }
+
+    //Authored by Harriet
+    public static String boardListToBoardString (HashMap < String, String > boardList){
+        String boardString = "";
+        for (String str : boardList.keySet()) {
+            boardString = boardString + boardList.get(str);
+        }
+        return boardString;
+    }
+}
+
+
 
 

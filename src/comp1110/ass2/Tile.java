@@ -141,7 +141,7 @@ public enum Tile {
     B25(2,1,2,1),
     B26(1,2,1,2),
     B27(2,1,2,1);
-// //
+    
     int north;
     int east;
     int south;
