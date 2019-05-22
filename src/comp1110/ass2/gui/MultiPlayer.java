@@ -21,9 +21,6 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO fix game end - show score, etc
-//TODO show round number
-
 //Authored by Harriet
 public class MultiPlayer extends Application {
 
@@ -34,6 +31,7 @@ public class MultiPlayer extends Application {
     private static final int VIEWER_HEIGHT = 768;
     private final Group root = new Group();
     private final Group controls = new Group();
+    private final Group board = new Group();
     private static final int DIMENSIONS = 60;
 
     //updated values
@@ -119,6 +117,9 @@ public class MultiPlayer extends Application {
                 TILES_TO_PLAY = 4;
                 S_PLAYED = 0;
 
+                //call the draw new tiles method
+                drawNewTiles();
+
                 if(ROUND > 0 && ROUND < 8 && computerInPlay) {
                     String placement = RailroadInk.generateMove(computerBoardString, ROLL);
                     //if the placement string is 4 tile placements or less
@@ -141,15 +142,13 @@ public class MultiPlayer extends Application {
                     }
                 }
 
-                //call the draw new tiles method
-                drawNewTiles();
-
                 //increase the round counter
                 ROUND++;
 
-                if(ROUND > 7) {
+                if(ROUND > 1) {
                     //if all rounds have been played clear the root children and run the end game method
                     root.getChildren().clear();
+                    root.getChildren().add(board);
                     endGame();
                 }
             }
@@ -781,7 +780,7 @@ public class MultiPlayer extends Application {
                 //set the tiles rotation and orientation and add to the rott
                 tile.setRotate(360.0 / 4 * rotation);
                 tile.setScaleX(orientation);
-                root.getChildren().add(tile);
+                board.getChildren().add(tile);
 
                 //if the tile is not a special tile
                 if (tileName.toCharArray()[0] != 'S') {
@@ -867,7 +866,7 @@ public class MultiPlayer extends Application {
             line1.setEndX(DIMENSIONS * k);
             line1.setEndY(DIMENSIONS * 8);
 
-            root.getChildren().add(line1);
+            board.getChildren().add(line1);
 
             Line line2 = new Line();
             line2.setStartX(DIMENSIONS);
@@ -875,7 +874,7 @@ public class MultiPlayer extends Application {
             line2.setEndX(DIMENSIONS * 8);
             line2.setEndY(DIMENSIONS * k);
 
-            root.getChildren().add(line2);
+            board.getChildren().add(line2);
         }
 
 
@@ -888,7 +887,7 @@ public class MultiPlayer extends Application {
             line1.setEndX(DIMENSIONS * k + DIMENSIONS/2);
             line1.setEndY(DIMENSIONS * 8);
 
-            root.getChildren().add(line1);
+            board.getChildren().add(line1);
 
             Line line2 = new Line();
             line2.setStroke(Color.RED);
@@ -897,7 +896,7 @@ public class MultiPlayer extends Application {
             line2.setEndX(DIMENSIONS * 16 + DIMENSIONS/2);
             line2.setEndY(DIMENSIONS * (k - 8));
 
-            root.getChildren().add(line2);
+            board.getChildren().add(line2);
         }
 
 
@@ -924,7 +923,7 @@ public class MultiPlayer extends Application {
             //Set the x and y of the ImageView
             imageView.setX(hx - DIMENSIONS);
             imageView.setY(hy);
-            root.getChildren().add(imageView);
+            board.getChildren().add(imageView);
 
             //Do the same for the RailExit tiles
             int ry = ((railroadExits[i][0] - 'A')) * DIMENSIONS;
@@ -937,7 +936,7 @@ public class MultiPlayer extends Application {
             imageView2.setFitWidth(DIMENSIONS);
             imageView2.setX(rx - DIMENSIONS);
             imageView2.setY(ry);
-            root.getChildren().add(imageView2);
+            board.getChildren().add(imageView2);
         }
 
 
@@ -958,7 +957,7 @@ public class MultiPlayer extends Application {
             //Set the x and y of the ImageView
             imageView.setX(hx + 7 * DIMENSIONS + DIMENSIONS/2);
             imageView.setY(hy);
-            root.getChildren().add(imageView);
+            board.getChildren().add(imageView);
 
             //Do the same for the RailExit tiles
             int ry = ((railroadExits[i][0] - 'A')) * DIMENSIONS;
@@ -971,7 +970,7 @@ public class MultiPlayer extends Application {
             imageView2.setFitWidth(DIMENSIONS);
             imageView2.setX(rx + 7 * DIMENSIONS + DIMENSIONS/2);
             imageView2.setY(ry);
-            root.getChildren().add(imageView2);
+            board.getChildren().add(imageView2);
         }
 
 
@@ -1108,14 +1107,15 @@ public class MultiPlayer extends Application {
     private void endGame() {
         String boardString = RailroadInk.boardListToBoardString(tiles);
         int score = RailroadInk.getAdvancedScore(boardString);
+        int computerScore = RailroadInk.getAdvancedScore(computerBoardString);
 
         //Creating a Text object
         Text text = new Text();
         //Setting font to the text
         text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 50));
         //setting the position of the text
-        text.setX(50);
-        text.setY(130);
+        text.setX(TILE_LOCATIONS[0][1]);
+        text.setY(TILE_LOCATIONS[0][0]);
         //Setting the color
         text.setFill(Color.BROWN);
         //Setting the Stroke
@@ -1123,9 +1123,28 @@ public class MultiPlayer extends Application {
         // Setting the stroke color
         text.setStroke(Color.BLUE);
         //Setting the text to be added.
-        text.setText("Game Over." + '\n' + '\n' +  "You scored: " + Integer.toString(score) + '\n'+ "The computer scored: " + Integer.toString(score));
-
+        text.setText("Game Over." + '\n' + '\n' +  "You scored: " + Integer.toString(score) + '\n'+ "The computer scored: " + Integer.toString(computerScore));
         root.getChildren().add(text);
+
+        Button menu = new Button("Main Menu");
+        menu.setOnAction(e -> {
+            Game ctc = new Game();
+            ctc.start(Game.classStage);
+            classStage.close();
+        });
+        //set the x and y of the button and add to root
+        menu.setLayoutX(7*DIMENSIONS);
+        menu.setLayoutY(TILE_LOCATIONS[0][0] - 2*DIMENSIONS / 3);
+        root.getChildren().add(menu);
+
+        Button exit = new Button("Exit");
+        exit.setOnAction(e -> {
+            classStage.close();
+        });
+        //set the x and y of the button and add to root
+        exit.setLayoutX(7*DIMENSIONS);
+        exit.setLayoutY(TILE_LOCATIONS[0][0]);
+        root.getChildren().add(exit);
 
     }
 
@@ -1170,7 +1189,7 @@ public class MultiPlayer extends Application {
             imageView.setY(y + DIMENSIONS);
 
             //add the image to root
-            root.getChildren().add(imageView);
+            board.getChildren().add(imageView);
         }
     }
 
@@ -1198,6 +1217,8 @@ public class MultiPlayer extends Application {
 
         //add the controls to the root
         root.getChildren().add(controls);
+        //add the board to the root
+        root.getChildren().add(board);
 
         makeControls();
         drawBoard();

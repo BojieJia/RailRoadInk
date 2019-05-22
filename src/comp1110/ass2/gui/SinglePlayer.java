@@ -20,8 +20,6 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 
-//TODO show round number
-
 //Authored by Harriet
 public class SinglePlayer extends Application {
     //setup variables
