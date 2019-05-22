@@ -1,12 +1,16 @@
 package comp1110.ass2;
 
 //Authored by Bojie
+/*
+    redefine the tiles with four numbers
+    the number represent the type of road on each side in a clockwise direction
+    "0" means no way
+    "1" means highway
+    "2" means railway
+
+ */
 public enum Tile {
-    // redefine the tiles with four numbers
-    //the number represent the type of road on each side in a clockwise direction
-    //"0" means no way
-    //"1" means highway
-    //"2" means railway
+
     S00(1,1,2,1),
     S01(1,1,1,2),
     S02(2,1,1,1),
