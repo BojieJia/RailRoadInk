@@ -4,6 +4,7 @@ import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+//Authored by Harriet
 public class TileImageView extends ImageView{
     public Image image;
     public int dimensions;

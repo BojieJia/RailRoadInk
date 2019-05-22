@@ -20,9 +20,6 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 
-//TODO make it so the game ends if a tile can't be played
-//TODO show round number
-
 //Authored by Harriet
 public class SinglePlayer extends Application {
     //setup variables
@@ -41,6 +38,7 @@ public class SinglePlayer extends Application {
     //updated values
     private static int[][] SPECIAL_LOCATIONS = new int[6][2];
     private HashMap<String, String> tiles = new HashMap<>();
+    private HashMap<String, String> tilesInPlay = new HashMap<>();
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
     private int TILES_TO_PLAY = 0;
@@ -375,10 +373,15 @@ public class SinglePlayer extends Application {
     /**
      * Creates the tiles for this round
      */
-    void drawNewTiles() {
+    private void drawNewTiles() {
         //Generate a new string (then char array) of tiles for this round
         String tileString = RailroadInk.generateDiceRoll();
         char[] tiles = tileString.toCharArray();
+
+        //If there are no tiles that can be played end the game
+        if(RailroadInk.generateMove(RailroadInk.boardListToBoardString(this.tiles), tileString).length() == 0) {
+            endGame();
+        }
 
         //For each of the four tiles, find the name of the tile, setting the image class variable for that tile to it,
         //then find the image that tile relates to,
@@ -418,6 +421,12 @@ public class SinglePlayer extends Application {
         t4.setOnMouseDragged(dragTile);
         t4.setOnMouseReleased(dropTile4);
         root.getChildren().add(t4);
+
+        //Add the tiles to tilesInPlay
+        tilesInPlay.put(i1, i1);
+        tilesInPlay.put(i2, i2);
+        tilesInPlay.put(i3, i3);
+        tilesInPlay.put(i4, i4);
     }
 
     /**
@@ -754,6 +763,17 @@ public class SinglePlayer extends Application {
                     S_PLAYED = 1;
                 }
 
+                //Remove the tile from tilesInPlay
+                if (tileName.toCharArray()[0] != 'S') {
+                    tilesInPlay.remove(tileName);
+                }
+                //Check if there are any tiles than can be played
+                for(String str : tilesInPlay.keySet()) {
+                    if(!RailroadInk.findPlacementForTile(RailroadInk.boardListToBoardString(tiles), str)){
+                        endGame();
+                    }
+                }
+
                 //Return true
                 return true;
             } else {
@@ -917,6 +937,7 @@ public class SinglePlayer extends Application {
             line1.setStartY(SPECIAL_LOCATIONS[k][1]);
             line1.setEndX(SPECIAL_LOCATIONS[k][0] + DIMENSIONS);
             line1.setEndY(SPECIAL_LOCATIONS[k][1]);
+            line1.setStroke(Color.RED);
             root.getChildren().add(line1);
 
             Line line2 = new Line();
@@ -924,7 +945,7 @@ public class SinglePlayer extends Application {
             line2.setStartY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
             line2.setEndX(SPECIAL_LOCATIONS[k][0] + DIMENSIONS);
             line2.setEndY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
-
+            line2.setStroke(Color.RED);
             root.getChildren().add(line2);
 
             Line line3 = new Line();
@@ -932,7 +953,7 @@ public class SinglePlayer extends Application {
             line3.setStartY(SPECIAL_LOCATIONS[k][1]);
             line3.setEndX(SPECIAL_LOCATIONS[k][0]);
             line3.setEndY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
-
+            line3.setStroke(Color.RED);
             root.getChildren().add(line3);
 
             Line line4 = new Line();
@@ -940,7 +961,7 @@ public class SinglePlayer extends Application {
             line4.setStartY(SPECIAL_LOCATIONS[k][1]);
             line4.setEndX(SPECIAL_LOCATIONS[k][0] + DIMENSIONS);
             line4.setEndY(SPECIAL_LOCATIONS[k][1] + DIMENSIONS);
-
+            line4.setStroke(Color.RED);
             root.getChildren().add(line4);
         }
     }
