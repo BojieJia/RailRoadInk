@@ -384,10 +384,7 @@ public class SinglePlayer extends Application {
         }
 
         //For each of the four tiles, find the name of the tile, setting the image class variable for that tile to it,
-        //then find the image that tile relates to,
-        //then create a new imageview for the tile, setting it to the imageview class variable for that tile
-        //set the dimensions and location of it
-        //set the cursor to be a hand when on the image
+        //then create a new tileimageview for the tile, setting the image dimensions, location, flip and orientation of it
         //execute the clickTile event if clicked and the dragTile event if dragged
         //finally add the tile to root
         char[] tiles1 = {tiles[0], tiles[1]};
@@ -829,6 +826,11 @@ public class SinglePlayer extends Application {
      */
     //Authored by Harriet
     private void drawBoard() {
+        //set up the locations for the special tiles
+        for(int i = 0; i < 6; i++) {
+            SPECIAL_LOCATIONS[i][0] = (i * 2 * (DIMENSIONS + 10)) + 10;
+            SPECIAL_LOCATIONS[i][1] = 8 * DIMENSIONS + 2 * DIMENSIONS / 3;
+        }
 
         //Draw grid
         for(int k = 1; k < 9; k++) {
@@ -966,7 +968,6 @@ public class SinglePlayer extends Application {
         }
     }
 
-
     /**
      * Creates the special tiles at the start of the game
      */
@@ -1039,10 +1040,13 @@ public class SinglePlayer extends Application {
         root.getChildren().add(text);
 
 
+        //create a new button for the main menu
         Button menu = new Button("Main Menu");
         menu.setOnAction(e -> {
+            //start an instance of the main menu stage when clicked
             Game ctc = new Game();
             ctc.start(Game.classStage);
+            //close this stage
             classStage.close();
         });
         //set the x and y of the button and add to root
@@ -1050,8 +1054,10 @@ public class SinglePlayer extends Application {
         menu.setLayoutY(4*DIMENSIONS);
         root.getChildren().add(menu);
 
+        //create a new button for exiting the game
         Button exit = new Button("Exit");
         exit.setOnAction(e -> {
+            //close the stage when clicked
             classStage.close();
         });
         //set the x and y of the button and add to root
@@ -1068,13 +1074,8 @@ public class SinglePlayer extends Application {
         primaryStage.setTitle("Railroad Ink");
         Scene play = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
-        for(int i = 0; i < 6; i++) {
-            SPECIAL_LOCATIONS[i][0] = (i * 2 * (DIMENSIONS + 10)) + 10;
-            SPECIAL_LOCATIONS[i][1] = 8 * DIMENSIONS + 2 * DIMENSIONS / 3;
-        }
-
-        makeControls();
         drawBoard();
+        makeControls();
         drawSpecial();
 
         //add the controls to the root

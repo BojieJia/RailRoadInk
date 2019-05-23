@@ -120,6 +120,7 @@ public class MultiPlayer extends Application {
                 //call the draw new tiles method
                 drawNewTiles();
 
+                //Check if the round is valid and the computer is still in play
                 if(ROUND > 0 && ROUND < 8 && computerInPlay) {
                     String placement = RailroadInk.generateMove(computerBoardString, ROLL);
                     //if the placement string is 4 tile placements or less
@@ -145,10 +146,8 @@ public class MultiPlayer extends Application {
                 //increase the round counter
                 ROUND++;
 
-                if(ROUND > 1) {
+                if(ROUND > 7) {
                     //if all rounds have been played clear the root children and run the end game method
-                    root.getChildren().clear();
-                    root.getChildren().add(board);
                     endGame();
                 }
             }
@@ -411,10 +410,7 @@ public class MultiPlayer extends Application {
         }
 
         //For each of the four tiles, find the name of the tile, setting the image class variable for that tile to it,
-        //then find the image that tile relates to,
-        //then create a new imageview for the tile, setting it to the imageview class variable for that tile
-        //set the dimensions and location of it
-        //set the cursor to be a hand when on the image
+        //then create a new tileimageview for the tile, setting the image dimensions, location, flip and orientation of it
         //execute the clickTile event if clicked and the dragTile event if dragged
         //finally add the tile to root
         char[] tiles1 = {tiles[0], tiles[1]};
@@ -858,6 +854,22 @@ public class MultiPlayer extends Application {
     //Authored by Harriet
     private void drawBoard() {
 
+        //set up the locations for the special tiles
+        for(int i = 0; i < 4; i++) {
+            SPECIAL_LOCATIONS[i][0] = (i * 2 * (DIMENSIONS + 10)) + 10;
+            SPECIAL_LOCATIONS[i][1] = 10 * DIMENSIONS + 2 * DIMENSIONS / 3 - 20;
+        }
+        SPECIAL_LOCATIONS[4][0] = 2 * (DIMENSIONS + 10) + 10;
+        SPECIAL_LOCATIONS[4][1] = 11 * DIMENSIONS + 2 * DIMENSIONS / 3 - 10;
+        SPECIAL_LOCATIONS[5][0] = 4 * (DIMENSIONS + 10) + 10;
+        SPECIAL_LOCATIONS[5][1] = 11 * DIMENSIONS + 2 * DIMENSIONS / 3 - 10;
+
+        //set up the locations for the tiles
+        for(int i = 0; i < 4; i++) {
+            TILE_LOCATIONS[i][1] = (i * 2 * (DIMENSIONS + 10)) + 10;
+            TILE_LOCATIONS[i][0] = 9 * DIMENSIONS + 2 * DIMENSIONS / 3 - 30;
+        }
+
         //Draw grid for player
         for(int k = 1; k < 9; k++) {
             Line line1 = new Line();
@@ -1105,6 +1117,10 @@ public class MultiPlayer extends Application {
      */
     //Code from https://www.tutorialspoint.com/javafx/javafx_text.htm, edits by Harriet
     private void endGame() {
+
+        root.getChildren().clear();
+        root.getChildren().add(board);
+
         String boardString = RailroadInk.boardListToBoardString(tiles);
         int score = RailroadInk.getAdvancedScore(boardString);
         int computerScore = RailroadInk.getAdvancedScore(computerBoardString);
@@ -1198,20 +1214,6 @@ public class MultiPlayer extends Application {
 
         classStage = primaryStage ;
 
-        for(int i = 0; i < 4; i++) {
-            SPECIAL_LOCATIONS[i][0] = (i * 2 * (DIMENSIONS + 10)) + 10;
-            SPECIAL_LOCATIONS[i][1] = 10 * DIMENSIONS + 2 * DIMENSIONS / 3 - 20;
-        }
-        SPECIAL_LOCATIONS[4][0] = 2 * (DIMENSIONS + 10) + 10;
-        SPECIAL_LOCATIONS[4][1] = 11 * DIMENSIONS + 2 * DIMENSIONS / 3 - 10;
-        SPECIAL_LOCATIONS[5][0] = 4 * (DIMENSIONS + 10) + 10;
-        SPECIAL_LOCATIONS[5][1] = 11 * DIMENSIONS + 2 * DIMENSIONS / 3 - 10;
-
-        for(int i = 0; i < 4; i++) {
-            TILE_LOCATIONS[i][1] = (i * 2 * (DIMENSIONS + 10)) + 10;
-            TILE_LOCATIONS[i][0] = 9 * DIMENSIONS + 2 * DIMENSIONS / 3 - 30;
-        }
-
         primaryStage.setTitle("Railroad Ink");
         Scene play = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
@@ -1220,8 +1222,8 @@ public class MultiPlayer extends Application {
         //add the board to the root
         root.getChildren().add(board);
 
-        makeControls();
         drawBoard();
+        makeControls();
         drawSpecial();
 
         primaryStage.setScene(play);

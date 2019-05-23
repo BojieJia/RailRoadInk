@@ -6,9 +6,11 @@ of our project implements the following features:
  - A simple placement viewer (Task 4)
  - A basic playable game
  - A basic playable game that snaps pieces to the board and checks for validity (Task 7)
- - Generates basic starting piece placements (Task 8)
- - Implements hints (Task 10)
- - Implements interesting starting placements (Task 11)
+
+ - Tasks up to and including task 12.
 
 additional features...
 
+- Draggable tiles
+- Start Screen
+- Rules Screen
