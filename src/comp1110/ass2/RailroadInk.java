@@ -355,10 +355,10 @@ public class RailroadInk {
      */
 
 
-
     /**
      * Given a well-formed board String representing an ordered list of placements,
      * Traversing all the tiles which the length is 5, check whether all the tiles are not coincident.
+     *
      * @param boardString a board string representing some placement sequence
      * @return true if all the tiles are not coincident
      */
@@ -379,8 +379,9 @@ public class RailroadInk {
     }
 
     /**
-     *Given a well-formed board String representing an ordered list of placements
+     * Given a well-formed board String representing an ordered list of placements
      * Check  whether all the connections to exits are legal.
+     *
      * @param boardString a board string representing some placement sequence
      * @return true if all the connections to the exits are legal.
      */
@@ -477,6 +478,7 @@ public class RailroadInk {
     /**
      * Given a well-formed board String representing an ordered list of placements
      * Check whether the connections between adjacent tiles are legal.
+     *
      * @param boardString a board string representing some placement sequence
      * @return true if all the connections between adjacent tiles are legal.
      */
@@ -644,6 +646,7 @@ public class RailroadInk {
 
     /**
      * find the order of exit which piece located at
+     *
      * @param piece a given piece which is located at one exit
      * @return the order of exit
      */
@@ -665,8 +668,9 @@ public class RailroadInk {
      * if direction=1, string2 is to the east of string1.
      * if direction=2, string2 is to the south of string1.
      * if direction=3, string2 is to the west of string1.
-     * @param string1 a given tile string1
-     * @param string2 a given tile string2
+     *
+     * @param string1   a given tile string1
+     * @param string2   a given tile string2
      * @param direction a given direction
      * @return true if the direction is valid
      */
@@ -699,11 +703,12 @@ public class RailroadInk {
 
     /**
      * Use depth-first-search to search the number of exits in the process of searching from the current tile
-     * @param pieces the current tile
+     *
+     * @param pieces        the current tile
      * @param orderOfPieces the order number of tile in the boardString
-     * @param direction the direction of the next search
-     * @param firstexit the firstexit in the route of searching
-     * @param boardString a board string representing some placement sequence
+     * @param direction     the direction of the next search
+     * @param firstexit     the firstexit in the route of searching
+     * @param boardString   a board string representing some placement sequence
      * @return the number of exits in the process of searching from the current tile
      */
     public static int exitNumber(String pieces, int orderOfPieces, int direction, String firstexit, String boardString) {
@@ -746,6 +751,7 @@ public class RailroadInk {
 
     /**
      * Find the number of tiles which located at the center grid
+     *
      * @param boardString a board string representing some placement sequence
      * @return the number of tiles which located at the center grid
      */
@@ -765,8 +771,9 @@ public class RailroadInk {
 
     /**
      * Judge if the tile exists in the boardString
+     *
      * @param boardString a board string representing some placement sequence
-     * @param piece a given tile
+     * @param piece       a given tile
      * @return true if the tile exists in the boardString.
      */
     //Authored by Bojie
@@ -780,9 +787,11 @@ public class RailroadInk {
         return false;
     }
 
-    /** search the string of the tile which located at the given location
+    /**
+     * search the string of the tile which located at the given location
+     *
      * @param boardString a board string representing some placement sequence
-     * @param location a given location
+     * @param location    a given location
      * @return the string of the tile which located at the given location
      */
     //Authored by Bojie
@@ -800,6 +809,7 @@ public class RailroadInk {
 
     /**
      * search the unconnected edges in the boardString
+     *
      * @param boardString a board string representing some placement sequence
      * @return the number of unconnected edges.
      */
@@ -890,7 +900,7 @@ public class RailroadInk {
         boolean[] specialTile = new boolean[6];
         boolean[] newTilesString = new boolean[5];
         int specialNUmber = 0;
-        boolean haveAddedSpecial=false;
+        boolean haveAddedSpecial = false;
         for (int i = 0; i < boardString.length(); i += 5) {
             String speicalT = boardString.substring(i, i + 2);
             if (speicalT.equals("S0")) {
@@ -935,32 +945,32 @@ public class RailroadInk {
                             if (isValidPlacementSequence(boardString + tileString) && !newTilesString[i]) {
                                 boardString = boardString + tileString;
                                 placementSequence = placementSequence + tileString;
-                                tiles[k]=true;
+                                tiles[k] = true;
                                 newTilesString[i] = true;
                             }
                         }
                     }
                 }
             }
-            for(int s=0;s<specialTile.length&&specialNUmber<3&&haveAddedSpecial;s++){
-                if(!specialTile[s]){
+            for (int s = 0; s < specialTile.length && specialNUmber < 3 && haveAddedSpecial; s++) {
+                if (!specialTile[s]) {
                     if (specialTile[s]) {
                         continue;
                     }//whether the sth bit in specialTile has been used
-                    char t='0';
+                    char t = '0';
                     t += s;
-                    String specialType="S"+t;
+                    String specialType = "S" + t;
 
                     for (char c = 'A'; c < 'H'; c++) {
                         for (char j = '0'; j < '7'; j++) {
                             for (char l = '0'; l < '8'; l++) {
-                                String tailString=specialType+c+""+j+l;
+                                String tailString = specialType + c + "" + j + l;
 
                                 if (isValidPlacementSequence(boardString + tailString) && !newTilesString[i]) {
                                     boardString = boardString + tailString;
                                     placementSequence = placementSequence + tailString;
                                     newTilesString[i] = true;//
-                                    specialTile[s]=true;
+                                    specialTile[s] = true;
                                     haveAddedSpecial = true;
                                 }
 
@@ -979,14 +989,14 @@ public class RailroadInk {
         boolean found = false;
 
         char[] tile = tileString1.toCharArray();
-        for(char c = 'A'; c < 'H' && !found; c++){
+        for (char c = 'A'; c < 'H' && !found; c++) {
             tile[2] = c;
             for (char j = '0'; j < '7' && !found; j++) {
                 tile[3] = j;
-                for(char i = '0'; i < '8' && !found; i++) {
+                for (char i = '0'; i < '8' && !found; i++) {
                     tile[4] = i;
                     String tileString = "" + tile[0] + tile[1] + tile[2] + tile[3] + tile[4];
-                    if(isValidPlacementSequence(boardString + tileString)) {
+                    if (isValidPlacementSequence(boardString + tileString)) {
                         return true;
                     }
                 }
@@ -1009,12 +1019,12 @@ public class RailroadInk {
      */
 
 
-    /**use one Method "findMaxLength" (based on depth-first-search) to find the max length Railway and Highway
-
+    /**
+     * use one Method "findMaxLength" (based on depth-first-search) to find the max length Railway and Highway
      */
 
     //Authored by Bojie
-    public static int getAdvancedScore (String boardString){
+    public static int getAdvancedScore(String boardString) {
         int maxRailWay = 0;
         int maxHighWay = 0;
 
@@ -1063,19 +1073,20 @@ public class RailroadInk {
     }
 
     /**
-     *Find the maximum length of the road from the current piece
-     * @param piece a given current piece
+     * Find the maximum length of the road from the current piece
+     *
+     * @param piece         a given current piece
      * @param orderOfNumber the order of piece in the boardString
-     * @param direction the direction of the next search.'0' means north, '1' means east, '2'means south, '3' means west
-     * @param type the type of tile, '1' means highway, '2' means railway.
-     * @param deep the depth of iterator function, the deep will be deep+1 after one iteration.
-     * @param boardString a board string representing a completed game
+     * @param direction     the direction of the next search.'0' means north, '1' means east, '2'means south, '3' means west
+     * @param type          the type of tile, '1' means highway, '2' means railway.
+     * @param deep          the depth of iterator function, the deep will be deep+1 after one iteration.
+     * @param boardString   a board string representing a completed game
      * @return the maximun length of the road from the current piece
      */
 
     //Authored by Bojie
-    public static int findMaxLength (String piece,int orderOfNumber, int direction, int type, int deep, String
-            boardString){
+    public static int findMaxLength(String piece, int orderOfNumber, int direction, int type, int deep, String
+            boardString) {
         int length = deep;
         for (int i = 0; i < boardString.length(); i += 5) {
             String s = boardString.substring(i, i + 5);
@@ -1104,7 +1115,7 @@ public class RailroadInk {
     }
 
     //Authored by Harriet
-    public static String boardListToBoardString (HashMap < String, String > boardList){
+    public static String boardListToBoardString(HashMap<String, String> boardList) {
         String boardString = "";
         for (String str : boardList.keySet()) {
             boardString = boardString + boardList.get(str);
