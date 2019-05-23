@@ -354,24 +354,45 @@ public class RailroadInk {
      * @return true if placement sequence is valid
      */
 
+
+
+    /**
+     * Given a well-formed board String representing an ordered list of placements,
+     * Traversing all the tiles which the length is 5, check whether all the tiles are not coincident.
+     * @param boardString a board string representing some placement sequence
+     * @return true if all the tiles are not coincident
+     */
     //Authored by Bojie
     public static boolean notCover(String boardString) {
         for (int i = 0; i < boardString.length(); i += 5) {
             for (int j = 0; j < boardString.length(); j += 5) {
                 String s1 = boardString.substring(i, i + 5);
                 String s2 = boardString.substring(j, j + 5);
+                // trasversing all the tiles
                 if (i != j && s1.charAt(2) == s2.charAt(2) && s1.charAt(3) == s2.charAt(3)) {
                     return false;
                 }
+                //check if their 3rd and 4th characters are consistent
             }
         }
         return true;
     }
 
+    /**
+     *Given a well-formed board String representing an ordered list of placements
+     * Check  whether all the connections to exits are legal.
+     * @param boardString a board string representing some placement sequence
+     * @return true if all the connections to the exits are legal.
+     */
+
     //Authored by Bojie
     public static boolean isExit(String boardString) {
 
         boolean haveExit = false;
+        // Set a 'flag' haveExit and and initialize it to false.
+        // In the following 'if' statements, if the connections to exits are legal, assign true to haveExit.
+        //If not, return false.
+        //If do not set haveExit as a flag, the methods would return true even if there is only one legal connections to exits and the others are illegal.
         for (int i = 0; i < boardString.length(); i += 5) {
             String s = boardString.substring(i, i + 5);
             String t = s.substring(0, 2) + s.charAt(4);
@@ -453,10 +474,18 @@ public class RailroadInk {
         return haveExit;
     }
 
+    /**
+     * Given a well-formed board String representing an ordered list of placements
+     * Check whether the connections between adjacent tiles are legal.
+     * @param boardString a board string representing some placement sequence
+     * @return true if all the connections between adjacent tiles are legal.
+     */
+
     //Authored by Bojie
     public static boolean isNeighbor(String boardString) {
 
         boolean connect[] = new boolean[boardString.length()];
+        //set flags.
         for (int i = 0; i < boardString.length(); i += 5) {
             for (int j = 0; j < boardString.length(); j += 5) {
                 String s1 = boardString.substring(i, i + 5);
@@ -476,6 +505,7 @@ public class RailroadInk {
                     if (tile1.west != 0 && tile2.east != 0 && tile1.west != tile2.east) {
                         return false;
                     }
+                    //check if the tile types in the four directions ( northern, eastern, southern, western) match
                 } else if (row1 == row2 && (column2 - column1) == 1) {
                     if (tile1.east != 0 && tile1.east == tile2.west) {
                         connect[i] = true;
@@ -509,7 +539,7 @@ public class RailroadInk {
             if (!connect[i] && !isExit(s)) {
                 return false;
             }
-        }//check if any piece have neighbor
+        }//check if any tile have neighbor
         return true;
 
     }
@@ -593,7 +623,7 @@ public class RailroadInk {
                     k = j / 5;
                 }
             }
-            //find pieces connected with exits
+            //find tiles connected with exits
             if (!touchExit[i]) {
                 touchExit[i] = true;
                 int direction[] = new int[]{0, 1, 2, 3};
@@ -603,7 +633,6 @@ public class RailroadInk {
                     }
                 }
             }
-
             //calculate the total number of exits
             score += finalPoints[exitNum];
         }
@@ -612,6 +641,12 @@ public class RailroadInk {
     }
 
     //Authored by Bojie
+
+    /**
+     * find the order of exit which piece located at
+     * @param piece a given piece which is located at one exit
+     * @return the order of exit
+     */
     public static int whichExit(String piece) {
         for (int i = 0; i < exits.length; i++) {
             String location = piece.substring(2, 4);
@@ -623,6 +658,18 @@ public class RailroadInk {
     }
 
     //Authored by Bojie
+
+    /**
+     * check the validation of direction between two tiles
+     * if direction=0, string2 is to the north of string1
+     * if direction=1, string2 is to the east of string1.
+     * if direction=2, string2 is to the south of string1.
+     * if direction=3, string2 is to the west of string1.
+     * @param string1 a given tile string1
+     * @param string2 a given tile string2
+     * @param direction a given direction
+     * @return true if the direction is valid
+     */
     public static boolean isValidDirection(String string1, String string2, int direction) {
 
         char row1 = string1.charAt(2);
@@ -649,6 +696,16 @@ public class RailroadInk {
     }
 
     //Authored by Bojie
+
+    /**
+     * Use depth-first-search to search the number of exits in the process of searching from the current tile
+     * @param pieces the current tile
+     * @param orderOfPieces the order number of tile in the boardString
+     * @param direction the direction of the next search
+     * @param firstexit the firstexit in the route of searching
+     * @param boardString a board string representing some placement sequence
+     * @return the number of exits in the process of searching from the current tile
+     */
     public static int exitNumber(String pieces, int orderOfPieces, int direction, String firstexit, String boardString) {
 
         String location = pieces.charAt(2) + "" + pieces.charAt(3);
@@ -659,7 +716,6 @@ public class RailroadInk {
                     isAnExit = i;
                 }
             }
-
             if (isAnExit >= 0 && direction == isAnExit / 3) {
                 if (!touchExit[isAnExit]) {
                     touchExit[isAnExit] = true;
@@ -667,17 +723,15 @@ public class RailroadInk {
                 }
                 return 0;
             }
-        }
-        //judge the number of exits on the edge
+        }//judge the number of exits on the edge
         int total = 0;
         for (int i = 0; i < boardString.length(); i += 5) {
             String s = boardString.substring(i, i + 5);
             if (areConnectedNeighbours(s, pieces) && isValidDirection(pieces, s, direction)) {
                 String next = s;
-                touchPile[orderOfPieces] = true;// 把走过的路标记为true
+                touchPile[orderOfPieces] = true;// assign true to the tiles which have been searched
                 if (s.substring(0, 2).equals("B2")) {
-                    //touchPile[i/5] = false;
-                    total += exitNumber(s, i / 5, direction, firstexit, boardString);
+                    total += exitNumber(next, i / 5, direction, firstexit, boardString);
                 } else if (!touchPile[i / 5]) {
                     total += exitNumber(next, i / 5, 0, firstexit, boardString);
                     total += exitNumber(next, i / 5, 1, firstexit, boardString);
@@ -690,6 +744,11 @@ public class RailroadInk {
         return total;
     }
 
+    /**
+     * Find the number of tiles which located at the center grid
+     * @param boardString a board string representing some placement sequence
+     * @return the number of tiles which located at the center grid
+     */
     //Authored by Bojie
     public static int centreGridNum(String boardString) {
         int num = 0;
@@ -704,6 +763,12 @@ public class RailroadInk {
         return num;
     }
 
+    /**
+     * Judge if the tile exists in the boardString
+     * @param boardString a board string representing some placement sequence
+     * @param piece a given tile
+     * @return true if the tile exists in the boardString.
+     */
     //Authored by Bojie
     public static boolean isBoardExist(String boardString, String piece) {
         for (int i = 0; i < boardString.length(); i += 5) {
@@ -715,6 +780,11 @@ public class RailroadInk {
         return false;
     }
 
+    /** search the string of the tile which located at the given location
+     * @param boardString a board string representing some placement sequence
+     * @param location a given location
+     * @return the string of the tile which located at the given location
+     */
     //Authored by Bojie
     public static String searchTile(String boardString, String location) {
         String output = "";
@@ -728,6 +798,11 @@ public class RailroadInk {
         return output;
     }
 
+    /**
+     * search the unconnected edges in the boardString
+     * @param boardString a board string representing some placement sequence
+     * @return the number of unconnected edges.
+     */
     //Authored by Bojie
     public static int missEdges(String boardString) {
         int num = 0;
@@ -842,13 +917,13 @@ public class RailroadInk {
                 specialTile[5] = true;
                 specialNUmber++;
             }
-        }
+        }// check the number of special tile
 
         for (int i = 0; i < 5; i++) {
             for (int k = 0; k < 4; k++) {
                 if (tiles[k]) {
                     continue;
-                }//diceroll里面的第k位是否被用过
+                }//whether the kth bit in diceroll has been used
                 char[] tile = tileStringArray[k].toCharArray();
                 for (char c = 'A'; c < 'H'; c++) {
                     tile[2] = c;
@@ -861,7 +936,7 @@ public class RailroadInk {
                                 boardString = boardString + tileString;
                                 placementSequence = placementSequence + tileString;
                                 tiles[k]=true;
-                                newTilesString[i] = true;//新的数组第i轮有没有放上片
+                                newTilesString[i] = true;
                             }
                         }
                     }
@@ -871,7 +946,7 @@ public class RailroadInk {
                 if(!specialTile[s]){
                     if (specialTile[s]) {
                         continue;
-                    }//specialTile里面的第s位是否被用过
+                    }//whether the sth bit in specialTile has been used
                     char t='0';
                     t += s;
                     String specialType="S"+t;
@@ -884,7 +959,7 @@ public class RailroadInk {
                                 if (isValidPlacementSequence(boardString + tailString) && !newTilesString[i]) {
                                     boardString = boardString + tailString;
                                     placementSequence = placementSequence + tailString;
-                                    newTilesString[i] = true;//新的数组第i轮有没有放上片
+                                    newTilesString[i] = true;//
                                     specialTile[s]=true;
                                     haveAddedSpecial = true;
                                 }
@@ -897,6 +972,7 @@ public class RailroadInk {
         }
         return placementSequence;
     }
+
 
     public static boolean findPlacementForTile(String boardString, String tileName) {
         String tileString1 = tileName + "A0" + "0";
@@ -932,9 +1008,9 @@ public class RailroadInk {
      * @return integer (positive or negative) for final score (not counting expansion packs)
      */
 
-    /**
-     *In this task, use one Method "findMaxLength" (based on depth-first-search) to find the max length Railway and Highway
-     *
+
+    /**use one Method "findMaxLength" (based on depth-first-search) to find the max length Railway and Highway
+
      */
 
     //Authored by Bojie
@@ -987,14 +1063,14 @@ public class RailroadInk {
     }
 
     /**
-     *
-     * @param piece
-     * @param orderOfNumber
-     * @param direction
-     * @param type
-     * @param deep
-     * @param boardString
-     * @return
+     *Find the maximum length of the road from the current piece
+     * @param piece a given current piece
+     * @param orderOfNumber the order of piece in the boardString
+     * @param direction the direction of the next search.'0' means north, '1' means east, '2'means south, '3' means west
+     * @param type the type of tile, '1' means highway, '2' means railway.
+     * @param deep the depth of iterator function, the deep will be deep+1 after one iteration.
+     * @param boardString a board string representing a completed game
+     * @return the maximun length of the road from the current piece
      */
 
     //Authored by Bojie
