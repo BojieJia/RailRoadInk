@@ -7,4 +7,4 @@ We declare that the work we have submitted for Stage H of this assignment and al
 * ....
 
 Signed: Bojie Jia (u6730978)
-
+        Harriet Phillips (u6698981)

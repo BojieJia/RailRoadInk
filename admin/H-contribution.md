@@ -5,4 +5,5 @@ We declare that the work toward our submission of Stage H was distributed among 
 
 
 Signed: Bojie Jia (u6730978)
+        Harriet Phillips (u6698981)
 
