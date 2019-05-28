@@ -30,7 +30,7 @@ engaged and hard working students during our labs and in this assignment.
 
 ## Mark
 
-**8.92/11.0**
+**9.25/11.0**
 
 ## Miscellaneous marks
 
